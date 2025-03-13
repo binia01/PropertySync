@@ -26,21 +26,7 @@ Union is a mobile application that allows users to organize events and book venu
 - Read: Users can browse available venues and view booking details.
 - Update: Users can modify/cancel their bookings.
 - Delete: Admins can remove venues from the system.
-### 3. Role-Based Access Control (Authorization)
+# Authentication & Authorization
+- Signup, Sign-in, Delete Account
 - Regular Users: Can create, edit, and delete their own events. Can book and modify venue reservations.
 - Admins: Can manage venues (CRUD) and moderate event bookings.
-# Features 
-### Authentication & Authorization
-- Signup, Sign-in, Delete Account
-- Role-based access control (User/Admin)
-- Restricted access to certain screens
-### Event Management (CRUD)
-- Create events
-- View events
-- Edit events
-- Delete events
-### Venue Booking (CRUD)
-- Book a venue
-- View bookings and venue details
-- Modify or cancel bookings
-- Admin can add, update, or delete venues
