@@ -1,0 +1,76 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  email     String
+  firstname String
+  lastname  String?
+  hash      String
+  role      Role     @default(USER)
+
+  events    Event[]
+  bookings  Booking[]
+}
+
+model Event {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  description String
+  date      DateTime
+  capacity  Int
+  createdBy User  @relation(fields: [createdById], references: [id])
+  createdById Int
+
+  bookings  Booking[]
+}
+model Venue {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name String
+  location String
+  capacity  String
+  bookings  Booking[]
+  
+}
+model Booking {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  event     Event    @relation(fields:[eventId], references: [id])
+  eventId   Int
+
+  venue     Venue    @relation(fields: [venueId], references: [id])
+  venueId   Int
+
+  user     User    @relation(fields: [userId], references: [id])
+  userId   Int  
+  status   BookingStatus @default(PENDING)
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELED
+}
