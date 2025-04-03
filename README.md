@@ -28,7 +28,7 @@ PropertySync is a real estate management app that lets buyers explore properties
  - Update – Reschedule or cancel appointments.
  - Delete – Remove past or canceled appointments.
 
- # Simplified Roles & Permissions
+ # Roles & Permissions
 
  ### Buyer (Users looking to purchase properties)
  - Property Listings: Read only (can view, search, and filter listings).
