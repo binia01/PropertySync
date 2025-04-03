@@ -1,4 +1,4 @@
-# Venue-Booking-System
+# Property Sync
 
 
 # Group Members
@@ -12,21 +12,33 @@
 | 5  | Kibreab Chanyalew Tamene    | UGR/9584/15|
 
 # Project Description
-Union is a mobile application that allows users to organize events and book venues while ensuring authentication and role-based authorization.
+PropertySync is a real estate management app that lets buyers explore properties, book viewings, and connect with sellers, while property owners can list, manage, and schedule appointments seamlessly.
 
 # Business Features (With Full CRUD Operations)
 
-### 1. Event Management (CRUD)
-- Create: Users can create events with details like date, time, description, and capacity.
-- Read: Users can view a list of all events and see event details.
-- Update: Users can edit event details they created.
-- Delete: Users can delete events they created.
-### 2. Venue Booking (CRUD)
-- Create: Users can book a venue for an event.
-- Read: Users can browse available venues and view booking details.
-- Update: Users can modify/cancel their bookings.
-- Delete: Admins can remove venues from the system.
+### 1. Property Listings Management (CRUD)
+- Create – Add new property listings (title, price, location, images, etc.).
+- Read – View property details, search listings, apply filters.
+- Update – Edit property details (price, status, images).
+- Delete – Remove sold or inactive listings.
+
+### 2. Booking & Appointment Scheduling (CRUD)
+ - Create – Book a property viewing appointment.
+ - Read – View scheduled appointments and availability.
+ - Update – Reschedule or cancel appointments.
+ - Delete – Remove past or canceled appointments.
+
+ # Simplified Roles & Permissions
+
+ ### Buyer (Users looking to purchase properties)
+ - Property Listings: Read only (can view, search, and filter listings).
+ - Booking & Appointment Scheduling: Full CRUD (can book, reschedule, and cancel appointments).
+
+ ### Seller (Users listing properties for sale)
+ - Property Listings: Full CRUD (can create, update, and delete their own listings).
+ - Booking & Appointment Scheduling: Read & Manage (can view and confirm/cancel appointments for their properties).
+
+
 # Authentication & Authorization
 - Signup, Sign-in, Delete Account
-- Regular Users: Can create, edit, and delete their own events. Can book and modify venue reservations.
-- Admins: Can manage venues (CRUD) and moderate event bookings.
+- Role-Based Access Control
