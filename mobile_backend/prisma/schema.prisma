@@ -42,9 +42,9 @@ model Property {
   updatedAt   DateTime       @updatedAt
   title       String
   description String
-  price       Decimal        // Use Decimal for currency
+  price       Int        // Use Decimal for currency
   location    String
-  images      String[]       // Store image URLs or paths as an array of strings
+  // images      String[]       // Store image URLs or paths as an optional array of strings
   status      PropertyStatus @default(ACTIVE) // Status of the listing
 
   // Relation: The user who created and owns this listing (the Seller)

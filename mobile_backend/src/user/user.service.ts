@@ -70,6 +70,6 @@ export class UserService{
         });
         return {
             message: 'Profile deleted successfully', 
-            user:deletedUser};
+            user: deletedUser};
     }
 }
