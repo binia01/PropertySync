@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { AuthDto } from "./dto";
+import { SignUpDto, SignInDto } from "./dto";
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { JwtService, TokenExpiredError } from "@nestjs/jwt";
@@ -13,13 +13,14 @@ export class AuthService {
         private jwt: JwtService,
         private config: ConfigService
     ){}
-    async signup(dto: AuthDto){
+    async signup(dto: SignUpDto){
         try {
             const hash = await argon.hash(dto.password);
             const user = await this.prisma.user.create({
                 data: {
                   email: dto.email,
                   hash: hash,
+                  role: dto.role,
                 },
             });
             return this.signToken(user.id, user.email);
@@ -33,7 +34,7 @@ export class AuthService {
             throw error;
         }
     }
-    async signin(dto: AuthDto){
+    async signin(dto: SignInDto){
         try {
             const user = await this.prisma.user.findUnique({
                 where: {
@@ -63,7 +64,7 @@ export class AuthService {
         const secret = this.config.get('JWT_SECRET')
 
         const token = await this.jwt.signAsync(data, {
-            expiresIn: '15m',
+            expiresIn: '90m',
             secret: secret,
         })
         return {

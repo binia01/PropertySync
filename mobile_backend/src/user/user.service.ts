@@ -1,0 +1,75 @@
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { PrismaService } from "src/prisma/prisma.service";
+import { UpdateUserDto } from "./dto";
+
+
+@Injectable()
+export class UserService{
+    constructor(private prisma: PrismaService) {}
+
+    async getUserData(id: number) {
+        const user = await this.prisma.user.findUnique({
+        where: { id, },
+        include: {
+            properties: true,
+            bookedAppointments: {
+            include: {
+                property: true,
+            },
+            },
+            sellingAppointments: {
+            include: {
+                buyer: true,
+            },
+            },
+        },
+        });
+    
+        if (!user) throw new NotFoundException('User not found');
+    
+        switch (user.role) {
+        case 'SELLER':
+            return {
+            id: user.id,
+            email: user.email,
+            name: `${user.firstname ?? ''} ${user.lastname ?? ''}`.trim(),
+            role: user.role,
+            properties: user.properties,
+            sellingAppointments: user.sellingAppointments,
+            };
+    
+        case 'BUYER':
+            return {
+            id: user.id,
+            email: user.email,
+            name: `${user.firstname ?? ''} ${user.lastname ?? ''}`.trim(),
+            role: user.role,
+            bookedAppointments: user.bookedAppointments,
+            };
+    
+        default:
+            throw new Error('Invalid user role');
+        }
+    }
+
+    async editProfile(id: number, dto: UpdateUserDto) {
+        const updatedUser = await this.prisma.user.update({
+            where: { id, },
+            data : {
+                ...dto,
+            }
+        })
+        return {
+            message: 'Profile updated successfully',
+            user: updatedUser};
+    }
+    
+    async deleteProfile(id: number) {
+        const deletedUser = await this.prisma.user.delete({
+            where: { id },
+        });
+        return {
+            message: 'Profile deleted successfully', 
+            user:deletedUser};
+    }
+}
