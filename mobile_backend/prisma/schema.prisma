@@ -63,7 +63,7 @@ model Appointment {
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
   startTime DateTime          // When the appointment starts
-  endTime   DateTime          // When the appointment ends
+  Date      DateTime          //appointment date
 
   // Relation: The property being viewed
   property  Property          @relation(fields: [propertyId], references: [id])
