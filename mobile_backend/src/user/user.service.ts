@@ -29,6 +29,7 @@ export class UserService{
     
         switch (user.role) {
         case 'SELLER':
+            console.log(user)
             return {
             id: user.id,
             email: user.email,
@@ -39,6 +40,7 @@ export class UserService{
             };
     
         case 'BUYER':
+            console.log(user)
             return {
             id: user.id,
             email: user.email,
