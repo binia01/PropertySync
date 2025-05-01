@@ -48,7 +48,7 @@ export class PropertyService{
         })
         return {
             message: 'Property updated successfully',
-            user: updatedProperty
+            property: updatedProperty
         };
 
     }
