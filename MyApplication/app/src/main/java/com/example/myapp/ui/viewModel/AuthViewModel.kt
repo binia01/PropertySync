@@ -53,17 +53,17 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-//    fun singUp(username: String, email: String, password: String, role: String){
-//        _authState.value = Auth.Loading
-//        viewModelScope.launch {
-//            val res = authRepository.signup(username,email,password, role)
-//            res.onSuccess { user ->
-//                _authState.value = Auth.LoggedIn(user = user)
-//            }.onFailure { error ->
-//                _authState.value = Auth.Error(error.localizedMessage ?: "SignUp failed")
-//            }
-//        }
-//    }
+    fun signUp(username: String, email: String, password: String, role: String){
+        _authState.value = Auth.Loading
+        viewModelScope.launch {
+            val res = authRepository.signup(username,email,password, role)
+            res.onSuccess { user ->
+                _authState.value = Auth.LoggedIn(user = user)
+            }.onFailure { error ->
+                _authState.value = Auth.Error(error.localizedMessage ?: "SignUp failed")
+            }
+        }
+    }
 
     fun logOut(){
         viewModelScope.launch {
