@@ -59,7 +59,7 @@ fun SignUpScreen(
 //        }
 //    }
 
-    // Main layout
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -67,12 +67,12 @@ fun SignUpScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // App title
         Text(
             text = "PropertySync",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 32.dp)
+            modifier = Modifier.padding(bottom = 32.dp),
+            color = Color(0xFF2196F3)
         )
 
         Text(
@@ -81,7 +81,6 @@ fun SignUpScreen(
             modifier = Modifier.padding(bottom = 24.dp)
         )
 
-        // Full name field
         OutlinedTextField(
             value = fullName,
             onValueChange = {
@@ -96,7 +95,6 @@ fun SignUpScreen(
                 .padding(bottom = 16.dp)
         )
 
-        // Email field
         OutlinedTextField(
             value = email,
             onValueChange = {
@@ -111,7 +109,6 @@ fun SignUpScreen(
                 .padding(bottom = 16.dp)
         )
 
-        // Password field
         OutlinedTextField(
             value = password,
             onValueChange = {
@@ -127,13 +124,11 @@ fun SignUpScreen(
                 .padding(bottom = 24.dp)
         )
 
-        // Role selection title
         Text(
             text = "I am a:",
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
-        // Buyer/Seller toggle
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -208,7 +203,7 @@ fun SignUpScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text("Already have an account?")
-            TextButton(onClick = {}) {
+            TextButton(onClick = {},) {
                 Text("Sign in")
             }
         }
