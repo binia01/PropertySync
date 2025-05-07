@@ -53,13 +53,16 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun signUp(username: String, email: String, password: String, role: String){
+    fun singUp(username: String, email: String, password: String, role: String){
         _authState.value = Auth.Loading
+        println("hello from authviewmodel signup: we got something $username, $email, $role, $password")
         viewModelScope.launch {
-            val res = authRepository.signup(username,email,password, role)
+            val res = authRepository.signup(username,email,password,role)
+            println(res)
             res.onSuccess { user ->
                 _authState.value = Auth.LoggedIn(user = user)
             }.onFailure { error ->
+                println("SOMETHING AN ERROR???")
                 _authState.value = Auth.Error(error.localizedMessage ?: "SignUp failed")
             }
         }
