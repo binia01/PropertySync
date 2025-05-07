@@ -29,7 +29,9 @@ import com.example.myapp.ui.viewModel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(authViewModel: AuthViewModel) {
+fun LoginScreen(
+    authViewModel: AuthViewModel,
+) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val authState by authViewModel.authState.collectAsState()

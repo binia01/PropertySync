@@ -16,6 +16,7 @@ import com.example.myapp.ui.screen.booking.BookingScreen
 import com.example.myapp.ui.screen.home.HomeScreen
 import com.example.myapp.ui.navigation.Screens
 import com.example.myapp.ui.screen.auth.LoginScreen
+import com.example.myapp.ui.screen.auth.SignUpScreen
 import com.example.myapp.ui.viewModel.AuthViewModel
 
 @Composable
@@ -36,9 +37,9 @@ fun PropertyApp() {
             Modifier.padding(paddingValues)
         ) {
             composable(Screens.Login.route) { LoginScreen(authViewModel) }
+//            composable(Screens.SignUp.route) { SignUpScreen(authViewModel) }
             composable(Screens.Home.route) { HomeScreen(navController = navController) }
             composable(Screens.Bookings.route) { BookingScreen(navController = navController) }
-
 
         }
     }
