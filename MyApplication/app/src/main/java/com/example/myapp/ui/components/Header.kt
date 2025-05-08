@@ -26,7 +26,7 @@ fun Header(title: String, showBack: Boolean = false, onbackpressed: (() -> Unit)
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (showBack) {
-            IconButton(onClick = {TODO()}) {
+            IconButton(onClick = { onbackpressed?.invoke() }) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back"
