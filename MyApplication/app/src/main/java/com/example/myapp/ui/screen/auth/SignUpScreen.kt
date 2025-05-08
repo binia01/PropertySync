@@ -3,6 +3,7 @@ package com.example.myapp.ui.screen.auth
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -16,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.myapp.data.model.Auth
@@ -74,6 +76,7 @@ fun SignUpScreen(onNavToLogin: () -> Unit, // navigate to sign up
             label = { Text("Full name") },
             isError = fullNameError.isNotEmpty(),
             supportingText = { if (fullNameError.isNotEmpty()) Text(fullNameError) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
@@ -89,6 +92,8 @@ fun SignUpScreen(onNavToLogin: () -> Unit, // navigate to sign up
             label = { Text("Email address") },
             isError = emailError.isNotEmpty(),
             supportingText = { if (emailError.isNotEmpty()) Text(emailError) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
@@ -105,6 +110,8 @@ fun SignUpScreen(onNavToLogin: () -> Unit, // navigate to sign up
             isError = passwordError.isNotEmpty(),
             supportingText = { if (passwordError.isNotEmpty()) Text(passwordError) },
             visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 24.dp)
