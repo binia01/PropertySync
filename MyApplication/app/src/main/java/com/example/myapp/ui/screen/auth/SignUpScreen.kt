@@ -1,8 +1,9 @@
 package com.example.myapp.ui.screen.auth
+
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -16,19 +17,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapp.data.model.Auth
+
 import com.example.myapp.ui.viewModel.AuthViewModel
 
 
 enum class UserType { BUYER, SELLER }
 @Composable
-fun SignUpScreen(
-//    onSignUpSuccess: () -> Unit, // navigate to sign up
-//    authViewModel: AuthViewModel,
+fun SignUpScreen(onNavToLogin: () -> Unit, // navigate to sign up
+                 authViewModel: AuthViewModel,
 ) {
     // State variables for form fields
     var fullName by remember { mutableStateOf("") }
@@ -41,25 +41,10 @@ fun SignUpScreen(
     var emailError by remember { mutableStateOf("") }
     var passwordError by remember { mutableStateOf("") }
 
-    // Collect auth state from ViewModel
-//    val authState by authViewModel.authState.collectAsState()
-
-    // Handle signup success/error
-//    LaunchedEffect(authState) {
-//        when (authState) {
-//            is Auth.LoggedIn -> {
-//                onSignUpSuccess()
-//            }
-//            is Auth.Error -> {
-//                // Handle error (you might want to show a snackbar or error message)
-//                val errorMessage = (authState as Auth.Error).message
-//                // You could set this to a general error state if needed
-//            }
-//            else -> {}
-//        }
-//    }
+    val authState by authViewModel.authState.collectAsState()
 
 
+    // Main layout
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -67,12 +52,12 @@ fun SignUpScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // App title
         Text(
             text = "PropertySync",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 32.dp),
-            color = Color(0xFF2196F3)
+            modifier = Modifier.padding(bottom = 32.dp)
         )
 
         Text(
@@ -81,6 +66,7 @@ fun SignUpScreen(
             modifier = Modifier.padding(bottom = 24.dp)
         )
 
+        // Full name field
         OutlinedTextField(
             value = fullName,
             onValueChange = {
@@ -90,11 +76,13 @@ fun SignUpScreen(
             label = { Text("Full name") },
             isError = fullNameError.isNotEmpty(),
             supportingText = { if (fullNameError.isNotEmpty()) Text(fullNameError) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
         )
 
+        // Email field
         OutlinedTextField(
             value = email,
             onValueChange = {
@@ -104,11 +92,14 @@ fun SignUpScreen(
             label = { Text("Email address") },
             isError = emailError.isNotEmpty(),
             supportingText = { if (emailError.isNotEmpty()) Text(emailError) },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
         )
 
+        // Password field
         OutlinedTextField(
             value = password,
             onValueChange = {
@@ -119,16 +110,20 @@ fun SignUpScreen(
             isError = passwordError.isNotEmpty(),
             supportingText = { if (passwordError.isNotEmpty()) Text(passwordError) },
             visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 24.dp)
         )
 
+        // Role selection title
         Text(
             text = "I am a:",
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
+        // Buyer/Seller toggle
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -173,14 +168,14 @@ fun SignUpScreen(
                     isValid = false
                 }
 
-//                if (isValid) {
-//                    authViewModel.signUp(
-//                        username = fullName,
-//                        email = email,
-//                        password = password,
-//                        role = userType.name
-//                    )
-//                }
+                if (isValid) {
+                    authViewModel.singUp(
+                        username = fullName,
+                        email = email,
+                        password = password,
+                        role = userType.name
+                    )
+                }
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -189,21 +184,21 @@ fun SignUpScreen(
                 containerColor = Color(0xFF2196F3) // Blue color
             )
         ) {
-//            if (authState is Auth.Loading) {
-//                CircularProgressIndicator(color = Color.White)
-//            } else {
+            if (authState is Auth.Loading) {
+                CircularProgressIndicator(color = Color.White)
+            } else {
                 Text("Sign up")
-//            }
+            }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Sign in redirect
+
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text("Already have an account?")
-            TextButton(onClick = {},) {
+            TextButton(onClick = onNavToLogin) {
                 Text("Sign in")
             }
         }
@@ -244,8 +239,3 @@ fun ChoiceChip(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun SignUpScreenPrev() {
-    SignUpScreen()
-}

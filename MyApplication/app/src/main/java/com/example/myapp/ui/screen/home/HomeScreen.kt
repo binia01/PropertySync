@@ -24,12 +24,11 @@ import com.example.myapp.ui.viewModel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController,) {
+fun HomeScreen(navController: NavController, authViewModel: AuthViewModel) {
     val homeViewModel: HomeViewModel = hiltViewModel()
     val userRole by homeViewModel.userRole.collectAsState()
     val userId by homeViewModel.userId.collectAsState()
     val properties by homeViewModel.properties.collectAsState()
-    val authViewModel: AuthViewModel = hiltViewModel()
 
     val propertiesList = properties ?: emptyList()
     Column(
@@ -40,9 +39,6 @@ fun HomeScreen(navController: NavController,) {
         Header(
             title = "Find Your Dream Home",
         )
-        Button(onClick = {authViewModel.logOut()}) {
-            Text("LogOut")
-        }
         if (userRole == "SELLER"){
             LazyColumn {
                 itemsIndexed(propertiesList){ index, it -> PropertyCard(it, true)}

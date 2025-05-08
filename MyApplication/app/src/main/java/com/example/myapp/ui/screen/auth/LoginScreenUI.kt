@@ -1,16 +1,14 @@
 package com.example.myapp.ui.screen.auth
 
-import android.text.Layout
+
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.myapp.ui.viewModel.AuthViewModel
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -20,20 +18,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.myapp.data.model.Auth
+import com.example.myapp.ui.viewModel.AuthViewModel
 
 
 @Composable
 fun LoginScreenUI(
-//    authViewModel: AuthViewModel,
-//    onNavigateToSignUp: () -> Unit
+    authViewModel: AuthViewModel,
+    onNavToSignup: () -> Unit
 ) {
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-//    val authState by authViewModel.authState.collectAsState()
+    val authState by authViewModel.authState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -84,25 +83,26 @@ fun LoginScreenUI(
                 .padding(bottom = 8.dp),
             shape = RoundedCornerShape(12.dp),
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            visualTransformation = PasswordVisualTransformation()
         )
 
         // Sign in button
         Button(
-            onClick = { /*authViewModel.login(email, password)*/ },
+            onClick = { authViewModel.login(email, password) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF2196F3) // Blue color
+                containerColor = Color(0xFF2196F3)
             )
         ) {
-//            if (authState is Auth.Loading) {
-//                CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
-//            } else {
+            if (authState is Auth.Loading) {
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.onPrimary)
+            } else {
                 Text("Sign in", style = MaterialTheme.typography.labelLarge)
-//            }
+            }
         }
 
         // Sign up prompt
@@ -111,24 +111,18 @@ fun LoginScreenUI(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text("Don't have an account?")
-            TextButton(onClick = {/*onNavigateToSignUp*/}) {
+            TextButton(onClick = onNavToSignup) {
                 Text("Create account", color = MaterialTheme.colorScheme.primary)
             }
         }
 
-        // Error message
-//        if (authState is Auth.Error) {
-//            Text(
-//                text = (authState as Auth.Error).message,
-//                color = MaterialTheme.colorScheme.error,
-//                modifier = Modifier.padding(top = 16.dp)
-//            )
-//        }
+//         Error message
+        if (authState is Auth.Error) {
+            Text(
+                text = (authState as Auth.Error).message,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(top = 16.dp)
+            )
+        }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SignInPrev() {
-    LoginScreenUI()
 }

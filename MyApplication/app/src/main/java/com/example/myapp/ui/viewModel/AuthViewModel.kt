@@ -5,7 +5,6 @@ package com.example.myapp.ui.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapp.data.model.Auth
-import com.example.myapp.data.model.User
 import com.example.myapp.data.repository.AuthRepository;
 import com.example.myapp.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -53,13 +52,16 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun signUp(username: String, email: String, password: String, role: String){
+    fun singUp(username: String, email: String, password: String, role: String){
         _authState.value = Auth.Loading
+        println("hello from authviewmodel signup: we got something $username, $email, $role, $password")
         viewModelScope.launch {
-            val res = authRepository.signup(username,email,password, role)
+            val res = authRepository.signup(username,email,password,role)
+            println(res)
             res.onSuccess { user ->
                 _authState.value = Auth.LoggedIn(user = user)
             }.onFailure { error ->
+                println("SOMETHING AN ERROR???")
                 _authState.value = Auth.Error(error.localizedMessage ?: "SignUp failed")
             }
         }
