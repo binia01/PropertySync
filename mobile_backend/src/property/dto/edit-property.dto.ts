@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from "class-validator"
+import { IsInt, IsNumber, IsOptional, IsString } from "class-validator"
 
 export class editPropretyDto{
     @IsString()
@@ -9,13 +9,25 @@ export class editPropretyDto{
     @IsOptional()
     description: string;
 
-    @IsNumber()
+    @IsInt()
     @IsOptional()
     price: number;
 
     @IsString()
     @IsOptional()
     location: string;
+
+    @IsInt()
+    @IsOptional()
+    beds: number;
+
+    @IsInt()
+    @IsOptional()
+    baths: number;
+
+    @IsInt()
+    @IsOptional()
+    area: number;
 
 }
 
