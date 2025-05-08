@@ -3,6 +3,7 @@ package com.example.propSync.di
 import android.app.Application
 import androidx.room.Room
 import com.example.myapp.data.api.AuthApiService
+//import com.example.myapp.data.api.AuthApiService.Companion.BASE_URL
 import com.example.myapp.data.api.PropertyService
 import com.example.myapp.data.api.UserService
 import com.example.myapp.data.db.AppDatabase
@@ -37,12 +38,15 @@ abstract class AppModule {
     abstract fun bindPropertyRepository(propertyRepository: PropertyRepoImpl): PropertyRepository
 
     companion object {
+        // INSERT YOUR OWN BASE URL HERE
+        val Abenis_URL : String = "http://192.168.76.36:3000/"
 
         @Provides
         @Singleton
         fun provideAuthApiService(): AuthApiService{
             return Retrofit.Builder()
-                .baseUrl("http://192.168.1.7:3000/")
+//                .baseUrl("http://192.168.1.7:3000/")
+                .baseUrl(Abenis_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(AuthApiService::class.java)
@@ -53,7 +57,8 @@ abstract class AppModule {
         @Singleton
         fun provideUserApiService(): UserService{
             return Retrofit.Builder()
-                .baseUrl("http://192.168.1.7:3000/")
+//                .baseUrl("http://192.168.1.7:3000/")
+                .baseUrl(Abenis_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(UserService::class.java)
@@ -63,7 +68,8 @@ abstract class AppModule {
         @Singleton
         fun providePropertyApiService(): PropertyService{
             return Retrofit.Builder()
-                .baseUrl("http://192.168.1.7:3000/")
+//                .baseUrl("http://192.168.1.7:3000/")
+                .baseUrl(Abenis_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(PropertyService::class.java)
