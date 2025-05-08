@@ -33,7 +33,7 @@ fun PropertyCard( property: Property, isSeller: Boolean) {
             .fillMaxWidth()
             .padding(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation=4.dp),
-        colors = CardDefaults.cardColors(containerColor = CardBackground)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
 
 
         ){

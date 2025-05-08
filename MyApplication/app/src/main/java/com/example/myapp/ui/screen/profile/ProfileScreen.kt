@@ -29,38 +29,39 @@ import com.example.myapp.ui.viewModel.UserViewModel
 fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     val userViewModel: UserViewModel = hiltViewModel()
     val userState by userViewModel.userState.collectAsState()
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(color = CardBackground),
-                contentPadding = PaddingValues(horizontal = 22.dp, vertical = 25.dp)
 
-            ) {
-                item {
-                    Header("My Profile")
-                    UserInfoCard("${userState?.firstname} ${userState?.lastname}", "${userState?.email}", "Property ${userState?.role?.lowercase()}")
-                    Spacer(modifier = Modifier.height(24.dp))
-                    ProfileAppointmentsCards(5, 2)
-                    Spacer(modifier = Modifier.height(24.dp))
-                    Text(
-                        text = "Account Settings",
-                        style = MaterialTheme.typography.titleLarge,
-                        modifier = Modifier.padding(start = 4.dp)
-                    )
-                    AccountSettings(
-                        onUpdateProfileClick =  { navController.navigate(Screens.UpdateProfile.route) },
-                        onDeleteAccountClick ={ userViewModel.deleteUser() },
-                        onLogoutClick ={
-                            println("did i get clicked?")
-                                authViewModel.logOut()
-                                navController.navigate(Screens.Login.route) {
-                                    popUpTo(navController.graph.id) { inclusive = true }
-                                }
-                            },
-                    )
-                }
-            }
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .clip(RoundedCornerShape(16.dp))
+            .background(color = MaterialTheme.colorScheme.background),
+        contentPadding = PaddingValues(horizontal = 22.dp, vertical = 25.dp)
+
+    ) {
+        item {
+            Header("My Profile")
+            UserInfoCard("${userState?.firstname} ${userState?.lastname}", "${userState?.email}", "Property ${userState?.role?.lowercase()}")
+            Spacer(modifier = Modifier.height(24.dp))
+            ProfileAppointmentsCards(5, 2)
+            Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = "Account Settings",
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(start = 4.dp)
+            )
+            AccountSettings(
+                onUpdateProfileClick =  { navController.navigate(Screens.UpdateProfile.route) },
+                onDeleteAccountClick ={ userViewModel.deleteUser() },
+                onLogoutClick ={
+                    println("did i get clicked?")
+                    authViewModel.logOut()
+                    navController.navigate(Screens.Login.route) {
+                        popUpTo(navController.graph.id) { inclusive = true }
+                    }
+                },
+            )
+        }
+    }
 }
 
 
