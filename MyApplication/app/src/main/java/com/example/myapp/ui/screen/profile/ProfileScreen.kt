@@ -11,16 +11,15 @@ import com.example.myapp.ui.components.Header
 import com.example.myapp.ui.components.UserInfoCard
 import com.example.myapp.ui.components.ProfileAppointmentsCards
 import com.example.myapp.ui.components.AccountSettings
-import com.example.myapp.ui.components.BottomNav
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapp.ui.navigation.Screens
+import com.example.myapp.ui.theme.BaseBackground
 import com.example.myapp.ui.theme.CardBackground
 import com.example.myapp.ui.viewModel.AuthViewModel
 import com.example.myapp.ui.viewModel.UserViewModel
