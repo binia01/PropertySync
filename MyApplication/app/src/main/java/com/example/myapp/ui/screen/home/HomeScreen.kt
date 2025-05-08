@@ -39,9 +39,6 @@ fun HomeScreen(navController: NavController, authViewModel: AuthViewModel) {
         Header(
             title = "Find Your Dream Home",
         )
-        Button(onClick = {authViewModel.logOut()}) {
-            Text("LogOut")
-        }
         if (userRole == "SELLER"){
             LazyColumn {
                 itemsIndexed(propertiesList){ index, it -> PropertyCard(it, true)}

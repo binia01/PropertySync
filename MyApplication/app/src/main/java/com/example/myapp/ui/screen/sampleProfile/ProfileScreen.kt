@@ -19,8 +19,15 @@ import com.example.myapp.ui.viewModel.UserViewModel
 fun ProfileScreen(
     navController: NavController,
     authViewModel: AuthViewModel
-) { val userViewModel: UserViewModel = hiltViewModel()
+) {
+    val userViewModel: UserViewModel = hiltViewModel()
     val userState by userViewModel.userState.collectAsState()
+    val deleteAccountState by userViewModel.deleteAccountState.collectAsState()
+    val updateAccountState by userViewModel.updateAccountState.collectAsState()
+
+    var fullName by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .padding()
@@ -31,6 +38,31 @@ fun ProfileScreen(
     ) {
         Text(text = "Account Actions", style = MaterialTheme.typography.headlineSmall)
         Text(text = "Hello ${userState?.firstname}", style = MaterialTheme.typography.headlineLarge)
+
+
+        if (deleteAccountState is UserReqState.Loading || updateAccountState is UserReqState.Loading) {
+            CircularProgressIndicator()
+        } else if (deleteAccountState is UserReqState.Error || updateAccountState is UserReqState.Error) {
+            val errorMessage = (deleteAccountState as? UserReqState.Error)?.message
+                ?: (updateAccountState as? UserReqState.Error)?.message
+            Text(
+                text = errorMessage.toString(),
+                color = MaterialTheme.colorScheme.error
+            )
+        } else if (updateAccountState is UserReqState.Success) {
+            Text(
+                text = (updateAccountState as UserReqState.Success).message.toString(),
+                color = MaterialTheme.colorScheme.primary
+            )
+        } else if (deleteAccountState is UserReqState.Success) {
+            LaunchedEffect(Unit) {
+                navController.navigate(Screens.Login.route) {
+                    popUpTo(navController.graph.id) { inclusive = true }
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         Button(
             onClick = {
@@ -44,6 +76,7 @@ fun ProfileScreen(
             Text("Logout")
         }
 
+        // delete user button
         Button(
             onClick = {
                 userViewModel.deleteUser()
@@ -54,21 +87,40 @@ fun ProfileScreen(
             Text("Delete Account")
         }
 
-        // Observe deleteAccountState for loading and error messages
-        val deleteAccountState by userViewModel.deleteAccountState.collectAsState()
-        if (deleteAccountState is UserReqState.Loading) {
-            CircularProgressIndicator()
-        } else if (deleteAccountState is UserReqState.Error) {
-            Text(
-                text = (deleteAccountState as UserReqState.Error).message,
-                color = MaterialTheme.colorScheme.error
-            )
-        } else if (deleteAccountState is UserReqState.Success) {
-            LaunchedEffect(Unit) {
-                navController.navigate(Screens.Login.route) {
-                    popUpTo(navController.graph.id) { inclusive = true }
-                }
-            }
+        OutlinedTextField(
+            value = fullName,
+            onValueChange = {
+                fullName = it
+            },
+            label = { Text("Full name") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
+        )
+
+        // Email field
+        OutlinedTextField(
+            value = email,
+            onValueChange = {
+                email = it
+            },
+            label = { Text("Email address") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
+        )
+
+        // update button make same on yours please and thank you.
+        Button(
+            onClick = {
+                userViewModel.update(
+                    name = fullName,
+                    newEmail = email,
+                )
+            },
+            modifier = Modifier.fillMaxWidth() // Make the button fill width for consistency
+        ) {
+            Text("Submit Changes")
         }
     }
 }

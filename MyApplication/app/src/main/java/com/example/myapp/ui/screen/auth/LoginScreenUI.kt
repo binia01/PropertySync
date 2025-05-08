@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.myapp.data.model.Auth
 import com.example.myapp.ui.viewModel.AuthViewModel
@@ -82,7 +83,8 @@ fun LoginScreenUI(
                 .padding(bottom = 8.dp),
             shape = RoundedCornerShape(12.dp),
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            visualTransformation = PasswordVisualTransformation()
         )
 
         // Sign in button
@@ -93,7 +95,7 @@ fun LoginScreenUI(
                 .height(56.dp),
             shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF2196F3) // Blue color
+                containerColor = Color(0xFF2196F3)
             )
         ) {
             if (authState is Auth.Loading) {

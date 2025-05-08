@@ -29,6 +29,9 @@ class UserViewModel @Inject constructor (private val userRepository: UserReposit
     private val _deleteAccountState = MutableStateFlow<UserReqState>(UserReqState.Idle)
     val deleteAccountState: StateFlow<UserReqState> = _deleteAccountState.asStateFlow()
 
+    private val _updateAccountState = MutableStateFlow<UserReqState>(UserReqState.Idle)
+    val updateAccountState: StateFlow<UserReqState> = _updateAccountState.asStateFlow()
+
 
     init {
         viewModelScope.launch {
@@ -58,10 +61,25 @@ class UserViewModel @Inject constructor (private val userRepository: UserReposit
     }
 
 
-    fun update() {
-        // TODO
-//        viewModelScope.launch {
-//            userRepository.
-//        }
+
+    fun update(name: String?, newEmail: String?) {
+        val (first, last) = extractFirstAndLastName(name)
+        println("THE NAMES ARE? $first $last $newEmail")
+        viewModelScope.launch {
+            val res = userRepository.updateUser(first, newEmail?.takeIf { it.isNotBlank() }, last)
+                res.onSuccess {
+                    _updateAccountState.value = UserReqState.Success("Profile updated successfully")
+                }
+                .onFailure { error ->
+                    _updateAccountState.value = UserReqState.Error(error.localizedMessage ?: "Failed to update profile")
+                }
+        }
+    }
+
+    private fun extractFirstAndLastName(fullName: String?): Pair<String?, String?> {
+        val nameParts = fullName?.split(" ") ?: emptyList()
+        val firstName = nameParts.getOrNull(0)?.takeIf { it.isNotBlank() }
+        val lastName = nameParts.getOrNull(1)
+        return Pair(firstName, lastName)
     }
 }

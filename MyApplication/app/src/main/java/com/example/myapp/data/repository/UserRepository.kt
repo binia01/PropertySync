@@ -13,7 +13,7 @@ interface UserRepository {
     suspend fun insertUser(user: User)
     suspend fun deleteUser()
     suspend fun deleteUserAccount() : Result<Unit>
-    suspend fun updateUser(user: User)
+    suspend fun updateUser(firstname: String?, email: String?, lastname: String?): Result<Unit>
 }
 
 class UserRepositoryImpl @Inject constructor(
@@ -59,9 +59,44 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateUser(user: User) {
-        //TODO
-    }
+    override suspend fun updateUser(firstname: String?, email: String?, lastname: String?): Result<Unit> {
+        return try {
+            val currentUser = getUser().firstOrNull()
 
+            if (currentUser?.token != null) {
+                val updateRequest = UserService.UpdateRequest(
+                    email = email ?: currentUser.email,
+                    firstname = firstname ?: currentUser.firstname,
+                    lastname = lastname ?: currentUser.lastname
+                )
+
+                val res = userApiService.update("Bearer ${currentUser.token}", updateRequest)
+
+                if (res.isSuccessful) {
+                    val userReturn = res.body()?.userRet
+                    if (userReturn != null) {
+                        val updatedUserLocal = User(
+                            id = userReturn.id?.toInt() ?: currentUser.id,
+                            email = userReturn.email ?: currentUser.email,
+                            firstname = firstname ?: currentUser.firstname,
+                            lastname = lastname ?: currentUser.lastname,
+                            role = currentUser.role,
+                            token = currentUser.token
+                        )
+                        insertUser(updatedUserLocal)
+                        return Result.success(Unit)
+                    } else {
+                        return Result.failure(Exception("Successful response but user data is null"))
+                    }
+                } else {
+                    return Result.failure(Exception("Backend Error: ${res.errorBody()?.string() ?: res.message()}"))
+                }
+            } else {
+                return Result.failure(Exception("User not logged in or token is null"))
+            }
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
+    }
 
 }
