@@ -15,24 +15,20 @@ import com.example.myapp.ui.components.BottomNav
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.myapp.ui.navigation.Screens
 import com.example.myapp.ui.theme.CardBackground
+import com.example.myapp.ui.viewModel.AuthViewModel
+import com.example.myapp.ui.viewModel.UserViewModel
 
 @Composable
-fun ProfileScreen(navController: NavHostController) {
-    Scaffold(
-        topBar = { Header("My Profile") },
-        bottomBar = { BottomNav(navController) },
-        containerColor = Color(0xFFF9FAFB)
-    ) { padding ->
-        Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = 20.dp, vertical = 16.dp),
-            color = Color(0xFFF9FAFB)
-        ) {
+fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel) {
+    val userViewModel: UserViewModel = hiltViewModel()
+    val userState by userViewModel.userState.collectAsState()
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
@@ -42,7 +38,8 @@ fun ProfileScreen(navController: NavHostController) {
 
             ) {
                 item {
-                    UserInfoCard("Grid", "Grid@gmail.com", "Property Buyer")
+                    Header("My Profile")
+                    UserInfoCard("${userState?.firstname} ${userState?.lastname}", "${userState?.email}", "Property ${userState?.role?.lowercase()}")
                     Spacer(modifier = Modifier.height(24.dp))
                     ProfileAppointmentsCards(5, 2)
                     Spacer(modifier = Modifier.height(24.dp))
@@ -51,10 +48,20 @@ fun ProfileScreen(navController: NavHostController) {
                         style = MaterialTheme.typography.titleLarge,
                         modifier = Modifier.padding(start = 4.dp)
                     )
-                    AccountSettings()
+                    AccountSettings(
+                        onUpdateProfileClick =  { navController.navigate(Screens.UpdateProfile.route) },
+                        onDeleteAccountClick ={ userViewModel.deleteUser() },
+                        onLogoutClick ={
+                            println("did i get clicked?")
+                                authViewModel.logOut()
+                                navController.navigate(Screens.Login.route) {
+                                    popUpTo(navController.graph.id) { inclusive = true }
+                                }
+                            },
+                    )
                 }
             }
-        }
-    }
 }
+
+
 

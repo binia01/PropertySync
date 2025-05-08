@@ -22,22 +22,36 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.myapp.R
 
 @Composable
-fun AccountSettings() {
+fun AccountSettings( onUpdateProfileClick: () -> Unit,
+                     onDeleteAccountClick: () -> Unit,
+                     onLogoutClick: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White, shape = RoundedCornerShape(16.dp))
             .padding(12.dp)
     ) {
-        SettingsRow("Update Profile", painterResource(id = R.drawable.editicon))
-        SettingsRow("Delete Account", painterResource(id = R.drawable.trashicon), iconTint = Color.Red, textColor = Color.Red)
-        SettingsRow("Logout",painterResource(id = R.drawable.logout))
+        SettingsRow(
+            "Update Profile", painterResource(id = R.drawable.editicon),
+            onClick = { onUpdateProfileClick() },
+            hasRightArrow = true
+        )
+        SettingsRow(
+            "Delete Account",
+            painterResource(id = R.drawable.trashicon),
+            iconTint = Color.Red,
+            textColor = Color.Red,
+            onClick = { onDeleteAccountClick() }
+        )
+        SettingsRow("Logout",painterResource(id = R.drawable.logout), onClick = { onLogoutClick() })
     }
 }
 
@@ -46,12 +60,14 @@ fun SettingsRow(
     title: String,
     icon: Any,
     iconTint: Color = Color.Black,
-    textColor: Color = Color.Black
+    textColor: Color = Color.Black,
+    onClick: () -> Unit,
+    hasRightArrow: Boolean = false
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* TODO */ }
+            .clickable { onClick() }
             .padding(vertical = 12.dp, horizontal = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
@@ -64,7 +80,7 @@ fun SettingsRow(
                     tint = iconTint,
                     modifier = Modifier.size(20.dp)
                 )
-                is androidx.compose.ui.graphics.painter.Painter -> Icon(
+                is Painter -> Icon(
                     painter = icon,
                     contentDescription = null,
                     tint = iconTint,
@@ -75,7 +91,9 @@ fun SettingsRow(
             Spacer(modifier = Modifier.width(16.dp))
             Text(title, color = textColor)
         }
-        Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, tint = textColor, modifier = Modifier.size(16.dp))
+        if(hasRightArrow){
+            Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = null, tint = textColor, modifier = Modifier.size(16.dp))
+        }
     }
     HorizontalDivider(thickness = 1.dp, color = Color(0xFFE0E0E0))
     Spacer(modifier = Modifier.height(8.dp))

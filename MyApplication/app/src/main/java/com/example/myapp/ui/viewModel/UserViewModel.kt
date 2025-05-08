@@ -62,11 +62,10 @@ class UserViewModel @Inject constructor (private val userRepository: UserReposit
 
 
 
-    fun update(name: String?, newEmail: String?) {
-        val (first, last) = extractFirstAndLastName(name)
+    fun update(first: String?, last: String? ,newEmail: String?) {
         println("THE NAMES ARE? $first $last $newEmail")
         viewModelScope.launch {
-            val res = userRepository.updateUser(first, newEmail?.takeIf { it.isNotBlank() }, last)
+            val res = userRepository.updateUser(first?.takeIf { it.isNotBlank() }, newEmail?.takeIf { it.isNotBlank() }, last?.takeIf { it.isNotBlank() })
                 res.onSuccess {
                     _updateAccountState.value = UserReqState.Success("Profile updated successfully")
                 }
@@ -76,10 +75,10 @@ class UserViewModel @Inject constructor (private val userRepository: UserReposit
         }
     }
 
-    private fun extractFirstAndLastName(fullName: String?): Pair<String?, String?> {
-        val nameParts = fullName?.split(" ") ?: emptyList()
-        val firstName = nameParts.getOrNull(0)?.takeIf { it.isNotBlank() }
-        val lastName = nameParts.getOrNull(1)
-        return Pair(firstName, lastName)
-    }
+//    private fun extractFirstAndLastName(fullName: String?): Pair<String?, String?> {
+//        val nameParts = fullName?.split(" ") ?: emptyList()
+//        val firstName = nameParts.getOrNull(0)?.takeIf { it.isNotBlank() }
+//        val lastName = nameParts.getOrNull(1)
+//        return Pair(firstName, lastName)
+//    }
 }
