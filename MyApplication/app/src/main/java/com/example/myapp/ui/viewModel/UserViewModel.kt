@@ -8,10 +8,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapp.data.model.Auth
 import com.example.myapp.data.model.User
+import com.example.myapp.data.model.UserReqState
 import com.example.myapp.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +25,13 @@ class UserViewModel @Inject constructor (private val userRepository: UserReposit
 
     val userRole : StateFlow<String?> = MutableStateFlow<String?>(null)
     val userId : StateFlow<Int?> = MutableStateFlow<Int?>(null)
+
+    private val _deleteAccountState = MutableStateFlow<UserReqState>(UserReqState.Idle)
+    val deleteAccountState: StateFlow<UserReqState> = _deleteAccountState.asStateFlow()
+
+    private val _updateAccountState = MutableStateFlow<UserReqState>(UserReqState.Idle)
+    val updateAccountState: StateFlow<UserReqState> = _updateAccountState.asStateFlow()
+
 
     init {
         viewModelScope.launch {
@@ -39,11 +48,38 @@ class UserViewModel @Inject constructor (private val userRepository: UserReposit
             userRepository.deleteUser()
         }
     }
+    fun deleteUser() {
+        viewModelScope.launch {
+            _deleteAccountState.value = UserReqState.Loading
+            val result = userRepository.deleteUserAccount()
+            result.onSuccess {
+                _deleteAccountState.value = UserReqState.Success("Deleted!")
+            }.onFailure {
+                _deleteAccountState.value = UserReqState.Error(result.exceptionOrNull()?.message ?: "Failed to delete account")
+            }
+        }
+    }
 
-    fun update() {
-        // TODO
-//        viewModelScope.launch {
-//            userRepository.
-//        }
+
+
+    fun update(name: String?, newEmail: String?) {
+        val (first, last) = extractFirstAndLastName(name)
+        println("THE NAMES ARE? $first $last $newEmail")
+        viewModelScope.launch {
+            val res = userRepository.updateUser(first, newEmail?.takeIf { it.isNotBlank() }, last)
+                res.onSuccess {
+                    _updateAccountState.value = UserReqState.Success("Profile updated successfully")
+                }
+                .onFailure { error ->
+                    _updateAccountState.value = UserReqState.Error(error.localizedMessage ?: "Failed to update profile")
+                }
+        }
+    }
+
+    private fun extractFirstAndLastName(fullName: String?): Pair<String?, String?> {
+        val nameParts = fullName?.split(" ") ?: emptyList()
+        val firstName = nameParts.getOrNull(0)?.takeIf { it.isNotBlank() }
+        val lastName = nameParts.getOrNull(1)
+        return Pair(firstName, lastName)
     }
 }
