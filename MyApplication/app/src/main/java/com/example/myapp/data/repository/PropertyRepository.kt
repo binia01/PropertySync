@@ -33,9 +33,9 @@ class PropertyRepoImpl @Inject constructor(
                                 title = p.title,
                                 location = p.location,
                                 price = p.price.toInt(),
-                                beds =  (2..5).random(),
-                                baths =  (1..3).random(),
-                                area = "4000",
+                                beds = p.beds ?: (2..5).random(),
+                                baths =  p.bathrooms ?: (1..3).random(),
+                                area = p.area?.toString() ?: "4000",
                                 imageUrl = "",
                                 description = p.description,
                                 sellerId = p.sellerId

@@ -8,6 +8,7 @@ import com.example.myapp.data.local.PropertyDAO
 import com.example.myapp.data.model.Property
 import com.example.myapp.data.model.User
 import javax.inject.Inject
+import kotlin.toString
 
 interface AuthRepository {
     suspend fun login(username: String, password: String): Result<User>
@@ -54,10 +55,10 @@ class AuthRepositoryImpl @Inject constructor(
                             id = p.id,
                             title = p.title,
                             location = p.location,
-                            price = p.price,
-                            beds = (2..5).random(),
-                            baths = (1..3).random(),
-                            area = "45000",
+                            price = p.price.toInt(),
+                            beds = p.beds ?: (2..5).random(),
+                            baths =  p.bathrooms ?: (1..3).random(),
+                            area = p.area?.toString() ?: "4000",
                             imageUrl = "",
                             description = p.description,
                             sellerId = p.sellerId

@@ -29,7 +29,10 @@ data class ReturnProperty(
     @SerializedName("price") val price: Double,
     @SerializedName("location") val location: String,
     @SerializedName("status") val status: String,
-    @SerializedName("sellerId") val sellerId: Int
+    @SerializedName("sellerId") val sellerId: Int,
+    @SerializedName("beds") val beds: Int?,
+    @SerializedName("bathroom") val bathrooms: Int?,
+    @SerializedName("area") val area: Int?,
 )
 
 

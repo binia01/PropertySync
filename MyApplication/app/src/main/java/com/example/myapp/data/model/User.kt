@@ -13,7 +13,7 @@ data class UserReturn (
         val name: String?,
         val hash: String?,
         val role: String?,
-        val properties: List<Property>?,
+        val properties: List<ReturnProperty>?,
         val bookedAppointments: List<Any>?,
         val sellingAppointments: List<Any>?
 
