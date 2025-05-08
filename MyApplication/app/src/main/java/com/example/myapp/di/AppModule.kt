@@ -2,6 +2,7 @@ package com.example.propSync.di
 
 import android.app.Application
 import androidx.room.Room
+import com.example.myapp.data.api.AppointmentService
 import com.example.myapp.data.api.AuthApiService
 import com.example.myapp.data.api.PropertyService
 import com.example.myapp.data.api.UserService
@@ -17,6 +18,7 @@ import com.example.myapp.data.repository.PropertyRepoImpl
 import com.example.myapp.data.repository.PropertyRepository
 import com.example.myapp.data.repository.UserRepository
 import com.example.myapp.data.repository.UserRepositoryImpl
+import com.google.gson.Gson
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -75,6 +77,16 @@ abstract class AppModule {
                 .create(PropertyService::class.java)
         }
 
+        @Provides
+        @Singleton
+        fun provideAppointmentApiService(): AppointmentService{
+            return Retrofit.Builder()
+                .baseUrl("http://192.168.1.7:3000/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+                .create(AppointmentService::class.java)
+        }
+
 
 
         @Provides
@@ -106,6 +118,12 @@ abstract class AppModule {
         @Singleton
         fun provideAppointment(appDatabase: AppDatabase): AppointmentDao{
             return appDatabase.appointmentDao()
+        }
+
+        @Provides
+        @Singleton
+        fun provideGson(): Gson {
+            return Gson()
         }
 
     }

@@ -27,10 +27,11 @@ class AuthRepositoryImpl @Inject constructor(
     private val userRepository: UserRepository,
     private val appointmentRepository: AppointmentRepository,
     private val userService: UserService,
+    private val gson: Gson,
     private val propertyDao: PropertyDAO // will change to propertyRepo
 ): AuthRepository
 {
-    val gson = Gson()
+//    val gson = Gson()
 
     override suspend fun login(
         username: String,
