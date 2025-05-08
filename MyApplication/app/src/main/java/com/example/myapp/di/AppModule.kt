@@ -6,8 +6,11 @@ import com.example.myapp.data.api.AuthApiService
 import com.example.myapp.data.api.PropertyService
 import com.example.myapp.data.api.UserService
 import com.example.myapp.data.db.AppDatabase
+import com.example.myapp.data.local.AppointmentDao
 import com.example.myapp.data.local.PropertyDAO
 import com.example.myapp.data.local.UserDao
+import com.example.myapp.data.repository.AppointmentRepository
+import com.example.myapp.data.repository.AppointmentRepositoryImpl
 import com.example.myapp.data.repository.AuthRepository
 import com.example.myapp.data.repository.AuthRepositoryImpl
 import com.example.myapp.data.repository.PropertyRepoImpl
@@ -35,6 +38,9 @@ abstract class AppModule {
 
     @Binds
     abstract fun bindPropertyRepository(propertyRepository: PropertyRepoImpl): PropertyRepository
+
+    @Binds
+    abstract fun bindAppointmentRepository(appointmentRepository: AppointmentRepositoryImpl): AppointmentRepository
 
     companion object {
 
@@ -95,5 +101,12 @@ abstract class AppModule {
         fun providePropertyDao(appDatabase: AppDatabase): PropertyDAO{
             return appDatabase.propertyDao()
         }
+
+        @Provides
+        @Singleton
+        fun provideAppointment(appDatabase: AppDatabase): AppointmentDao{
+            return appDatabase.appointmentDao()
+        }
+
     }
 }

@@ -75,10 +75,5 @@ class UserViewModel @Inject constructor (private val userRepository: UserReposit
         }
     }
 
-//    private fun extractFirstAndLastName(fullName: String?): Pair<String?, String?> {
-//        val nameParts = fullName?.split(" ") ?: emptyList()
-//        val firstName = nameParts.getOrNull(0)?.takeIf { it.isNotBlank() }
-//        val lastName = nameParts.getOrNull(1)
-//        return Pair(firstName, lastName)
-//    }
+
 }

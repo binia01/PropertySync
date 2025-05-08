@@ -5,8 +5,12 @@ import com.example.myapp.data.api.AuthApiService
 //import com.example.propSync.data.api.RealAuthAPiService
 import com.example.myapp.data.api.UserService
 import com.example.myapp.data.local.PropertyDAO
+import com.example.myapp.data.model.AppointmentEntity
+import com.example.myapp.data.model.BuyerBookingsReturn
 import com.example.myapp.data.model.Property
+import com.example.myapp.data.model.SellerBookingsReturn
 import com.example.myapp.data.model.User
+import com.google.gson.Gson
 import javax.inject.Inject
 import kotlin.toString
 
@@ -21,10 +25,12 @@ interface AuthRepository {
 class AuthRepositoryImpl @Inject constructor(
     private val authApiService: AuthApiService,
     private val userRepository: UserRepository,
+    private val appointmentRepository: AppointmentRepository,
     private val userService: UserService,
     private val propertyDao: PropertyDAO // will change to propertyRepo
 ): AuthRepository
 {
+    val gson = Gson()
 
     override suspend fun login(
         username: String,
@@ -64,6 +70,13 @@ class AuthRepositoryImpl @Inject constructor(
                             sellerId = p.sellerId
                         ))
                         }
+                        println("Seeing things real quick ${userReturn.sellingAppointments}")
+                        userReturn.sellingAppointments?.forEach { s ->
+                            appointmentRepository.saveAppointment(mapFromSellerNetwork(s))
+                        }
+                    }
+                    userReturn.bookedAppointments?.forEach { b ->
+                        appointmentRepository.saveAppointment(mapFromBuyerNetwork(b))
                     }
                     return (Result.success(User(
                         email = userReturn.email.toString(),
@@ -134,6 +147,7 @@ class AuthRepositoryImpl @Inject constructor(
             println("Removing properties and user stuff")
             userRepository.deleteUser()
             propertyDao.clearProperties()
+            appointmentRepository.deleteAppointments()
         } catch (e: Exception) {
             println(e)
         }
@@ -150,6 +164,38 @@ class AuthRepositoryImpl @Inject constructor(
         val firstName = nameParts.getOrNull(0) ?: ""
         val lastName = nameParts.getOrNull(1) ?: ""
         return Pair(firstName, lastName)
+    }
+
+    private fun mapFromBuyerNetwork(dto: BuyerBookingsReturn): AppointmentEntity {
+        return AppointmentEntity(
+            id = dto.id,
+            createdAt = dto.createdAt,
+            updatedAt = dto.updatedAt,
+            startTime = dto.startTime,
+            date = dto.date,
+            propid = dto.propid,
+            buyerid = dto.buyerid,
+            sellerid = dto.sellerid,
+            status = dto.status,
+            role = "BUYER",
+            relatedJson = gson.toJson(dto.property)
+        )
+    }
+
+    private fun mapFromSellerNetwork(dto: SellerBookingsReturn): AppointmentEntity {
+        return AppointmentEntity(
+            id = dto.id,
+            createdAt = dto.createdAt,
+            updatedAt = dto.updatedAt,
+            startTime = dto.startTime,
+            date = dto.date,
+            propid = dto.propid,
+            buyerid = dto.buyerid,
+            sellerid = dto.sellerid,
+            status = dto.status,
+            role = "SELLER",
+            relatedJson = gson.toJson(dto.buyer)
+        )
     }
 
 

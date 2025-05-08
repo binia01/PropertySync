@@ -14,8 +14,8 @@ data class UserReturn (
         val hash: String?,
         val role: String?,
         val properties: List<ReturnProperty>?,
-        val bookedAppointments: List<Any>?,
-        val sellingAppointments: List<Any>?
+        val bookedAppointments: List<BuyerBookingsReturn>?,
+        val sellingAppointments: List<SellerBookingsReturn>?
 
 )
 
