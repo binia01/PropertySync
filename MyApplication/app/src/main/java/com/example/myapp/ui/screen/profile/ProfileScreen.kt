@@ -11,14 +11,12 @@ import com.example.myapp.ui.components.Header
 import com.example.myapp.ui.components.UserInfoCard
 import com.example.myapp.ui.components.ProfileAppointmentsCards
 import com.example.myapp.ui.components.AccountSettings
-import com.example.myapp.ui.components.BottomNav
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapp.ui.navigation.Screens
 import com.example.myapp.ui.theme.BaseBackground
@@ -31,7 +29,7 @@ fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel
     val userViewModel: UserViewModel = hiltViewModel()
     val userState by userViewModel.userState.collectAsState()
 
-        LazyColumn(modifier = Modifier.fillMaxSize().background(BaseBackground)) {
+    LazyColumn(modifier = Modifier.fillMaxSize().background(BaseBackground)) {
             item {
                 Column(
                     modifier = Modifier
