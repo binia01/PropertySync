@@ -15,8 +15,10 @@ import com.example.myapp.ui.components.BottomNav
 import com.example.myapp.ui.screen.booking.BookingScreen
 import com.example.myapp.ui.screen.home.HomeScreen
 import com.example.myapp.ui.navigation.Screens
-import com.example.myapp.ui.screen.auth.LoginScreen
+//import com.example.myapp.ui.screen.auth.LoginScreen
+import com.example.myapp.ui.screen.auth.LoginScreenUI
 import com.example.myapp.ui.screen.auth.SignUpScreen
+import com.example.myapp.ui.screen.property.AddPropertyScreen
 import com.example.myapp.ui.viewModel.AuthViewModel
 
 @Composable
@@ -25,6 +27,15 @@ fun PropertyApp() {
     val navController = rememberNavController()
     val authViewModel: AuthViewModel = hiltViewModel()
     val authState by authViewModel.authState.collectAsState()
+
+    // Redirect to login when user logs out
+    LaunchedEffect(authState) {
+        if (authState is Auth.LoggedOut) {
+            navController.navigate(Screens.Login.route) {
+                popUpTo(0) // clear stack
+            }
+        }
+    }
 
 
     Scaffold(
@@ -36,11 +47,11 @@ fun PropertyApp() {
             startDestination = if (authState is Auth.LoggedIn) Screens.Home.route else Screens.Login.route,
             Modifier.padding(paddingValues)
         ) {
-            composable(Screens.Login.route) { LoginScreen(authViewModel) }
-//            composable(Screens.SignUp.route) { SignUpScreen(authViewModel) }
-            composable(Screens.Home.route) { HomeScreen(navController = navController) }
+            composable(Screens.Login.route) { LoginScreenUI(authViewModel, onSignInSuccess = { navController.navigate(Screens.Home.route) }, onNavigateToSignUp = {navController.navigate(Screens.SignUp.route)}) }
+            composable(Screens.SignUp.route) { SignUpScreen(authViewModel, onSignUpSuccess = { navController.navigate(Screens.Home.route) }, onNavigateToSignIn = {navController.navigate(Screens.Login.route)}) }
+            composable(Screens.Home.route) { HomeScreen(authViewModel = authViewModel,navController = navController) }
             composable(Screens.Bookings.route) { BookingScreen(navController = navController) }
-
+            composable(Screens.Add.route) {AddPropertyScreen(navController = navController) }
         }
     }
 }
