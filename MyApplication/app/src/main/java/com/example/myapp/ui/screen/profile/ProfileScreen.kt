@@ -27,8 +27,8 @@ import com.example.myapp.ui.viewModel.UserViewModel
 
 @Composable
 fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel) {
-    val userViewModel: UserViewModel = hiltViewModel()
-    val userState by userViewModel.userState.collectAsState()
+            val userViewModel: UserViewModel = hiltViewModel()
+            val userState by userViewModel.userState.collectAsState()
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
