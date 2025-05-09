@@ -65,4 +65,10 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteProperty(propId: Int){
+        viewModelScope.launch {
+            propertyRepository.deleteProperty(propId, "Bearer ${token.value}")
+        }
+    }
 }

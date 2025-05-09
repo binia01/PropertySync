@@ -1,8 +1,10 @@
 package com.example.myapp.data.api
 
+import androidx.room.Delete
 import com.example.myapp.data.model.ReturnProperty
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
@@ -19,6 +21,12 @@ interface PropertyService {
         @Header("Authorization") token: String,
         @Body updateProperty: UpdateProperty
     ): Response<EditResponse>
+
+    @DELETE("property/{id}")
+    suspend fun deleteProperty(
+        @Path("id") id: String,
+        @Header("Authorization") token: String,
+    ): Response<Any>
 
     data class UpdateProperty(
         val title: String?,

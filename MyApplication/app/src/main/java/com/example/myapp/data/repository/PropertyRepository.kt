@@ -14,7 +14,7 @@ interface PropertyRepository {
     suspend fun getProperties(token: String): Result<List<Property>>
     suspend fun insertProperty(property: Property)
     fun getLocalProps(): Flow<List<Property>>
-    suspend fun deleteProperty(id: Int)
+    suspend fun deleteProperty(id: Int, token: String)
     suspend fun updateProperty(propId: String,
                                token: String,
                                title: String?,
@@ -74,7 +74,7 @@ class PropertyRepoImpl @Inject constructor(
         return propertyDAO.getProperties()
     }
 
-    override suspend fun deleteProperty(id: Int) {
+    override suspend fun deleteProperty(id: Int, token: String) {
         TODO("Not yet implemented")
     }
 
@@ -98,7 +98,7 @@ class PropertyRepoImpl @Inject constructor(
                         description = description ?: property.description,
                         area = (area)?.toIntOrNull() ?: (property.area).toInt(),
                         beds = (beds)?.toIntOrNull() ?: property.beds,
-                        baths = baths?.toIntOrNull() ?: property.baths,
+                        baths = (baths)?.toIntOrNull() ?: property.baths,
                         location = location ?: property.location,
                         price = price?.toIntOrNull() ?: property.price
                     )
