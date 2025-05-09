@@ -21,7 +21,7 @@ import com.example.myapp.ui.theme.BluePrimary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Header(title: String, showBack: Boolean = false, onBackPressed: (() -> Unit)? = null) {
+fun Header(title: String, showBack: Boolean = false, onbackpressed: (() -> Unit)? = null) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -31,7 +31,7 @@ fun Header(title: String, showBack: Boolean = false, onBackPressed: (() -> Unit)
     ) {
         if (showBack) {
             IconButton(
-                onClick = { onBackPressed?.invoke() }, // Handle back press
+                onClick = { onbackpressed?.invoke() }, // Handle back press
                 modifier = Modifier.padding(end = 8.dp)
             ) {
                 Icon(
