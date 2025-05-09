@@ -1,9 +1,5 @@
 package com.example.myapp.ui.components
 
-
-
-
-import com.example.myapp.ui.theme.CardBackground
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -21,8 +17,6 @@ import androidx.compose.ui.unit.dp
 import com.example.myapp.data.model.Property
 import com.example.myapp.R
 import androidx.compose.material.icons.filled.LocationOn
-
-
 
 
 

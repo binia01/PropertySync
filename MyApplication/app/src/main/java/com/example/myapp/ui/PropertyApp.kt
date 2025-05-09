@@ -14,8 +14,10 @@ import com.example.myapp.ui.components.BottomNav
 import com.example.myapp.ui.screen.booking.BookingScreen
 import com.example.myapp.ui.screen.home.HomeScreen
 import com.example.myapp.ui.navigation.Screens
+import com.example.myapp.ui.screen.appointments.AppointmentsPage
 import com.example.myapp.ui.screen.auth.LoginScreenUI
 import com.example.myapp.ui.screen.auth.SignUpScreen
+import com.example.myapp.ui.screen.home.PropertyDetails
 import com.example.myapp.ui.screen.profile.ProfileScreen
 import com.example.myapp.ui.screen.profile.UpdateProfile
 import com.example.myapp.ui.viewModel.AuthViewModel
@@ -43,7 +45,8 @@ fun PropertyApp() {
             composable(Screens.SignUp.route)  { SignUpScreen(onNavToLogin = {navController.navigate(Screens.Login.route)}, authViewModel) }
             composable(Screens.Profile.route) { ProfileScreen(navController, authViewModel) }
             composable(Screens.UpdateProfile.route) { UpdateProfile(navController) }
-
+            composable(Screens.PropertyDetails.route) { PropertyDetails(navController = navController) }
+            composable(Screens.Appointment.route) { AppointmentsPage(navController = navController, onBackPressed = {}) }
         }
     }
 }
