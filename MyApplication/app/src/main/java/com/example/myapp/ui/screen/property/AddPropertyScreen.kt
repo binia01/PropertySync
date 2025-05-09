@@ -2,6 +2,7 @@ package com.example.myapp.ui.screen.property
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,7 +13,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -21,6 +26,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,69 +37,160 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.myapp.ui.components.BottomNav
 import com.example.myapp.ui.components.Header
+import com.example.myapp.ui.viewModel.AddPropertyViewModel
+import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
 
 //import com.example.myapp.ui.components.Header
 
 @Composable
-fun AddPropertyScreen(navController: NavController){
-    var title by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-    var price by remember { mutableStateOf("") }
-    var location by remember { mutableStateOf("") }
-    var beds by remember { mutableStateOf(0) }
-    var baths by remember { mutableStateOf(0) }
-    var area by remember { mutableStateOf("") }
-    Scaffold (
-        containerColor = Color.White,
-        topBar = { Header(title = "Create Property", showBack = true) },
-        bottomBar = { BottomNav(navController = NavController(LocalContext.current)) },
-    ){ paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(horizontal = 40.dp, vertical = 40.dp),
-        ){
-            InputField(label = "Property Title *", hint = "e.g. Modern apartment for sale", value = title, num = 1, onValueChange = {title = it})
-            InputField(label = "Price ($) *", hint = "e.g. 100000", value = price, num = 1,onValueChange = {price = it})
-            InputField(label = "Location *", hint = "e.g. New york", value = location, num = 1,onValueChange = {location = it})
-            InputField(label = "Area (sq ft) *", hint = "e.g. 2400", value = area, num = 1,onValueChange = {area = it})
-            Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CounterField("Bedrooms *", beds, onIncrement = { beds++ }, onDecrement = { if (beds > 0) beds-- })
-                CounterField("Bathrooms *", baths, onIncrement = { baths++ }, onDecrement = { if (baths > 0) baths-- })
-            }
+fun AddPropertyScreen(
+    navController: NavController,
+    viewModel: AddPropertyViewModel = hiltViewModel()
+) {
+    val state by viewModel.state.collectAsState()
 
-            Spacer(modifier = Modifier.height(16.dp))
-            InputField(label = "Description *", hint = "Describe your property", value = description, num = 10, onValueChange = {description = it})
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+    // Handle success state
+    LaunchedEffect(state.isSuccessfull) {
+        if (state.isSuccessfull) {
+            // Reset the form and navigate to home
+            navController.navigate("home") {
+                popUpTo("add_property") { inclusive = true }
+            }
+            viewModel.onEvent(AddPropertyEvent.OnSuccessHandled)
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        Header(title = "Create Property", showBack = false)
+
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .verticalScroll(rememberScrollState())
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(40.dp)
             ) {
-                TextButton(
-                    onClick = { /* Cancel action */ },
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(end = 8.dp)
-                        .border(1.dp, Color.Gray, RoundedCornerShape(8.dp))
+                InputField(
+                    label = "Property Title *",
+                    hint = "e.g. Modern apartment for sale",
+                    value = state.title,
+                    num = 1,
+                    onValueChange = { viewModel.onEvent(AddPropertyEvent.onTitleChange(it)) }
+                )
+
+                InputField(
+                    label = "Price ($) *",
+                    hint = "e.g. 100000",
+                    value = state.price,
+                    num = 1,
+                    onValueChange = { viewModel.onEvent(AddPropertyEvent.onPriceChange(it)) }
+                )
+
+                InputField(
+                    label = "Location *",
+                    hint = "e.g. New york",
+                    value = state.location,
+                    num = 1,
+                    onValueChange = { viewModel.onEvent(AddPropertyEvent.onLocationChange(it)) }
+                )
+
+                InputField(
+                    label = "Area (sq ft) *",
+                    hint = "e.g. 2400",
+                    value = state.area,
+                    num = 1,
+                    onValueChange = { viewModel.onEvent(AddPropertyEvent.onAreaChange(it)) }
+                )
+
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Text("Cancel", color = Color.Black)
+                    CounterField(
+                        "Bedrooms *",
+                        state.beds,
+                        onIncrement = { viewModel.onEvent(AddPropertyEvent.onBedsIncrease(state.beds)) },
+                        onDecrement = {
+                            if (state.beds > 0) viewModel.onEvent(AddPropertyEvent.onBedsDecrease(state.beds))
+                        }
+                    )
+                    CounterField(
+                        "Bathrooms *",
+                        state.baths,
+                        onIncrement = { viewModel.onEvent(AddPropertyEvent.onBathsIncrease(state.baths)) },
+                        onDecrement = { if (state.baths > 0) viewModel.onEvent(AddPropertyEvent.onBathsDecrease(state.baths)) }
+                    )
                 }
 
-                TextButton(
-                    onClick = { /* Create property */ },
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 8.dp)
-                        .background(Color(0xFF2563EB), RoundedCornerShape(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+
+                InputField(
+                    label = "Description *",
+                    hint = "Describe your property",
+                    value = state.description,
+                    num = 10,
+                    onValueChange = { viewModel.onEvent(AddPropertyEvent.onDescriptionChange(it))}
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Create property", color = Color.White)
+                    TextButton(
+                        onClick = { viewModel.onEvent(AddPropertyEvent.onClearClick)},
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(end = 8.dp)
+                            .border(
+                                1.dp,
+                                Color.Gray,
+                                RoundedCornerShape(8.dp)
+                            )
+                    ) {
+                        Text(
+                            "Cancel",
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+
+                    TextButton(
+                        onClick = { viewModel.onEvent(AddPropertyEvent.onSubmitClick) },
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 8.dp)
+                            .background(
+                                Color(0xFF2563EB),
+                                RoundedCornerShape(8.dp)
+                            ),
+                        enabled = !state.isLoading
+                    ) {
+                        if (state.isLoading) {
+                            CircularProgressIndicator(color = Color.White)
+                        } else {
+                            Text("Create property", color = Color.White)
+                        }
+                    }
+                }
+
+                state.error?.let { error ->
+                    Text(
+                        text = error,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
                 }
             }
         }
@@ -101,21 +198,46 @@ fun AddPropertyScreen(navController: NavController){
 }
 
 @Composable
-fun InputField(label: String, hint: String, value: String, num: Int, onValueChange: (String) -> Unit, KeyboardOptions: androidx.compose.foundation.text.KeyboardOptions = androidx.compose.foundation.text.KeyboardOptions.Default) {
-    Text(label, style = MaterialTheme.typography.bodyMedium)
-    TextField(
-        value = value,
-        onValueChange = onValueChange,
-        placeholder = { Text(hint, style = MaterialTheme.typography.bodySmall) },
-        keyboardOptions = KeyboardOptions,
-        maxLines = num,
-        colors = TextFieldDefaults.colors(focusedContainerColor = Color.White, unfocusedContainerColor = Color.White)
-    )
-    Spacer(Modifier.height(16.dp))
-
+fun InputField(
+    label: String,
+    hint: String,
+    value: String,
+    num: Int,
+    onValueChange: (String) -> Unit
+) {
+    Column(modifier = Modifier.padding(bottom = 16.dp)) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        TextField(
+            value = value,
+            onValueChange = onValueChange,
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                    shape = RoundedCornerShape(8.dp)
+                ),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            placeholder = {
+                Text(
+                    text = hint,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                )
+            },
+            maxLines = num
+        )
+    }
 }
-
-
 
 @Composable
 fun CounterField(
@@ -126,57 +248,66 @@ fun CounterField(
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(label, style = MaterialTheme.typography.bodyMedium)
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.align(Alignment.Start)
+        )
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start,
+            horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
+            // Decrement button
             Box(
                 modifier = Modifier
                     .size(55.dp)
-                    .padding(vertical = 8.dp)
-                    .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
-                    .padding(12.dp)
+                    .border(
+                        1.dp,
+                        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                        RoundedCornerShape(8.dp)
+                    )
+                    .clickable { onDecrement() },
+                contentAlignment = Alignment.Center
             ) {
-                IconButton(onClick = onDecrement) {
-                    Text(text = "−", style = MaterialTheme.typography.bodyLarge)
-                }
+                Text("−", style = MaterialTheme.typography.bodyLarge)
             }
+
+            // Centered counter
             Box(
                 modifier = Modifier
                     .size(55.dp)
-                    .padding(vertical = 8.dp)
-                    .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
-                    .padding(12.dp)
+                    .border(
+                        1.dp,
+                        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                        RoundedCornerShape(8.dp)
+                    ),
+                contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = count.toString(),
-                    style = MaterialTheme.typography.bodyMedium
+                    count.toString(),
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
+
+            // Increment button
             Box(
                 modifier = Modifier
                     .size(55.dp)
-                    .padding(vertical = 8.dp)
-                    .border(1.dp, Color.LightGray, RoundedCornerShape(8.dp))
-                    .padding(12.dp)
+                    .border(
+                        1.dp,
+                        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                        RoundedCornerShape(8.dp)
+                    )
+                    .clickable { onIncrement() },
+                contentAlignment = Alignment.Center
             ) {
-                IconButton(onClick = onIncrement) {
-                    Text(text = "+", style = MaterialTheme.typography.bodyLarge)
-                }
+                Text("+", style = MaterialTheme.typography.bodyLarge)
             }
         }
     }
-
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun PropertyScreenPreview(){
-//    AddPropertyScreen()
 }
