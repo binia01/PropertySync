@@ -40,19 +40,27 @@ class HomeViewModel @Inject constructor(
 
     init {
         loadUserDetails()
+        observePropertyUpdates()
     }
-
     private fun loadProperties() {
         viewModelScope.launch {
             userRepository.getUser()
-                .map { user -> user?.token }
-                .collectLatest { authToken ->
+                .collectLatest { user ->
+                    val authToken = user?.token
+                    val currentUserId = user?.id
+
                     if (!authToken.isNullOrBlank()) {
                         _isLoading.value = true
                         propertyRepository.getProperties("Bearer $authToken").collectLatest { result ->
                             _isLoading.value = false
                             if (result.isSuccess) {
                                 _properties.value = result.getOrNull()
+                                val filteredProperties = if (userRole.value == "SELLER" && currentUserId != null) {
+                                    _properties.value?.filter { it.sellerId == currentUserId } // Corrected comparison
+                                } else {
+                                    _properties.value
+                                }
+                                _properties.value = filteredProperties
                                 _errorMessage.value = null
                             } else {
                                 _properties.value = null
@@ -67,6 +75,38 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+//    private fun loadProperties() {
+//        viewModelScope.launch {
+//            userRepository.getUser()
+//                .map { user -> user?.token }
+//                .collectLatest { authToken ->
+//
+//                    if (!authToken.isNullOrBlank()) {
+//                        _isLoading.value = true
+//                        propertyRepository.getProperties("Bearer $authToken").collectLatest { result ->
+//                            _isLoading.value = false
+//                            if (result.isSuccess) {
+//                                _properties.value = result.getOrNull()
+//                                val filteredProperties = if (userRole.value == "SELLER" && userId != null) {
+//                                    _properties.value?.filter { it.sellerId ==  }
+//                                } else {
+//                                    _properties.value
+//                                }
+//                                _properties.value = filteredProperties
+//                                _errorMessage.value = null
+//                            } else {
+//                                _properties.value = null
+//                                _errorMessage.value = result.exceptionOrNull()?.localizedMessage ?: "Failed to fetch properties"
+//                            }
+//                        }
+//                    } else {
+//                        _properties.value = null
+//                        _errorMessage.value = "User token not available"
+//                    }
+//                }
+//        }
+//    }
+
     private fun loadUserDetails() {
         viewModelScope.launch {
             userRepository.getUser().collectLatest { user ->
@@ -79,7 +119,14 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
-
+    private fun observePropertyUpdates() {
+        viewModelScope.launch {
+            propertyRepository.propertyUpdatedFlow.collectLatest {
+                println("HomeViewModel: propertyUpdatedFlow emitted, refreshing properties...")
+                loadProperties()
+            }
+        }
+    }
     fun deleteProperty(propId: Int) {
         viewModelScope.launch {
             userRepository.getUser().map { it?.token }.collectLatest { authToken ->

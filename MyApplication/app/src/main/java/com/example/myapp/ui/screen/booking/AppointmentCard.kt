@@ -38,7 +38,7 @@ fun AppointmentCard(appointment: AppointmentEntity) {
             Text(text = "Status: ${appointment.status}")
             Text(text = "Start Time: $formattedStartTime")
             Text(text = "Property ID: ${appointment.propid}")
-            Text(text = "Role: ${appointment.role}")
+//            Text(text = "Role: ${appointment.role}")
         }
     }
 }
