@@ -24,13 +24,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.myapp.data.model.UserReqState
 import com.example.myapp.ui.components.Header
+import com.example.myapp.ui.viewModel.EditPropViewModel
+import com.example.myapp.ui.viewModel.HomeViewModel
 
 
 @Composable
 fun EditProperty(propertyId: String?,  navController: NavController){
+    val editPropViewModel: EditPropViewModel = hiltViewModel()
+
+
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
@@ -114,7 +120,18 @@ fun EditProperty(propertyId: String?,  navController: NavController){
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        Button(onClick = { /* TODO: Implement save logic */ }) {
+        Button(onClick = {
+            editPropViewModel.update(
+                title = title,
+                description = description,
+                area = area,
+                beds = beds,
+                baths = baths,
+                location = location,
+                price = price,
+                id = propertyId.toString(),
+            )
+        }) {
             Text("Save Changes")
         }
     }

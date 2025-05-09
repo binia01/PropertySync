@@ -96,16 +96,29 @@ class PropertyRepoImpl @Inject constructor(
                     updateProperty = PropertyService.UpdateProperty(
                         title = title ?: property.title,
                         description = description ?: property.description,
-                        area = area ?: property.area,
-                        beds = (beds ?: property.beds).toString(),
-                        baths = (baths ?: property.baths).toString(),
+                        area = (area)?.toIntOrNull() ?: (property.area).toInt(),
+                        beds = (beds)?.toIntOrNull() ?: property.beds,
+                        baths = baths?.toIntOrNull() ?: property.baths,
                         location = location ?: property.location,
-                        price = (price ?: property.price).toString()
+                        price = price?.toIntOrNull() ?: property.price
                     )
                 )
                 if (resp.isSuccessful){
-                    println(resp.body()!!)
-                    Result.success("YIPPI")
+                    val p = resp.body()?.property!!
+                    println(p)
+                    insertProperty(Property(
+                        id = p.id,
+                        title = p.title,
+                        location = p.location,
+                        price = p.price.toInt(),
+                        beds = p.beds ?: (2..5).random(),
+                        baths =  p.bathrooms ?: (1..3).random(),
+                        area = p.area?.toString() ?: "4000",
+                        imageUrl = "",
+                        description = p.description,
+                        sellerId = p.sellerId
+                    ))
+                    Result.success(resp.message())
                 }else{
                     println("Eroor with: ${resp}")
                     Result.failure(Exception("Failed to update property: ${resp.errorBody()?.string()}"))
@@ -114,7 +127,7 @@ class PropertyRepoImpl @Inject constructor(
                 Result.failure(Exception("Failed to find a property: $property"))
             }
         }catch (e: Exception){
-            Result.failure(e)
+            Result.failure(Exception("It seems we broke $e"))
         }
 
 
