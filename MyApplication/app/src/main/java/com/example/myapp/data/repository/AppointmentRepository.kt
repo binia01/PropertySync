@@ -1,7 +1,7 @@
 package com.example.myapp.data.repository
 
 import com.example.myapp.data.api.AppointmentService
-import com.example.myapp.data.local.AppointmentDao
+//import com.example.myapp.data.local.AppointmentDao
 import com.example.myapp.data.model.AppointmentEntity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

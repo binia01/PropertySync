@@ -6,10 +6,10 @@ import com.example.myapp.data.api.AppointmentService
 import com.example.myapp.data.api.AuthApiService
 import com.example.myapp.data.api.PropertyService
 import com.example.myapp.data.api.UserService
-import com.example.myapp.data.db.AppDatabase
-import com.example.myapp.data.local.AppointmentDao
-import com.example.myapp.data.local.PropertyDAO
-import com.example.myapp.data.local.UserDao
+//import com.example.myapp.data.db.AppDatabase
+//import com.example.myapp.data.local.AppointmentDao
+//import com.example.myapp.data.local.PropertyDAO
+//import com.example.myapp.data.local.UserDao
 import com.example.myapp.data.repository.AppointmentRepository
 import com.example.myapp.data.repository.AppointmentRepositoryImpl
 import com.example.myapp.data.repository.AuthRepository
@@ -56,7 +56,6 @@ abstract class AppModule {
                 .create(AuthApiService::class.java)
         }
 
-
         @Provides
         @Singleton
         fun provideUserApiService(): UserService{
@@ -89,18 +88,18 @@ abstract class AppModule {
 
 
 
-        @Provides
-        @Singleton
-        fun provideAppDatabase(application: Application): AppDatabase {
-            return Room.databaseBuilder(
-                application,
-                AppDatabase::class.java,
-                "prop_sync_db"
-
-            )
-                .fallbackToDestructiveMigration(true)
-                .build()
-        }
+//        @Provides
+//        @Singleton
+//        fun provideAppDatabase(application: Application): AppDatabase {
+//            return Room.databaseBuilder(
+//                application,
+//                AppDatabase::class.java,
+//                "prop_sync_db"
+//
+//            )
+//                .fallbackToDestructiveMigration(true)
+//                .build()
+//        }
 
 //        @Provides
 //        @Singleton
@@ -110,8 +109,15 @@ abstract class AppModule {
 //
 //        @Provides
 //        @Singleton
-//        fun providePropertyDao(appDatabase: AppDatabase): PropertyDAO{
-//            return appDatabase.propertyDao()
+//        fun provideAppointmentDao(appDatabase: AppDatabase): AppointmentDao{
+//            return appDatabase.appointmentDao()
 //        }
+
+        @Provides
+        @Singleton  //  Only one instance of Gson will be created.
+        fun provideGson(): Gson {
+            return Gson()
+        }
+
     }
 }
