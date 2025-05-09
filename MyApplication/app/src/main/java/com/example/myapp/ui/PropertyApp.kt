@@ -14,6 +14,7 @@ import com.example.myapp.ui.components.BottomNav
 import com.example.myapp.ui.screen.booking.BookingScreen
 import com.example.myapp.ui.screen.home.HomeScreen
 import com.example.myapp.ui.navigation.Screens
+import com.example.myapp.ui.screen.appointments.AppointmentsPage
 import com.example.myapp.ui.screen.auth.LoginScreenUI
 import com.example.myapp.ui.screen.auth.SignUpScreen
 //import com.example.myapp.ui.screen.booking.NewAppointments
