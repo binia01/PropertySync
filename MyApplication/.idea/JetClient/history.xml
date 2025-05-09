@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="History">
+    <option name="requestHistoryStates">
+      <list>
+        <requestHistoryState>
+          <option name="dateTime" value="1746745587292" />
+          <option name="id" value="21341387-2dc8-44c4-856b-4ca7530581dc" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;username&quot;: &quot;abendroth&quot;,&#10;  &quot;email&quot;: &quot;acb123@gmail.com&quot;,&#10;  &quot;password&quot;: &quot;abc123&quot;,&#10;  &quot;role&quot;: &quot;SELLER&quot;,&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ef08ddd0-171a-4d3f-b688-9cc7f56095ae" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft" />
+              <option name="url" value="http://localhost:3000/signup" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJtZXNzYWdlIjoiQ2Fubm90IFBPU1QgL3NpZ251cCIsImVycm9yIjoiTm90IEZvdW5kIiwic3RhdHVzQ29kZSI6NDA0fQ==" />
+              <option name="bodyString" value="{&#10;  &quot;message&quot;: &quot;Cannot POST /signup&quot;,&#10;  &quot;error&quot;: &quot;Not Found&quot;,&#10;  &quot;statusCode&quot;: 404&#10;}" />
+              <option name="code" value="404" />
+              <option name="connectionEstablishingTime" value="416" />
+              <option name="contentType" value="application/json; charset=utf-8" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Powered-By" />
+                    <option name="value" value="Express" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Access-Control-Allow-Origin" />
+                    <option name="value" value="*" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Access-Control-Allow-Credentials" />
+                    <option name="value" value="true" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json; charset=utf-8" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Length" />
+                    <option name="value" value="70" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="ETag" />
+                    <option name="value" value="W/&quot;46-3A6A2lw9SbLCbL3oZeLoU7/3F6g&quot;" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Thu, 08 May 2025 23:06:27 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=5" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="21341387-2dc8-44c4-856b-4ca7530581dc" />
+              <option name="message" value="Not Found" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;message&quot;:&quot;Cannot POST /signup&quot;,&quot;error&quot;:&quot;Not Found&quot;,&quot;statusCode&quot;:404}" />
+              <option name="size" value="70" />
+              <option name="time" value="2312" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1746745710680" />
+          <option name="id" value="0e62be15-6b5e-4616-974a-8dcc4e62f8ce" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;username&quot;: &quot;abendroth&quot;,&#10;  &quot;email&quot;: &quot;acb123@gmail.com&quot;,&#10;  &quot;password&quot;: &quot;abc123&quot;,&#10;  &quot;role&quot;: &quot;SELLER&quot;,&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ef08ddd0-171a-4d3f-b688-9cc7f56095ae" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft" />
+              <option name="url" value="http://localhost:3000/auth/signup" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJhY2Nlc3NfdG9rZW4iOiJleUpoYkdjaU9pSklVekkxTmlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKemRXSWlPaklzSW1WdFlXbHNJam9pWVdOaU1USXpRR2R0WVdsc0xtTnZiU0lzSW1saGRDSTZNVGMwTmpjME5UY3hNQ3dpWlhod0lqb3hOelEyTnpVeE1URXdmUS4xSzhzRDRoMl9Md1ZiaUdJdk5DUXdNdjJYX2xSNDlZMmV6VW5XaTFxNFJRIn0=" />
+              <option name="bodyString" value="{&#10;  &quot;access_token&quot;: &quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWNiMTIzQGdtYWlsLmNvbSIsImlhdCI6MTc0Njc0NTcxMCwiZXhwIjoxNzQ2NzUxMTEwfQ.1K8sD4h2_LwVbiGIvNCQwMv2X_lR49Y2ezUnWi1q4RQ&quot;&#10;}" />
+              <option name="code" value="201" />
+              <option name="connectionEstablishingTime" value="5" />
+              <option name="contentType" value="application/json; charset=utf-8" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Powered-By" />
+                    <option name="value" value="Express" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Access-Control-Allow-Origin" />
+                    <option name="value" value="*" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Access-Control-Allow-Credentials" />
+                    <option name="value" value="true" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json; charset=utf-8" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Length" />
+                    <option name="value" value="194" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="ETag" />
+                    <option name="value" value="W/&quot;c2-kDfKWznBIE8FBivoeNqFxUGQBAs&quot;" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Thu, 08 May 2025 23:08:30 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=5" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="0e62be15-6b5e-4616-974a-8dcc4e62f8ce" />
+              <option name="message" value="Created" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;access_token&quot;:&quot;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWNiMTIzQGdtYWlsLmNvbSIsImlhdCI6MTc0Njc0NTcxMCwiZXhwIjoxNzQ2NzUxMTEwfQ.1K8sD4h2_LwVbiGIvNCQwMv2X_lR49Y2ezUnWi1q4RQ&quot;}" />
+              <option name="size" value="194" />
+              <option name="time" value="5166" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+        <requestHistoryState>
+          <option name="dateTime" value="1746745928813" />
+          <option name="id" value="64ee2f50-4716-47c8-adf4-78c76cb871f5" />
+          <option name="request">
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;title&quot;: &quot;chala&quot;,&#10;  &quot;description&quot;: &quot;chala&quot;,&#10;  &quot;price&quot;: 213,&#10;  &quot;location&quot;: &quot;chala&quot;,&#10;  &quot;beds&quot;: 2,&#10;  &quot;baths&quot;: 2,&#10;  &quot;area&quot;: 123,&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Authorization" />
+                    <option name="value" value="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWNiMTIzQGdtYWlsLmNvbSIsImlhdCI6MTc0Njc0NTcxMCwiZXhwIjoxNzQ2NzUxMTEwfQ.1K8sD4h2_LwVbiGIvNCQwMv2X_lR49Y2ezUnWi1q4RQ" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="45765a77-ba1a-46ff-abe8-ed8f57f1395f" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft (1)" />
+              <option name="url" value="http://localhost:3000/property/" />
+            </requestState>
+          </option>
+          <option name="response">
+            <responseState>
+              <option name="bodyBytesBase64" value="eyJtZXNzYWdlIjoiUHJvcGVydHkgQ3JlYXRlZCBTdWNjZXNzZnVsbHkiLCJwcm9wZXJ0eSI6eyJpZCI6MSwiY3JlYXRlZEF0IjoiMjAyNS0wNS0wOFQyMzoxMjowOC41NzlaIiwidXBkYXRlZEF0IjoiMjAyNS0wNS0wOFQyMzoxMjowOC41NzlaIiwidGl0bGUiOiJjaGFsYSIsImRlc2NyaXB0aW9uIjoiY2hhbGEiLCJwcmljZSI6MjEzLCJsb2NhdGlvbiI6ImNoYWxhIiwic3RhdHVzIjoiQUNUSVZFIiwic2VsbGVySWQiOjJ9fQ==" />
+              <option name="bodyString" value="{&#10;  &quot;message&quot;: &quot;Property Created Successfully&quot;,&#10;  &quot;property&quot;: {&#10;    &quot;id&quot;: 1,&#10;    &quot;createdAt&quot;: &quot;2025-05-08T23:12:08.579Z&quot;,&#10;    &quot;updatedAt&quot;: &quot;2025-05-08T23:12:08.579Z&quot;,&#10;    &quot;title&quot;: &quot;chala&quot;,&#10;    &quot;description&quot;: &quot;chala&quot;,&#10;    &quot;price&quot;: 213,&#10;    &quot;location&quot;: &quot;chala&quot;,&#10;    &quot;status&quot;: &quot;ACTIVE&quot;,&#10;    &quot;sellerId&quot;: 2&#10;  }&#10;}" />
+              <option name="code" value="201" />
+              <option name="connectionEstablishingTime" value="5" />
+              <option name="contentType" value="application/json; charset=utf-8" />
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="X-Powered-By" />
+                    <option name="value" value="Express" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Access-Control-Allow-Origin" />
+                    <option name="value" value="*" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Access-Control-Allow-Credentials" />
+                    <option name="value" value="true" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Type" />
+                    <option name="value" value="application/json; charset=utf-8" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Content-Length" />
+                    <option name="value" value="241" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="ETag" />
+                    <option name="value" value="W/&quot;f1-hWvMem52J8jlbmBkncLq+HAz5wk&quot;" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Date" />
+                    <option name="value" value="Thu, 08 May 2025 23:12:08 GMT" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Connection" />
+                    <option name="value" value="keep-alive" />
+                  </headerState>
+                  <headerState>
+                    <option name="key" value="Keep-Alive" />
+                    <option name="value" value="timeout=5" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="64ee2f50-4716-47c8-adf4-78c76cb871f5" />
+              <option name="message" value="Created" />
+              <option name="prettyResponseType" value="JSON" />
+              <option name="rawBodyString" value="{&quot;message&quot;:&quot;Property Created Successfully&quot;,&quot;property&quot;:{&quot;id&quot;:1,&quot;createdAt&quot;:&quot;2025-05-08T23:12:08.579Z&quot;,&quot;updatedAt&quot;:&quot;2025-05-08T23:12:08.579Z&quot;,&quot;title&quot;:&quot;chala&quot;,&quot;description&quot;:&quot;chala&quot;,&quot;price&quot;:213,&quot;location&quot;:&quot;chala&quot;,&quot;status&quot;:&quot;ACTIVE&quot;,&quot;sellerId&quot;:2}}" />
+              <option name="size" value="241" />
+              <option name="time" value="977" />
+            </responseState>
+          </option>
+          <option name="workspaceId" value="drafts" />
+        </requestHistoryState>
+      </list>
+    </option>
+  </component>
+</project>

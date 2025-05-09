@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JetClientState">
+    <option name="draftsState">
+      <draftsState>
+        <option name="requests">
+          <list>
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;username&quot;: &quot;abendroth&quot;,&#10;  &quot;email&quot;: &quot;acb123@gmail.com&quot;,&#10;  &quot;password&quot;: &quot;abc123&quot;,&#10;  &quot;role&quot;: &quot;SELLER&quot;,&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="id" value="ef08ddd0-171a-4d3f-b688-9cc7f56095ae" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft" />
+              <option name="url" value="http://localhost:3000/auth/signup" />
+            </requestState>
+            <requestState>
+              <option name="body">
+                <bodyState>
+                  <option name="raw" value="{&#10;  &quot;title&quot;: &quot;chala&quot;,&#10;  &quot;description&quot;: &quot;chala&quot;,&#10;  &quot;price&quot;: 213,&#10;  &quot;location&quot;: &quot;chala&quot;,&#10;  &quot;beds&quot;: 2,&#10;  &quot;baths&quot;: 2,&#10;  &quot;area&quot;: 123,&#10;}" />
+                  <option name="type" value="JSON" />
+                </bodyState>
+              </option>
+              <option name="headers">
+                <list>
+                  <headerState>
+                    <option name="key" value="Authorization" />
+                    <option name="value" value="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWNiMTIzQGdtYWlsLmNvbSIsImlhdCI6MTc0Njc0NTcxMCwiZXhwIjoxNzQ2NzUxMTEwfQ.1K8sD4h2_LwVbiGIvNCQwMv2X_lR49Y2ezUnWi1q4RQ" />
+                  </headerState>
+                </list>
+              </option>
+              <option name="id" value="45765a77-ba1a-46ff-abe8-ed8f57f1395f" />
+              <option name="method" value="POST" />
+              <option name="name" value="Draft (1)" />
+              <option name="url" value="http://localhost:3000/property/" />
+            </requestState>
+          </list>
+        </option>
+      </draftsState>
+    </option>
+    <option name="id" value="44a8c3eb-b313-4862-898e-75c0a209a425" />
+    <option name="version" value="6" />
+  </component>
+</project>
