@@ -84,16 +84,16 @@ abstract class AppModule {
                 .build()
         }
 
-        @Provides
-        @Singleton
-        fun provideUserDao(appDatabase: AppDatabase): UserDao {
-            return appDatabase.userDao()
-        }
-
-        @Provides
-        @Singleton
-        fun providePropertyDao(appDatabase: AppDatabase): PropertyDAO{
-            return appDatabase.propertyDao()
-        }
+//        @Provides
+//        @Singleton
+//        fun provideUserDao(appDatabase: AppDatabase): UserDao {
+//            return appDatabase.userDao()
+//        }
+//
+//        @Provides
+//        @Singleton
+//        fun providePropertyDao(appDatabase: AppDatabase): PropertyDAO{
+//            return appDatabase.propertyDao()
+//        }
     }
 }

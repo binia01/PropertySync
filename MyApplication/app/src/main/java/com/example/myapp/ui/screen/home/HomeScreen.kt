@@ -41,7 +41,8 @@ fun HomeScreen(navController: NavController, authViewModel: AuthViewModel) {
         )
         if (userRole == "SELLER"){
             LazyColumn {
-                itemsIndexed(propertiesList){ index, it -> PropertyCard(it, true, navController)}
+                itemsIndexed(propertiesList){ index, it -> PropertyCard(it, true, navController,
+                    onDelete = { homeViewModel.deleteProperty(it.id.toInt())})}
             }
         }else{
             LazyColumn {
