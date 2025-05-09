@@ -44,6 +44,9 @@ model Property {
   description String
   price       Int        // Use Decimal for currency
   location    String
+  beds        Int
+  baths       Int
+  area        Int
   // images      String[]       // Store image URLs or paths as an optional array of strings
   status      PropertyStatus @default(ACTIVE) // Status of the listing
 

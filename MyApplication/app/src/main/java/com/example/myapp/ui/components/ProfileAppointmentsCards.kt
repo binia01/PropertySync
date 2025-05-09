@@ -29,7 +29,9 @@ import com.example.myapp.R
 @Composable
 fun ProfileAppointmentsCards(
     pendingCount: Int,
-    confirmedCount: Int
+    confirmedCount: Int,
+    propertyCount: Int? = null,
+    userRole: String
 ) {
     Column {
         AppointmentCard(
@@ -49,9 +51,19 @@ fun ProfileAppointmentsCards(
             iconBgColor = Color(0xFF00C853),
             onLinkClick = {}
         )
+        if (userRole == "SELLER" && propertyCount != null) {
+            Spacer(modifier = Modifier.height(12.dp))
+            AppointmentCard(
+                title = "My Properties",
+                count = propertyCount,
+                icon = painterResource(id = R.drawable.homeproperty),
+                linkText = "View my properties",
+                iconBgColor = Color(0xFF6366F1),
+                onLinkClick = {}
+            )
+        }
     }
 }
-
 
 @Composable
 fun AppointmentCard(
@@ -118,4 +130,3 @@ fun AppointmentCard(
         }
     }
 }
-

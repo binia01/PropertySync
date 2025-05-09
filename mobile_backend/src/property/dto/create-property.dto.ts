@@ -16,4 +16,16 @@ export class CreatePropertyDto {
   @IsNotEmpty()
   @IsString()
   location: string;
+
+  @IsNotEmpty()
+  @IsInt()
+  beds: number;
+
+  @IsNotEmpty()
+  @IsInt()
+  baths: number;
+
+  @IsNotEmpty()
+  @IsInt()
+  area: number;
 }
