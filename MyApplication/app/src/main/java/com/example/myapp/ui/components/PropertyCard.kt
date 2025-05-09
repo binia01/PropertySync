@@ -6,6 +6,7 @@ package com.example.myapp.ui.components
 import com.example.myapp.ui.theme.CardBackground
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.myapp.data.model.Property
 import com.example.myapp.R
 import androidx.compose.material.icons.filled.LocationOn
@@ -27,11 +29,14 @@ import androidx.compose.material.icons.filled.LocationOn
 
 
 @Composable
-fun PropertyCard( property: Property, isSeller: Boolean) {
+fun PropertyCard( property: Property, isSeller: Boolean, navController: NavController, onDelete: (() -> Unit)?=null ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp),
+            .padding(12.dp)
+            .clickable {
+                if (!isSeller) { navController.navigate("propertyDetails/${property.id}") }
+    },
         elevation = CardDefaults.cardElevation(defaultElevation=4.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
 
@@ -105,17 +110,20 @@ fun PropertyCard( property: Property, isSeller: Boolean) {
 
                 // Add seller buttons here
             }
-            if (isSeller){
-                //TODO
-                Spacer(
-                    modifier = Modifier.height(12.dp)
-                )
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
+            if (isSeller) {
+                Spacer(modifier = Modifier.height(12.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            navController.navigate("editProperty/${property.id}")
+                        },
                         modifier = Modifier.padding(end = 8.dp),
                         shape = MaterialTheme.shapes.medium,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(37, 99,235))
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(37, 99, 235))
                     ) {
                         Text(
                             text = "Edit",
@@ -123,11 +131,15 @@ fun PropertyCard( property: Property, isSeller: Boolean) {
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
+
                     Button(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            // Handle deletion logic here or call a passed-in delete callback
+                            // You might want to pass a `onDelete: (propertyId: String) -> Unit` as a parameter
+                        },
                         modifier = Modifier.padding(end = 8.dp),
                         shape = MaterialTheme.shapes.medium,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(220,38,38))
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(220, 38, 38))
                     ) {
                         Text(
                             text = "Delete",
@@ -160,6 +172,6 @@ fun PreviewPropCard(){
         description = "asdf",
         sellerId = 2 // For now, using a drawable name instead of URL
     )
-    PropertyCard(sampleProperty, true)
+//    PropertyCard(sampleProperty, true)
 }
 
