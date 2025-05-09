@@ -4,7 +4,9 @@ package com.example.myapp.data.repository
 import com.example.myapp.data.api.PropertyService
 import com.example.myapp.data.local.PropertyDAO
 import com.example.myapp.data.model.Property
+import com.example.myapp.data.model.ReturnProperty
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 
@@ -13,7 +15,15 @@ interface PropertyRepository {
     suspend fun insertProperty(property: Property)
     fun getLocalProps(): Flow<List<Property>>
     suspend fun deleteProperty(id: Int)
-    suspend fun updatePropterty(id: Int)
+    suspend fun updateProperty(propId: String,
+                               token: String,
+                               title: String?,
+                               description: String?,
+                               area: String?,
+                               beds: String?,
+                               baths: String?,
+                               location: String?,
+                               price: String?): Result<Any>
 }
 
 class PropertyRepoImpl @Inject constructor(
@@ -68,8 +78,46 @@ class PropertyRepoImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun updatePropterty(id: Int) {
-        TODO("Not yet implemented")
+    override suspend fun updateProperty(propId: String,
+                                        token: String,
+                                        title: String?,
+                                        description: String?,
+                                        area: String?,
+                                        beds: String?,
+                                        baths: String?,
+                                        location: String?,
+                                        price: String? ): Result<Any> {
+        return try {
+            val property = propertyDAO.getPropertyById(propId.toString()).firstOrNull()
+            if (property != null) {
+                val resp = propertyApiService.updateProperty(
+                    id = propId,
+                    token = token,
+                    updateProperty = PropertyService.UpdateProperty(
+                        title = title ?: property.title,
+                        description = description ?: property.description,
+                        area = area ?: property.area,
+                        beds = (beds ?: property.beds).toString(),
+                        baths = (baths ?: property.baths).toString(),
+                        location = location ?: property.location,
+                        price = (price ?: property.price).toString()
+                    )
+                )
+                if (resp.isSuccessful){
+                    println(resp.body()!!)
+                    Result.success("YIPPI")
+                }else{
+                    println("Eroor with: ${resp}")
+                    Result.failure(Exception("Failed to update property: ${resp.errorBody()?.string()}"))
+                }
+            }else{
+                Result.failure(Exception("Failed to find a property: $property"))
+            }
+        }catch (e: Exception){
+            Result.failure(e)
+        }
+
+
     }
 
 }

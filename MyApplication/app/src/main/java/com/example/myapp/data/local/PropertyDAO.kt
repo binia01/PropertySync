@@ -18,4 +18,7 @@ interface PropertyDAO {
 
     @Query("DELETE FROM property")
     suspend fun clearProperties()
+
+    @Query("SELECT * FROM property WHERE id = :id")
+    fun getPropertyById(id: String): Flow<Property?>
 }
