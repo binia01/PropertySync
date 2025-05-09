@@ -38,15 +38,11 @@ abstract class AppModule {
     abstract fun bindPropertyRepository(propertyRepository: PropertyRepoImpl): PropertyRepository
 
     companion object {
-        // INSERT YOUR OWN BASE URL HERE
-        val Abenis_URL : String = "http://192.168.76.36:3000/"
-
         @Provides
         @Singleton
         fun provideAuthApiService(): AuthApiService{
             return Retrofit.Builder()
-//                .baseUrl("http://192.168.1.7:3000/")
-                .baseUrl(Abenis_URL)
+                .baseUrl("http://192.168.1.7:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(AuthApiService::class.java)
@@ -57,8 +53,7 @@ abstract class AppModule {
         @Singleton
         fun provideUserApiService(): UserService{
             return Retrofit.Builder()
-//                .baseUrl("http://192.168.1.7:3000/")
-                .baseUrl(Abenis_URL)
+                .baseUrl("http://192.168.1.7:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(UserService::class.java)
@@ -68,8 +63,7 @@ abstract class AppModule {
         @Singleton
         fun providePropertyApiService(): PropertyService{
             return Retrofit.Builder()
-//                .baseUrl("http://192.168.1.7:3000/")
-                .baseUrl(Abenis_URL)
+                .baseUrl("http://192.168.1.7:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(PropertyService::class.java)
