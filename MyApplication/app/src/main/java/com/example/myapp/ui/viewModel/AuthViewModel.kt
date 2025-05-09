@@ -38,7 +38,7 @@ class AuthViewModel @Inject constructor(
                 println("HII AGAIN FROM LOGIN AUTHVIEW MODEL THE USER HERE IS:    $user")
                 _authState.value = Auth.LoggedIn(user = user)
             }.onFailure { error ->
-                _authState.value = Auth.Error("Invalid Credentials")
+                _authState.value = Auth.Error("Incorrect Credentials")
                 println("LOGIN FAILURE in ViewModel: ${error.localizedMessage}")
             }
 
