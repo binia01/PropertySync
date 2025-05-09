@@ -6,7 +6,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
@@ -15,9 +14,10 @@ import com.example.myapp.ui.components.BottomNav
 import com.example.myapp.ui.screen.booking.BookingScreen
 import com.example.myapp.ui.screen.home.HomeScreen
 import com.example.myapp.ui.navigation.Screens
-//import com.example.myapp.ui.screen.auth.LoginScreen
 import com.example.myapp.ui.screen.auth.LoginScreenUI
 import com.example.myapp.ui.screen.auth.SignUpScreen
+import com.example.myapp.ui.screen.profile.ProfileScreen
+import com.example.myapp.ui.screen.profile.UpdateProfile
 import com.example.myapp.ui.screen.property.AddPropertyScreen
 import com.example.myapp.ui.viewModel.AuthViewModel
 
@@ -27,15 +27,6 @@ fun PropertyApp() {
     val navController = rememberNavController()
     val authViewModel: AuthViewModel = hiltViewModel()
     val authState by authViewModel.authState.collectAsState()
-
-    // Redirect to login when user logs out
-    LaunchedEffect(authState) {
-        if (authState is Auth.LoggedOut) {
-            navController.navigate(Screens.Login.route) {
-                popUpTo(0) // clear stack
-            }
-        }
-    }
 
 
     Scaffold(
@@ -47,11 +38,14 @@ fun PropertyApp() {
             startDestination = if (authState is Auth.LoggedIn) Screens.Home.route else Screens.Login.route,
             Modifier.padding(paddingValues)
         ) {
-            composable(Screens.Login.route) { LoginScreenUI(authViewModel, onSignInSuccess = { navController.navigate(Screens.Home.route) }, onNavigateToSignUp = {navController.navigate(Screens.SignUp.route)}) }
-            composable(Screens.SignUp.route) { SignUpScreen(authViewModel, onSignUpSuccess = { navController.navigate(Screens.Home.route) }, onNavigateToSignIn = {navController.navigate(Screens.Login.route)}) }
-            composable(Screens.Home.route) { HomeScreen(authViewModel = authViewModel,navController = navController) }
+            composable(Screens.Login.route) { LoginScreenUI(authViewModel, onNavToSignup = {navController.navigate(Screens.SignUp.route)}) }
+            composable(Screens.Home.route) { HomeScreen(navController = navController, authViewModel) }
             composable(Screens.Bookings.route) { BookingScreen(navController = navController) }
-            composable(Screens.Add.route) {AddPropertyScreen(navController = navController) }
+            composable(Screens.SignUp.route)  { SignUpScreen(onNavToLogin = {navController.navigate(Screens.Login.route)}, authViewModel) }
+            composable(Screens.Profile.route) { ProfileScreen(navController, authViewModel) }
+            composable(Screens.UpdateProfile.route) { UpdateProfile(navController) }
+            composable(Screens.Add.route) { AddPropertyScreen(navController = navController) }
+
         }
     }
 }
