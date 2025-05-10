@@ -2,7 +2,10 @@ package com.example.myapp.data.repository
 
 import com.example.myapp.data.api.PropertyService
 import com.example.myapp.data.model.Property
+import com.example.myapp.data.model.Request.AddPropertyRequest
+import com.example.myapp.data.model.Response.AddPropertyResponse
 import com.example.myapp.data.model.ReturnProperty
+import com.example.myapp.ui.screen.property.NetworkResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -15,6 +18,7 @@ import kotlin.runCatching
 interface PropertyRepository {
 
     fun getProperties(token: String): Flow<Result<List<Property>>>
+    suspend fun createProperty(token: String, property: AddPropertyRequest): NetworkResult<AddPropertyResponse>
     suspend fun deleteProperty(id: Int, token: String): Result<Unit>
     suspend fun updateProperty(
         propId: String,
@@ -58,6 +62,21 @@ class PropertyRepoImpl @Inject constructor(
             }
         }.onSuccess { result -> emit(result) }
             .onFailure { error -> emit(Result.failure(error)) }
+    }
+
+    override suspend fun createProperty(token: String,property: AddPropertyRequest): NetworkResult<AddPropertyResponse> {
+        return try {
+            val response = propertyApiService.addProperty("Bearer $token", property)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    NetworkResult.Success(it)
+                } ?: NetworkResult.Error("Empty response")
+            } else {
+                NetworkResult.Error(response.message())
+            }
+        } catch (e: Exception) {
+            NetworkResult.Error(e.message ?: "Unknown error")
+        }
     }
 
     override suspend fun deleteProperty(id: Int, token: String): Result<Unit> = runCatching {

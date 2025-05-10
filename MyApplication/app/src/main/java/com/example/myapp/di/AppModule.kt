@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.room.Room
 import com.example.myapp.data.api.AppointmentService
 import com.example.myapp.data.api.AuthApiService
+//import com.example.myapp.data.api.AuthApiService.Companion.BASE_URL
 import com.example.myapp.data.api.PropertyService
 import com.example.myapp.data.api.UserService
 //import com.example.myapp.data.db.AppDatabase
@@ -45,7 +46,6 @@ abstract class AppModule {
     abstract fun bindAppointmentRepository(appointmentRepository: AppointmentRepositoryImpl): AppointmentRepository
 
     companion object {
-
         @Provides
         @Singleton
         fun provideAuthApiService(): AuthApiService{

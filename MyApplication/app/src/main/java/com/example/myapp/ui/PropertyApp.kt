@@ -22,6 +22,7 @@ import com.example.myapp.ui.screen.home.EditProperty
 import com.example.myapp.ui.screen.home.PropertyDetails
 import com.example.myapp.ui.screen.profile.ProfileScreen
 import com.example.myapp.ui.screen.profile.UpdateProfile
+import com.example.myapp.ui.screen.property.AddPropertyScreen
 import com.example.myapp.ui.viewModel.AuthViewModel
 
 @Composable
@@ -47,6 +48,7 @@ fun PropertyApp() {
             composable(Screens.SignUp.route)  { SignUpScreen(onNavToLogin = {navController.navigate(Screens.Login.route)}, authViewModel) }
             composable(Screens.Profile.route) { ProfileScreen(navController, authViewModel) }
             composable(Screens.UpdateProfile.route) { UpdateProfile(navController) }
+            composable(Screens.Add.route) { AddPropertyScreen(navController = navController) }
 //            composable(Screens.NewAppointment.route) { NewAppointments(navController) }
             composable("propertyDetails/{propertyId}") { backStackEntry ->
                 val propertyId = backStackEntry.arguments?.getString("propertyId")

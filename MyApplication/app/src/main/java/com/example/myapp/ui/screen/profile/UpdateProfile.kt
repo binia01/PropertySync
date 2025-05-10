@@ -2,20 +2,16 @@ package com.example.myapp.ui.screen.profile
 
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,6 +21,8 @@ import com.example.myapp.ui.components.Header
 import com.example.myapp.ui.viewModel.UserViewModel
 import com.example.myapp.R
 import com.example.myapp.ui.theme.BluePrimary
+import com.example.myapp.ui.theme.TextPrimary
+import com.example.myapp.ui.theme.TextSecondary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,11 +96,11 @@ fun UpdateProfile(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    CustomInputField("First Name", firstName) { firstName = it }
+                    DefaultInputField("First Name", firstName) { firstName = it }
                     Spacer(modifier = Modifier.height(12.dp))
-                    CustomInputField("Last Name", lastName) { lastName = it }
+                    DefaultInputField("Last Name", lastName) { lastName = it }
                     Spacer(modifier = Modifier.height(12.dp))
-                    CustomInputField("Email", email) { email = it }
+                    DefaultInputField("Email", email) { email = it }
 
                     Spacer(modifier = Modifier.height(40.dp))
 
@@ -129,46 +127,36 @@ fun UpdateProfile(
 }
 
 @Composable
-fun CustomInputField(label: String, value: String, onChange: (String) -> Unit) {
-    var isFocused by remember { mutableStateOf(false) }
-
+fun DefaultInputField(label: String, value: String, onValueChange: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp)
+            .padding(vertical = 6.dp)
     ) {
-        Text(label, style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
-        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            color = TextSecondary
+        )
+        Spacer(modifier = Modifier.height(6.dp))
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .border(
-                    width = 1.dp,
-                    color = if (isFocused) BluePrimary else Color(0xFFE0E0E0),
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .background(Color(0xFFF3F3F3), RoundedCornerShape(8.dp))
-                .padding(12.dp),
-        ) {
-            BasicTextField(
-                value = value,
-                onValueChange = onChange,
-                textStyle = MaterialTheme.typography.bodyMedium.copy(color = Color.Black),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
-                cursorBrush = SolidColor(BluePrimary),
-                decorationBox = { innerTextField ->
-                    Box(
-                        Modifier.onFocusChanged { focusState ->
-                            isFocused = focusState.isFocused
-                        }
-                    ) {
-                        innerTextField()
-                    }
-                }
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            singleLine = true,
+            placeholder = { Text("Enter $label", style = MaterialTheme.typography.bodySmall.copy(color = TextSecondary)) },
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp),
+            textStyle = MaterialTheme.typography.bodyMedium.copy(
+                color = TextPrimary
+            ),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = Color(0xFF007BFF),
+                unfocusedBorderColor = Color(0xFFE0E0E0),
+                cursorColor = Color(0xFF007BFF),
+                focusedContainerColor = Color(0xFFF3F3F3),
+                unfocusedContainerColor = Color(0xFFF3F3F3)
             )
-        }
+        )
     }
 }
