@@ -37,7 +37,7 @@ fun AccountSettings( onUpdateProfileClick: () -> Unit,
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.background, shape = RoundedCornerShape(16.dp))
+            .background(MaterialTheme.colorScheme.onPrimary, shape = RoundedCornerShape(16.dp))
             .padding(12.dp)
     ) {
         SettingsRow(
