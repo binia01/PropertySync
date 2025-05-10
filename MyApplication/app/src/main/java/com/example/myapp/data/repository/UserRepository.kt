@@ -2,45 +2,41 @@ package com.example.myapp.data.repository
 
 import com.example.myapp.data.api.AuthApiService
 import com.example.myapp.data.api.UserService
-import com.example.myapp.data.local.UserDao
+//import com.example.myapp.data.local.UserDao
 import com.example.myapp.data.model.User
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
+import javax.inject.Singleton
+
 
 interface UserRepository {
     fun getUser(): Flow<User?>
-    suspend fun insertUser(user: User)
-    suspend fun deleteUser()
-    suspend fun deleteUserAccount() : Result<Unit>
+    suspend fun insertUser(user: User) // Now for in-memory storage
+    suspend fun deleteUser() // Clears in-memory user
+    suspend fun deleteUserAccount(): Result<Unit>
     suspend fun updateUser(firstname: String?, email: String?, lastname: String?): Result<Unit>
 }
 
+@Singleton
 class UserRepositoryImpl @Inject constructor(
-    private val userDao: UserDao,
     private val userApiService: UserService
-): UserRepository {
-    override fun getUser(): Flow<User?> {
-        return userDao.getUser()
-    }
+) : UserRepository {
+    private val _currentUser = MutableStateFlow<User?>(null)
+    override fun getUser(): Flow<User?> = _currentUser
 
     override suspend fun insertUser(user: User) {
-        userDao.insert(user)
+        _currentUser.value = user
     }
 
     override suspend fun deleteUser() {
-        try {
-            userDao.clearUser()
-            println("cleared?")
-        } catch (e: Exception) {
-            println(e)
-        }
+        _currentUser.value = null
     }
+
     override suspend fun deleteUserAccount(): Result<Unit> {
         return try {
-            val currentUserFlow = getUser()
-            val currentUser = currentUserFlow.firstOrNull()
-
+            val currentUser = _currentUser.value // Get current user from in-memory state
             if (currentUser?.token != null) {
                 val response = userApiService.delete("Bearer ${currentUser.token}")
                 if (response.isSuccessful) {
@@ -61,7 +57,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun updateUser(firstname: String?, email: String?, lastname: String?): Result<Unit> {
         return try {
-            val currentUser = getUser().firstOrNull()
+            val currentUser = _currentUser.value
 
             if (currentUser?.token != null) {
                 val updateRequest = UserService.UpdateRequest(
@@ -75,15 +71,16 @@ class UserRepositoryImpl @Inject constructor(
                 if (res.isSuccessful) {
                     val userReturn = res.body()?.userRet
                     if (userReturn != null) {
+                        val (first, last) = extractFirstAndLastName(userReturn.name)
                         val updatedUserLocal = User(
                             id = userReturn.id?.toInt() ?: currentUser.id,
                             email = userReturn.email ?: currentUser.email,
-                            firstname = firstname ?: currentUser.firstname,
-                            lastname = lastname ?: currentUser.lastname,
+                            firstname = firstname ?: first ?: currentUser.firstname,
+                            lastname = lastname ?: last ?: currentUser.lastname,
                             role = currentUser.role,
                             token = currentUser.token
                         )
-                        insertUser(updatedUserLocal)
+                        insertUser(updatedUserLocal) // Update in-memory state
                         return Result.success(Unit)
                     } else {
                         return Result.failure(Exception("Successful response but user data is null"))
@@ -98,5 +95,10 @@ class UserRepositoryImpl @Inject constructor(
             return Result.failure(e)
         }
     }
-
+    private fun extractFirstAndLastName(fullName: String?): Pair<String, String> {
+        val nameParts = fullName?.split(" ") ?: emptyList()
+        val firstName = nameParts.getOrNull(0) ?: ""
+        val lastName = nameParts.getOrNull(1) ?: ""
+        return Pair(firstName, lastName)
+    }
 }

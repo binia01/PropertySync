@@ -2,19 +2,24 @@ package com.example.propSync.di
 
 import android.app.Application
 import androidx.room.Room
+import com.example.myapp.data.api.AppointmentService
 import com.example.myapp.data.api.AuthApiService
 //import com.example.myapp.data.api.AuthApiService.Companion.BASE_URL
 import com.example.myapp.data.api.PropertyService
 import com.example.myapp.data.api.UserService
-import com.example.myapp.data.db.AppDatabase
-import com.example.myapp.data.local.PropertyDAO
-import com.example.myapp.data.local.UserDao
+//import com.example.myapp.data.db.AppDatabase
+//import com.example.myapp.data.local.AppointmentDao
+//import com.example.myapp.data.local.PropertyDAO
+//import com.example.myapp.data.local.UserDao
+import com.example.myapp.data.repository.AppointmentRepository
+import com.example.myapp.data.repository.AppointmentRepositoryImpl
 import com.example.myapp.data.repository.AuthRepository
 import com.example.myapp.data.repository.AuthRepositoryImpl
 import com.example.myapp.data.repository.PropertyRepoImpl
 import com.example.myapp.data.repository.PropertyRepository
 import com.example.myapp.data.repository.UserRepository
 import com.example.myapp.data.repository.UserRepositoryImpl
+import com.google.gson.Gson
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -37,6 +42,9 @@ abstract class AppModule {
     @Binds
     abstract fun bindPropertyRepository(propertyRepository: PropertyRepoImpl): PropertyRepository
 
+    @Binds
+    abstract fun bindAppointmentRepository(appointmentRepository: AppointmentRepositoryImpl): AppointmentRepository
+
     companion object {
         @Provides
         @Singleton
@@ -47,7 +55,6 @@ abstract class AppModule {
                 .build()
                 .create(AuthApiService::class.java)
         }
-
 
         @Provides
         @Singleton
@@ -69,31 +76,48 @@ abstract class AppModule {
                 .create(PropertyService::class.java)
         }
 
-
-
         @Provides
         @Singleton
-        fun provideAppDatabase(application: Application): AppDatabase {
-            return Room.databaseBuilder(
-                application,
-                AppDatabase::class.java,
-                "prop_sync_db"
-
-            )
-                .fallbackToDestructiveMigration(true)
+        fun provideAppointmentApiService(): AppointmentService{
+            return Retrofit.Builder()
+                .baseUrl("http://192.168.1.7:3000/")
+                .addConverterFactory(GsonConverterFactory.create())
                 .build()
+                .create(AppointmentService::class.java)
         }
 
-        @Provides
-        @Singleton
-        fun provideUserDao(appDatabase: AppDatabase): UserDao {
-            return appDatabase.userDao()
-        }
+
+
+//        @Provides
+//        @Singleton
+//        fun provideAppDatabase(application: Application): AppDatabase {
+//            return Room.databaseBuilder(
+//                application,
+//                AppDatabase::class.java,
+//                "prop_sync_db"
+//
+//            )
+//                .fallbackToDestructiveMigration(true)
+//                .build()
+//        }
+
+//        @Provides
+//        @Singleton
+//        fun provideUserDao(appDatabase: AppDatabase): UserDao {
+//            return appDatabase.userDao()
+//        }
+//
+//        @Provides
+//        @Singleton
+//        fun provideAppointmentDao(appDatabase: AppDatabase): AppointmentDao{
+//            return appDatabase.appointmentDao()
+//        }
 
         @Provides
-        @Singleton
-        fun providePropertyDao(appDatabase: AppDatabase): PropertyDAO{
-            return appDatabase.propertyDao()
+        @Singleton  //  Only one instance of Gson will be created.
+        fun provideGson(): Gson {
+            return Gson()
         }
+
     }
 }

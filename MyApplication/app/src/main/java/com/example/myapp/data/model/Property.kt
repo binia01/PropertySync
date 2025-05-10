@@ -31,7 +31,7 @@ data class ReturnProperty(
     @SerializedName("status") val status: String,
     @SerializedName("sellerId") val sellerId: Int,
     @SerializedName("beds") val beds: Int?,
-    @SerializedName("bathroom") val bathrooms: Int?,
+    @SerializedName("baths") val bathrooms: Int?,
     @SerializedName("area") val area: Int?,
 )
 

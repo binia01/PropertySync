@@ -16,6 +16,9 @@ import com.example.myapp.ui.screen.home.HomeScreen
 import com.example.myapp.ui.navigation.Screens
 import com.example.myapp.ui.screen.auth.LoginScreenUI
 import com.example.myapp.ui.screen.auth.SignUpScreen
+//import com.example.myapp.ui.screen.booking.NewAppointments
+import com.example.myapp.ui.screen.home.EditProperty
+import com.example.myapp.ui.screen.home.PropertyDetailed
 import com.example.myapp.ui.screen.profile.ProfileScreen
 import com.example.myapp.ui.screen.profile.UpdateProfile
 import com.example.myapp.ui.screen.property.AddPropertyScreen
@@ -45,6 +48,15 @@ fun PropertyApp() {
             composable(Screens.Profile.route) { ProfileScreen(navController, authViewModel) }
             composable(Screens.UpdateProfile.route) { UpdateProfile(navController) }
             composable(Screens.Add.route) { AddPropertyScreen(navController = navController) }
+//            composable(Screens.NewAppointment.route) { NewAppointments(navController) }
+            composable("propertyDetails/{propertyId}") { backStackEntry ->
+                val propertyId = backStackEntry.arguments?.getString("propertyId")
+                PropertyDetailed(propertyId = propertyId, navController)
+            }
+            composable("editProperty/{propertyId}") { backStackEntry ->
+                val propertyId = backStackEntry.arguments?.getString("propertyId")
+                EditProperty(propertyId = propertyId, navController)
+            }
 
         }
     }

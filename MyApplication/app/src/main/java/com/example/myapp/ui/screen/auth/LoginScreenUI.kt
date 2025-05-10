@@ -116,7 +116,6 @@ fun LoginScreenUI(
             }
         }
 
-//         Error message
         if (authState is Auth.Error) {
             Text(
                 text = (authState as Auth.Error).message,
