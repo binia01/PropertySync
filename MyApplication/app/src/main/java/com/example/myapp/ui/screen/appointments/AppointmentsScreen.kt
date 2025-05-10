@@ -1,6 +1,8 @@
 package com.example.myapp.ui.screen.appointments
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -8,14 +10,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -26,15 +26,13 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -47,42 +45,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.myapp.R
+import com.example.myapp.data.model.AppointmentEntity
+import com.example.myapp.ui.components.Header
 import com.example.myapp.ui.theme.BluePrimary
+import com.example.myapp.ui.viewModel.AppointmentViewModel
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppointmentsPage(navController: NavHostController,onBackPressed: () -> Unit) {
+fun AppointmentsPage(navController: NavController) {
     val tabs = listOf("All", "Pending", "Confirmed", "Completed", "Cancelled")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("My Appointments",
-                    color = Color.White,
-                    modifier = Modifier.padding(top = 4.dp))
-                },
-                navigationIcon = {
-                    IconButton(onClick = { onBackPressed()}) {
-                        Image(
-                            painter = painterResource(id = R.drawable.back),
-                            contentDescription = "Back arrow",
-                            modifier = Modifier
-                                .requiredSize(20.dp)
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = BluePrimary
-                ),
-                windowInsets = WindowInsets(0.dp)// To remove more padding of system (finally)
-            )
-        }
-    ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
+    val appointmentViewModel: AppointmentViewModel = hiltViewModel()
+    val appointments by appointmentViewModel.appointments.collectAsState()
+
+
+    Column {
+            Header("My Appointments")
             ScrollableTabRow(
                 selectedTabIndex = selectedTabIndex,
                 contentColor = BluePrimary,
@@ -126,58 +113,97 @@ fun AppointmentsPage(navController: NavHostController,onBackPressed: () -> Unit)
                     )
                 }
             }
-
-            LazyColumn(modifier = Modifier
-                .padding(16.dp, vertical = 4.dp)){
-                items(sampleAppointments) { appointment ->
-                    AppointmentCard(
-                        title = appointment.title,
-                        date = appointment.date,
-                        time = appointment.time,
-                        address = appointment.address,
-                        status = appointment.status,
-                        onCancel = {}
-                    )
+                appointments?.let {
+                    if (it.isEmpty()) {
+                        // Display a message if there are no appointments
+                        Text(text = "No appointments available.")
+                    } else {
+                        // Display the list of appointments
+                        LazyColumn(modifier = Modifier
+                            .padding(16.dp, vertical = 4.dp)) {
+                            itemsIndexed(it) { index, appointment: AppointmentEntity ->
+                                val property by appointmentViewModel.selectedProperty.collectAsState()
+                                LaunchedEffect(appointment.propid) {
+                                    appointmentViewModel.getPropertyDetails(appointment.propid)
+                                }
+                                AppointmentCard(
+                                    title = property?.title ?: "Couldn't get title",
+                                    date = appointment.date,
+                                    time = appointment.startTime,
+                                    address = property?.location ?: "Couldn't get location",
+                                    status = appointment.status,
+                                    onCancel = {println("Cancl clik")}
+                                )
+                            }
+                        }
+                    }
                 }
-            }
+
+//            LazyColumn(modifier = Modifier
+//                .padding(16.dp, vertical = 4.dp)){
+//
+//                items(appointments) { appointment ->
+//                    AppointmentCard(
+//                        title = appointment.title,
+//                        date = appointment.date,
+//                        time = appointment.time,
+//                        address = appointment.address,
+//                        status = appointment.status,
+//                        onCancel = {}
+//                    )
+//                }
+//            }
         }
+    }
+
+
+//data class Appointment(
+//    val title: String,
+//    val date: String,
+//    val time: String,
+//    val address: String,
+//    val status: String // "Pending", "Confirmed", etc.
+//)
+//
+//
+//val sampleAppointments = listOf(
+//    Appointment(
+//        title = "Modern Apartment with View",
+//        date = "2025-05-09",
+//        time = "10:30 AM",
+//        address = "221B Baker Street, London",
+//        status = "Confirmed"
+//    ),
+//    Appointment(
+//        title = "Downtown Loft Visit",
+//        date = "2025-05-10",
+//        time = "02:00 PM",
+//        address = "455 Sunset Blvd, Los Angeles",
+//        status = "Pending"
+//    ),
+//    Appointment(
+//        title = "Beach House Tour",
+//        date = "2025-05-11",
+//        time = "11:15 AM",
+//        address = "123 Ocean Drive, Miami",
+//        status = "Confirmed"
+//    )
+//)
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+private fun formatDateString(dateString: String, formatter: DateTimeFormatter): String {
+    return try {
+        LocalDateTime.parse(dateString, formatter).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+    } catch (e: DateTimeParseException) {
+        "Invalid Date"
     }
 }
 
-data class Appointment(
-    val title: String,
-    val date: String,
-    val time: String,
-    val address: String,
-    val status: String // "Pending", "Confirmed", etc.
-)
 
 
-val sampleAppointments = listOf(
-    Appointment(
-        title = "Modern Apartment with View",
-        date = "2025-05-09",
-        time = "10:30 AM",
-        address = "221B Baker Street, London",
-        status = "Confirmed"
-    ),
-    Appointment(
-        title = "Downtown Loft Visit",
-        date = "2025-05-10",
-        time = "02:00 PM",
-        address = "455 Sunset Blvd, Los Angeles",
-        status = "Pending"
-    ),
-    Appointment(
-        title = "Beach House Tour",
-        date = "2025-05-11",
-        time = "11:15 AM",
-        address = "123 Ocean Drive, Miami",
-        status = "Confirmed"
-    )
-)
 
-
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppointmentCard(
     title: String ,
@@ -187,9 +213,12 @@ fun AppointmentCard(
     status: String = "Pending",
     onCancel: () -> Unit = {}
 ) {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    val formattedStartTime = formatDateString(time, formatter)
+
     val statusColor = when (status) {
-        "Confirmed" -> Pair(Color(0xFFDCFCE7), Color(0xFF166534))
-        "Pending" -> Pair(Color(0xFFFEF9C3), Color(0xFF854D0E))
+        "CONFIRMED" -> Pair(Color(0xFFDCFCE7), Color(0xFF166534))
+        "PENDING" -> Pair(Color(0xFFFEF9C3), Color(0xFF854D0E))
         else -> Pair(Color.LightGray, Color.DarkGray)
     }
 
@@ -230,7 +259,7 @@ fun AppointmentCard(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.DateRange, contentDescription = null)
                 Spacer(Modifier.width(8.dp))
-                Text(text = date,
+                Text(text = formattedStartTime.split(" ")[0],
                     fontWeight = FontWeight.Normal,
                     fontSize = 14.sp)
             }
@@ -240,7 +269,7 @@ fun AppointmentCard(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(painterResource(id = R.drawable.clock), contentDescription = null)
                 Spacer(Modifier.width(8.dp))
-                Text(text = time,
+                Text(text = formattedStartTime.split(" ")[1],
                     fontWeight = FontWeight.Normal,
                     fontSize = 14.sp)
             }

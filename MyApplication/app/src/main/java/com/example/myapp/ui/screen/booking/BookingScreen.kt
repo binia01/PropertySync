@@ -37,7 +37,7 @@ fun BookingScreen(navController: NavController){
                 // Display the list of appointments
                 LazyColumn {
                     itemsIndexed(it) { index, appointment: AppointmentEntity -> // Explicitly type 'appointment'
-                        AppointmentCard(appointment = appointment)
+                        OldAppointmentCard(appointment = appointment)
                     }
                 }
             }

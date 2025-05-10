@@ -19,7 +19,7 @@ import java.time.format.DateTimeParseException
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun AppointmentCard(appointment: AppointmentEntity) {
+fun OldAppointmentCard(appointment: AppointmentEntity) {
 
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     val formattedStartTime = formatDateString(appointment.startTime, formatter)

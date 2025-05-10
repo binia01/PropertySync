@@ -3,7 +3,9 @@ package com.example.myapp.ui.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapp.data.model.AppointmentEntity
+import com.example.myapp.data.model.Property
 import com.example.myapp.data.repository.AppointmentRepository
+import com.example.myapp.data.repository.PropertyRepository
 import com.example.myapp.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AppointmentViewModel @Inject constructor(
     private val appointmentRepository: AppointmentRepository,
+    private val propertyRepository: PropertyRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
     private val _appointments = MutableStateFlow<List<AppointmentEntity>?>(null)
@@ -26,6 +29,15 @@ class AppointmentViewModel @Inject constructor(
 
     private val _errorMessage = MutableStateFlow<String?>(null)
     val errorMessage: StateFlow<String?> = _errorMessage
+
+    private val _selectedProperty = MutableStateFlow<Property?>(null)
+    val selectedProperty: StateFlow<Property?> = _selectedProperty
+
+    private val _propertyLoading = MutableStateFlow(false)
+    val propertyLoading: StateFlow<Boolean> = _propertyLoading
+
+    private val _propertyError = MutableStateFlow<String?>(null)
+    val propertyError: StateFlow<String?> = _propertyError
 
     init {
         println("AppointmentViewModel initialized") // Log when ViewModel is created
@@ -60,6 +72,34 @@ class AppointmentViewModel @Inject constructor(
                         _appointments.value = null
                         _errorMessage.value = "User token not available"
                         println("refreshAppointments: Token is null or blank") // Log token issue
+                    }
+                }
+        }
+    }
+    fun getPropertyDetails(propertyId: Int) {
+        viewModelScope.launch {
+            userRepository.getUser()
+                .map { user -> user?.token }
+                .collectLatest { authToken ->
+                    if (!authToken.isNullOrBlank()) {
+                        _propertyLoading.value = true
+                        _propertyError.value = null
+                        propertyRepository.getPropertyById("Bearer $authToken", propertyId)
+                            .collectLatest { result ->
+                                _propertyLoading.value = false
+                                if (result.isSuccess) {
+                                    _selectedProperty.value = result.getOrNull()
+                                    println("Successfully fetched property details: ${_selectedProperty.value}")
+                                } else {
+                                    _propertyError.value = result.exceptionOrNull()?.localizedMessage ?: "Failed to fetch property details"
+                                    println("Error fetching property details: ${_propertyError.value}")
+                                    _selectedProperty.value = null
+                                }
+                            }
+                    } else {
+                        _propertyError.value = "User token not available"
+                        println("Error: User token not available to fetch property details")
+                        _selectedProperty.value = null
                     }
                 }
         }

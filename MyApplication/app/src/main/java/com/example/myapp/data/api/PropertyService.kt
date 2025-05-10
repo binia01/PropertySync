@@ -28,6 +28,10 @@ interface PropertyService {
         @Header("Authorization") token: String,
     ): Response<Any>
 
+    @GET("property/{id}")
+    suspend fun getPropertyById(@Header("Authorization") token: String, @Path("id") id: Int): Response<ReturnProperty>
+
+
     data class UpdateProperty(
         val title: String?,
         val description: String?,

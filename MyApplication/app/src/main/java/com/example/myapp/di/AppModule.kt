@@ -86,33 +86,6 @@ abstract class AppModule {
                 .create(AppointmentService::class.java)
         }
 
-
-
-//        @Provides
-//        @Singleton
-//        fun provideAppDatabase(application: Application): AppDatabase {
-//            return Room.databaseBuilder(
-//                application,
-//                AppDatabase::class.java,
-//                "prop_sync_db"
-//
-//            )
-//                .fallbackToDestructiveMigration(true)
-//                .build()
-//        }
-
-//        @Provides
-//        @Singleton
-//        fun provideUserDao(appDatabase: AppDatabase): UserDao {
-//            return appDatabase.userDao()
-//        }
-//
-//        @Provides
-//        @Singleton
-//        fun provideAppointmentDao(appDatabase: AppDatabase): AppointmentDao{
-//            return appDatabase.appointmentDao()
-//        }
-
         @Provides
         @Singleton  //  Only one instance of Gson will be created.
         fun provideGson(): Gson {

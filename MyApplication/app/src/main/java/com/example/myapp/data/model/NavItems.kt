@@ -22,7 +22,7 @@ data class NavItems (
                     rout = Screens.Home.route
                 ),
                 NavItems(
-                    label = "Bookings",
+                    label = "Appointments",
                     icon = Icons.Outlined.DateRange,
                     rout = Screens.Bookings.route
                 )

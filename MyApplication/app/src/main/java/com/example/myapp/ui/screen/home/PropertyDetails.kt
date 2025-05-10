@@ -48,10 +48,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.myapp.R
-import com.example.myapp.ui.navigation.Screens
 import com.example.myapp.ui.theme.BluePrimary
 import java.util.Calendar
 import java.util.Date
@@ -59,7 +57,7 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PropertyDetails(navController: NavHostController) {
+fun PropertyDetails(navController: NavHostController, propertyId: String?) {
     var showDatePicker by remember { mutableStateOf(false) }
     var selectedDate by remember { mutableStateOf("MM/DD/YYYY")}
     var selectedTime by remember { mutableStateOf("00 : 00") }

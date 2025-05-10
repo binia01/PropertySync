@@ -13,8 +13,8 @@ import javax.inject.Singleton
 
 interface UserRepository {
     fun getUser(): Flow<User?>
-    suspend fun insertUser(user: User) // Now for in-memory storage
-    suspend fun deleteUser() // Clears in-memory user
+    suspend fun insertUser(user: User)
+    suspend fun deleteUser()
     suspend fun deleteUserAccount(): Result<Unit>
     suspend fun updateUser(firstname: String?, email: String?, lastname: String?): Result<Unit>
 }
