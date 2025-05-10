@@ -4,16 +4,21 @@ package com.example.myapp.data.repository
 import com.example.myapp.data.api.PropertyService
 import com.example.myapp.data.local.PropertyDAO
 import com.example.myapp.data.model.Property
+import com.example.myapp.data.model.Request.AddPropertyRequest
+import com.example.myapp.data.model.Response.AddPropertyResponse
+import com.example.myapp.ui.screen.property.NetworkResult
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 
 interface PropertyRepository {
     suspend fun getProperties(token: String): Result<List<Property>>
-    suspend fun insertProperty(property: Property)
+    suspend fun createProperty(token: String, property: AddPropertyRequest): NetworkResult<AddPropertyResponse>
     fun getLocalProps(): Flow<List<Property>>
     suspend fun deleteProperty(id: Int)
-    suspend fun updatePropterty(id: Int)
+    suspend fun updateProperty(id: Int)
+    suspend fun insertProperty(property: Property)
 }
 
 class PropertyRepoImpl @Inject constructor(
@@ -56,6 +61,21 @@ class PropertyRepoImpl @Inject constructor(
     }
 
 
+    override suspend fun createProperty(token: String,property: AddPropertyRequest): NetworkResult<AddPropertyResponse> {
+        return try {
+            val response = propertyApiService.addProperty("Bearer $token", property)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    NetworkResult.Success(it)
+                } ?: NetworkResult.Error("Empty response")
+            } else {
+                NetworkResult.Error(response.message())
+            }
+        } catch (e: Exception) {
+            NetworkResult.Error(e.message ?: "Unknown error")
+        }
+    }
+
     override suspend fun insertProperty(property: Property) {
         propertyDAO.insert(property)
     }
@@ -68,7 +88,7 @@ class PropertyRepoImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun updatePropterty(id: Int) {
+    override suspend fun updateProperty(id: Int) {
         TODO("Not yet implemented")
     }
 

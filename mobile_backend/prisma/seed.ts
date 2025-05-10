@@ -19,12 +19,18 @@ async function main() {
           description: 'A spacious loft with lots of natural light.',
           price: 450000,
           location: 'Los Angeles, CA',
+          beds: 4,
+          baths: 6,
+          area: 300
         },
         {
           title: 'Beach House Retreat',
           description: 'Relaxing 3-bedroom beach house with ocean views.',
           price: 750000,
           location: 'Malibu, CA',
+          beds: 4,
+          baths: 6,
+          area: 300
         }
       ],
     },
@@ -39,6 +45,9 @@ async function main() {
           description: 'Comfortable 4-bedroom home in a quiet neighborhood.',
           price: 350000,
           location: 'Austin, TX',
+          beds: 4,
+          baths: 6,
+          area: 300
         }
       ],
     },
@@ -53,6 +62,9 @@ async function main() {
           description: 'Compact and convenient city-living experience.',
           price: 300000,
           location: 'Chicago, IL',
+          beds: 4,
+          baths: 6,
+          area: 300
         }
       ],
     },
