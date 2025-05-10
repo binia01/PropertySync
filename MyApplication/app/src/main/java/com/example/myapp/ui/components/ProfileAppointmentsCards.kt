@@ -25,6 +25,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.myapp.R
+import com.example.myapp.ui.navigation.Screens
+import com.example.myapp.ui.theme.BluePrimary
 
 @Composable
 fun ProfileAppointmentsCards(
@@ -40,7 +42,7 @@ fun ProfileAppointmentsCards(
             icon = painterResource(id = R.drawable.calander),
             linkText = "View all appointments",
             iconBgColor = Color(0xFF2979FF),
-            onLinkClick = {}
+            onLinkClick = {Screens.Bookings.route}
         )
         Spacer(modifier = Modifier.height(12.dp))
         AppointmentCard(
@@ -78,7 +80,7 @@ fun AppointmentCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF9FAFB))
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 20.dp)) {
@@ -93,13 +95,13 @@ fun AppointmentCard(
                             is ImageVector -> Icon(
                                 imageVector = icon,
                                 contentDescription = null,
-                                tint = Color.White,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(20.dp)
                             )
                             is androidx.compose.ui.graphics.painter.Painter -> Icon(
                                 painter = icon,
                                 contentDescription = null,
-                                tint = Color.White,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.size(20.dp)
                             )
                             else -> throw IllegalArgumentException("Unsupported icon type")
@@ -117,14 +119,14 @@ fun AppointmentCard(
                 modifier = Modifier
                     .clickable{ onLinkClick() }
                     .fillMaxWidth()
-                    .background(Color(0xFFF3F4F6))
+                    .background(MaterialTheme.colorScheme.onTertiary)
                     .padding(horizontal = 16.dp, vertical = 20.dp)
 
             ) {
                 Text(
                     text = linkText,
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color(0xFF2979FF)
+                    color = BluePrimary
                 )
             }
         }

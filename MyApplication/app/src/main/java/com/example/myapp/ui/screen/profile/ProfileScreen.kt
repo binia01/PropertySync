@@ -18,8 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapp.ui.navigation.Screens
-import com.example.myapp.ui.theme.BaseBackground
-import com.example.myapp.ui.theme.CardBackground
 import com.example.myapp.ui.viewModel.AuthViewModel
 import com.example.myapp.ui.viewModel.UserViewModel
 
@@ -32,14 +30,14 @@ fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel
         Header("My Profile")
         LazyColumn(modifier = Modifier
             .fillMaxSize()
-            .background(BaseBackground)) {
+            .background(MaterialTheme.colorScheme.surface)) {
             item {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 16.dp)
                         .clip(RoundedCornerShape(12.dp))
-                        .background(CardBackground)
+                        .background(MaterialTheme.colorScheme.background)
                         .padding(horizontal = 24.dp, vertical = 16.dp)
                 ) {
                     UserInfoCard(
