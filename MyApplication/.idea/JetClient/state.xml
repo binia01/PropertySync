@@ -28,7 +28,7 @@
                 <list>
                   <headerState>
                     <option name="key" value="Authorization" />
-                    <option name="value" value="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWNiMTIzQGdtYWlsLmNvbSIsImlhdCI6MTc0Njc0NTcxMCwiZXhwIjoxNzQ2NzUxMTEwfQ.1K8sD4h2_LwVbiGIvNCQwMv2X_lR49Y2ezUnWi1q4RQ" />
+                    <option name="value" value="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoiYWNiMTIzQGdtYWlsLmNvbSIsImlhdCI6MTc0Njg1MDIwOSwiZXhwIjoxNzQ2ODU1NjA5fQ.oJ1n-UXQ0hki5LD0S0WNiQXCoC64CzpdtPZkCSbgeiE" />
                   </headerState>
                 </list>
               </option>
