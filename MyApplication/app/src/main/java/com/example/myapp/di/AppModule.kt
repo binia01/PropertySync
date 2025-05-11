@@ -1,7 +1,6 @@
 package com.example.propSync.di
 
 import android.app.Application
-import androidx.room.Room
 import com.example.myapp.data.api.AppointmentService
 import com.example.myapp.data.api.AuthApiService
 //import com.example.myapp.data.api.AuthApiService.Companion.BASE_URL

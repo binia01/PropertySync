@@ -20,8 +20,8 @@ private val DarkColorScheme = darkColorScheme(
 
 private val LightColorScheme = lightColorScheme(
     primary = BluePrimary,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
+    secondary = BaseBackground,
+    tertiary = BaseBackground,
 //    primary = BluePrimary,
     background = CardBackground,
     surface = CardBackground,
@@ -43,7 +43,7 @@ private val LightColorScheme = lightColorScheme(
 fun MyApplicationTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = false,
+    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

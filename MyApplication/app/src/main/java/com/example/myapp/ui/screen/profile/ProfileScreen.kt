@@ -25,7 +25,7 @@ fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel
     val userViewModel: UserViewModel = hiltViewModel()
     val userState by userViewModel.userState.collectAsState()
 
-        LazyColumn(modifier = Modifier
+    LazyColumn(modifier = Modifier
             .fillMaxSize()
             ) {
             item {
@@ -67,4 +67,4 @@ fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel
             }
         }
     }
-}
+

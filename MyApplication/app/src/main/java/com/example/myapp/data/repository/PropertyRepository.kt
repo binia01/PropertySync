@@ -35,7 +35,6 @@ interface PropertyRepository {
     fun getPropertyById(token: String, propertyId: Int): Flow<Result<Property?>>
 
 
-
     val propertyUpdatedFlow: kotlinx.coroutines.flow.SharedFlow<Unit>
 }
 
@@ -133,6 +132,7 @@ class PropertyRepoImpl @Inject constructor(
             .onFailure { error -> emit(Result.failure(error)) }
     }
 
+
     private fun ReturnProperty.toProperty(): Property {
         return Property(
             id = this.id,
@@ -144,7 +144,8 @@ class PropertyRepoImpl @Inject constructor(
             area = this.area?.toString() ?: "",
             imageUrl = "", // You'll likely need to handle this differently
             description = this.description,
-            sellerId = this.sellerId
+            sellerId = this.sellerId,
+            status = this.status
         )
     }
 }

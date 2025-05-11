@@ -1,12 +1,10 @@
 package com.example.myapp.data.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "property")
 data class Property(
-    @PrimaryKey val id: Int,
+    val id: Int,
     val title: String,
     val location: String,
     val price: Int,
@@ -15,7 +13,8 @@ data class Property(
     val area: String,
     val imageUrl: String,
     val description: String,
-    val sellerId: Int
+    val sellerId: Int,
+    val status: String
 )
 
 

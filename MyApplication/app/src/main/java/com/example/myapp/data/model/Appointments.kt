@@ -1,11 +1,9 @@
 package com.example.myapp.data.model
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 
-@Entity(tableName = "appointments")
+
 data class AppointmentEntity(
-    @PrimaryKey val id: Int,
+    val id: Int,
     val createdAt: String,
     val updatedAt: String,
     val startTime: String,

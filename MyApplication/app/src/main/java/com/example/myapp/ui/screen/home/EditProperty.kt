@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,12 +30,16 @@ import androidx.navigation.NavController
 import com.example.myapp.data.model.UserReqState
 import com.example.myapp.ui.components.Header
 import com.example.myapp.ui.viewModel.EditPropViewModel
+import com.example.myapp.ui.viewModel.EditState
 import com.example.myapp.ui.viewModel.HomeViewModel
 
 
 @Composable
 fun EditProperty(propertyId: String?,  navController: NavController){
     val editPropViewModel: EditPropViewModel = hiltViewModel()
+    // TODO
+    val editState by editPropViewModel.editState.collectAsState()
+
 
 
     var title by remember { mutableStateOf("") }
@@ -54,8 +59,25 @@ fun EditProperty(propertyId: String?,  navController: NavController){
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Header("Edit Property", true, { navController.popBackStack() })
-
         Spacer(modifier = Modifier.height(24.dp))
+
+        // TODO
+        when (editState) {
+            is EditState.Loading -> CircularProgressIndicator()
+            is EditState.Error -> Text(
+                text = (editState as EditState.Error).message,
+                color = MaterialTheme.colorScheme.error
+            )
+
+            is EditState.Success -> Text(
+                text = (editState as EditState.Success).message.toString(),
+                color = MaterialTheme.colorScheme.primary
+            )
+
+            else -> {}
+        }
+        Spacer(modifier = Modifier.height(24.dp))
+
         OutlinedTextField(
             value = title,
             onValueChange = { title = it },

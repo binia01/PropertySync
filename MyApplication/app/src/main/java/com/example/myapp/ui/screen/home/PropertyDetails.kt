@@ -35,6 +35,8 @@ import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,9 +50,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.myapp.R
+import com.example.myapp.ui.screen.appointments.convertMillisToDatee
 import com.example.myapp.ui.theme.BluePrimary
+import com.example.myapp.ui.viewModel.AppointmentViewModel
+import com.example.myapp.ui.viewModel.DetailedPropertyViewModel
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
@@ -62,6 +68,13 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
     var selectedDate by remember { mutableStateOf("MM/DD/YYYY")}
     var selectedTime by remember { mutableStateOf("00 : 00") }
     var showTimePicker by remember { mutableStateOf(false) }
+
+    val detailedPropertyViewModel: DetailedPropertyViewModel = hiltViewModel()
+    val property by detailedPropertyViewModel.selectedProperty.collectAsState()
+
+    detailedPropertyViewModel.getPropertyDetails(propertyId?.toIntOrNull())
+
+
 
     Column(
         modifier = Modifier
@@ -89,7 +102,7 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
             ) {
                 // Property Name
                 Text(
-                    text = "PROPERTY NAME",
+                    text = "${property?.title}",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 8.dp)
@@ -103,7 +116,7 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "PROPERTY LOC",
+                        text = "${property?.location}",
                         style = MaterialTheme.typography.bodyLarge
                     )
                 }
@@ -118,10 +131,7 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
                 Text(
-                    text = "Lorem ipsum dolor sit amet consectetur adipisicing elit. " +
-                            "Quo nostrum placcat fugit fuga dolorem ipsum recusandae " +
-                            "elus distinctio, consequatur aspernatur reiciendis. Cum debitis " +
-                            "dolor cumque quia libero, in quasi deserunt.",
+                    text = "${property?.description}",
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier.padding(bottom = 16.dp))
 
@@ -134,31 +144,13 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
                         .padding(bottom = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    FeatureItem(icon = R.drawable.outline_bed_24, text = "4 beds")
-                    FeatureItem(icon = R.drawable.outline_bathtub_24, text = "2 bath")
-                    FeatureItem(icon = R.drawable.outline_crop_square_24, text = "2400 sq ft")
+                    FeatureItem(icon = R.drawable.outline_bed_24, text = "${property?.beds}")
+                    FeatureItem(icon = R.drawable.outline_bathtub_24, text = "${property?.baths}")
+                    FeatureItem(icon = R.drawable.outline_crop_square_24, text = "${property?.area}")
                 }
 
-                HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
+//                HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
 
-
-                // Listing Info
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = "Listed By:",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Text(
-                        text = "X Real-estates",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
-                }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -168,14 +160,14 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
                 )
                 {
                     Text(
-                        text = "$24,000",
+                        text = "${property?.price}",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = BluePrimary
                     )
 
                     Text(
-                        text = "Available",
+                        text = "${property?.status}",
                         color = Color(0xFF166534),
                         style = MaterialTheme.typography.labelMedium,
                         modifier = Modifier
@@ -216,7 +208,7 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom =  16.dp),
+                        .padding(bottom = 16.dp),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -239,7 +231,16 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
 
                 // Schedule Button
                 Button(
-                    onClick = { },
+                    onClick = {
+                        val propertyIdInt = propertyId?.toIntOrNull()
+                        if (propertyIdInt != null) {
+                            detailedPropertyViewModel.createAppointment(propertyIdInt, selectedDate, selectedTime, property?.sellerId)
+                            println("Clicked Schedule and called ViewModel: $selectedDate, $selectedTime, $propertyId")
+                        } else {
+                            println("Error: propertyId is null or not an integer")
+                            // Optionally show an error message to the user
+                        }
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 16.dp),
@@ -255,7 +256,7 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
                 if (showDatePicker) {
                     DatePickerModal(
                         onDateSelected = {
-                            selectedDate = it?.let { millis -> convertMillisToDate(millis) } ?: ""
+                            selectedDate = it?.let { millis -> convertMillisToDatee(millis) } ?: ""
                             showDatePicker = false
                         },
                         onDismiss = { showDatePicker = false }
@@ -321,12 +322,6 @@ fun DatePickerModal(
         DatePicker(state = datePickerState)
     }
 }
-
-fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-    return formatter.format(Date(millis))
-}
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

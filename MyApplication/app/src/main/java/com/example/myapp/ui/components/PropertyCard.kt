@@ -29,8 +29,10 @@ fun PropertyCard( property: Property, isSeller: Boolean, navController: NavContr
             .fillMaxWidth()
             .padding(12.dp)
             .clickable {
-                if (!isSeller) { navController.navigate("propertyDetails/${property.id}") }
-    },
+                if (!isSeller) {
+                    navController.navigate("propertyDetails/${property.id}")
+                }
+            },
         elevation = CardDefaults.cardElevation(defaultElevation=4.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
 
@@ -48,7 +50,9 @@ fun PropertyCard( property: Property, isSeller: Boolean, navController: NavContr
             .padding(8.dp)
         ){
             Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ){
@@ -76,7 +80,9 @@ fun PropertyCard( property: Property, isSeller: Boolean, navController: NavContr
                 Text(text = property.location, style = MaterialTheme.typography.bodySmall)
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)){
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)){
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(
                         painter = painterResource(R.drawable.outline_bed_24),
@@ -127,10 +133,7 @@ fun PropertyCard( property: Property, isSeller: Boolean, navController: NavContr
                     }
 
                     Button(
-                        onClick = {
-                            // Handle deletion logic here or call a passed-in delete callback
-                            // You might want to pass a `onDelete: (propertyId: String) -> Unit` as a parameter
-                        },
+                        onClick = { onDelete?.invoke() },
                         modifier = Modifier.padding(end = 8.dp),
                         shape = MaterialTheme.shapes.medium,
                         colors = ButtonDefaults.buttonColors(containerColor = Color(220, 38, 38))
@@ -164,7 +167,8 @@ fun PreviewPropCard(){
         area = "850 sqft",
         imageUrl = "demohouse",
         description = "asdf",
-        sellerId = 2 // For now, using a drawable name instead of URL
+        sellerId = 2, // For now, using a drawable name instead of URL
+        status = "TEBEDA"
     )
 //    PropertyCard(sampleProperty, true)
 }

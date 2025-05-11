@@ -49,7 +49,6 @@ fun PropertyApp() {
             composable(Screens.Profile.route) { ProfileScreen(navController, authViewModel) }
             composable(Screens.UpdateProfile.route) { UpdateProfile(navController) }
             composable(Screens.Add.route) { AddPropertyScreen(navController = navController) }
-//            composable(Screens.NewAppointment.route) { NewAppointments(navController) }
             composable("propertyDetails/{propertyId}") { backStackEntry ->
                 val propertyId = backStackEntry.arguments?.getString("propertyId")
                 PropertyDetails(navController, propertyId)

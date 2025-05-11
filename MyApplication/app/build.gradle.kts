@@ -96,7 +96,7 @@ android {
 //}
 
 dependencies {
-    val room_version = "2.7.1"
+//    val room_version = "2.7.1"
     val hiltVersion = "2.51"
     val lifecycle_version = "2.7.0"
     val retrofit_version = "2.9.0"
@@ -105,8 +105,8 @@ dependencies {
     val kotlin_metadata_jvm_version = "0.5.1"
 
     // Room with KSP
-    implementation("androidx.room:room-runtime:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
+//    implementation("androidx.room:room-runtime:$room_version")
+//    ksp("androidx.room:room-compiler:$room_version")
 
     // Hilt with KSP (Migrating - comment out KAPT lines for now)
     implementation("com.google.dagger:hilt-android:$hiltVersion")

@@ -1,6 +1,5 @@
 package com.example.myapp.data.api
 
-import androidx.room.Delete
 import com.example.myapp.data.model.Request.AddPropertyRequest
 import com.example.myapp.data.model.Response.AddPropertyResponse
 import com.example.myapp.data.model.ReturnProperty

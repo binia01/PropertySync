@@ -1,7 +1,6 @@
 package com.example.myapp.data.model;
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+
 
 // make sure to add a token when we call stuff actually.
 
@@ -19,9 +18,8 @@ data class UserReturn (
 
 )
 
-@Entity(tableName = "user")
 data class User(
-        @PrimaryKey val id: Int,
+        val id: Int,
         val email: String,
         val firstname: String,
         val lastname: String,

@@ -2,7 +2,9 @@ package com.example.myapp.ui.screen.home
 
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -15,11 +17,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.myapp.data.model.Property
+import com.example.myapp.data.model.UserReqState
 import com.example.myapp.ui.components.Header
 import com.example.myapp.ui.components.PropertyCard
 import com.example.myapp.ui.navigation.Screens
 import com.example.myapp.ui.viewModel.AuthViewModel
 import com.example.myapp.ui.viewModel.HomeViewModel
+import com.example.myapp.ui.viewModel.MessageState
 
 
 @OptIn(ExperimentalMaterial3Api::class)

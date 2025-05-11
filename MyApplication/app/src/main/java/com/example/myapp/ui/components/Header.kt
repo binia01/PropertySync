@@ -25,8 +25,7 @@ fun Header(title: String, showBack: Boolean = false, onbackpressed: (() -> Unit)
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(BluePrimary) // Blue background
-            .padding(horizontal = 16.dp, vertical = 12.dp), // Add some padding
+            .padding(horizontal = 16.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (showBack) {
@@ -37,13 +36,12 @@ fun Header(title: String, showBack: Boolean = false, onbackpressed: (() -> Unit)
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back",
-                    tint = MaterialTheme.colorScheme.onPrimary // White icon
                 )
             }
         }
         Text(
             text = title,
-            style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onPrimary), // White text
+            style = MaterialTheme.typography.titleLarge, // White text
             modifier = Modifier.weight(1f)
         )
     }

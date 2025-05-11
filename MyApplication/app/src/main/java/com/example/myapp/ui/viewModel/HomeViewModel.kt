@@ -26,8 +26,8 @@ class HomeViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
-    private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: StateFlow<String?> = _errorMessage
+    private val _errorMessage = MutableStateFlow<MessageState>(MessageState.Idle)
+    val message: StateFlow<MessageState> = _errorMessage
 
     private val _userRole = MutableStateFlow<String?>(null)
     val userRole: StateFlow<String?> = _userRole
@@ -61,15 +61,15 @@ class HomeViewModel @Inject constructor(
                                     _properties.value
                                 }
                                 _properties.value = filteredProperties
-                                _errorMessage.value = null
+//                                _errorMessage.value = MessageState.Success("")
                             } else {
                                 _properties.value = null
-                                _errorMessage.value = result.exceptionOrNull()?.localizedMessage ?: "Failed to fetch properties"
+                                _errorMessage.value = MessageState.Error(result.exceptionOrNull()?.localizedMessage ?: "Failed to fetch properties")
                             }
                         }
                     } else {
                         _properties.value = null
-                        _errorMessage.value = "User token not available"
+                        _errorMessage.value = MessageState.Error("User token not available")
                     }
                 }
         }
@@ -128,21 +128,31 @@ class HomeViewModel @Inject constructor(
         }
     }
     fun deleteProperty(propId: Int) {
+        println("Can I DELETE THIS PROPERTY??? $propId")
         viewModelScope.launch {
             userRepository.getUser().map { it?.token }.collectLatest { authToken ->
                 if (!authToken.isNullOrBlank()) {
                     propertyRepository.deleteProperty(propId, "Bearer $authToken")
                         .onFailure { error ->
-                            _errorMessage.value = error.localizedMessage ?: "Failed to delete property"
+                            _errorMessage.value = MessageState.Error( error.localizedMessage ?: "Failed to delete property")
                         }
                         .onSuccess {
                             // Optionally handle successful deletion (e.g., refresh list)
+                            _errorMessage.value = MessageState.Success("Deleted Property")
                             loadProperties()
                         }
                 } else {
-                    _errorMessage.value = "Cannot delete property, user token not available"
+                    _errorMessage.value = MessageState.Error( "Cannot delete property, user token not available")
                 }
             }
         }
     }
+}
+
+sealed class MessageState {
+    object Idle: MessageState()
+    object Loading : MessageState()
+    data class Success(val message: String) : MessageState()
+    data class Error(val message: String) : MessageState()
+
 }
