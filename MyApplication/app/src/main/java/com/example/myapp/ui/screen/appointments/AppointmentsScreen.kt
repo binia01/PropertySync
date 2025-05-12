@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -132,9 +133,7 @@ fun AppointmentsPage(navController: NavController) {
             }
                 appointments?.let {
                     if (it.isEmpty()) {
-                        // Display a message if there are no appointments
-                        // TODO make this prettier ig?
-                        Text(text = "No appointments available.")
+                        NoAppointments()
                     } else {
                         LazyColumn(modifier = Modifier.padding(16.dp, vertical = 4.dp)) {
                             itemsIndexed(it) { index, appointment: AppointmentEntity ->
@@ -445,6 +444,44 @@ fun AppointmentCard(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun NoAppointments() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Image(
+            painter = painterResource(id = R.drawable.calander),
+            contentDescription = "Calendar Icon",
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+            modifier = Modifier
+                .size(64.dp)
+                .padding(bottom = 16.dp)
+        )
+
+        Text(
+            text = "No appointments found",
+            style = MaterialTheme.typography.titleMedium.copy(
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "You don't have any appointments yet.",
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontSize = 14.sp
+            ),
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 
