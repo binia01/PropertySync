@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -33,6 +34,7 @@ import androidx.navigation.NavController
 import com.example.myapp.ui.components.Header
 import com.example.myapp.ui.viewModel.AddPropertyViewModel
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapp.ui.components.HeaderStyle
 
@@ -86,6 +88,7 @@ fun AddPropertyScreen(
                 InputField(
                     label = "Price ($) *",
                     hint = "e.g. 100000",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = state.price,
                     num = 1,
                     onValueChange = { viewModel.onEvent(AddPropertyEvent.onPriceChange(it)) }
@@ -102,6 +105,7 @@ fun AddPropertyScreen(
                 InputField(
                     label = "Area (sq ft) *",
                     hint = "e.g. 2400",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = state.area,
                     num = 1,
                     onValueChange = { viewModel.onEvent(AddPropertyEvent.onAreaChange(it)) }
@@ -196,6 +200,7 @@ fun InputField(
     hint: String,
     value: String,
     num: Int,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onValueChange: (String) -> Unit
 ) {
     Column(modifier = Modifier.padding(bottom = 16.dp)) {
