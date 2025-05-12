@@ -30,20 +30,15 @@ fun BottomNav(navController: NavController) {
                 NavigationBarItem(
                     selected = i == navSelectedItem,
                     label = {
-                        Text(navItem.label)
-                    },
-                    icon = {
-                        Icon(
+                        Text(navItem.label)},
+                    icon = { Icon(
                             navItem.icon,
-                            contentDescription = navItem.label
-                        )
-                    },
+                            contentDescription = navItem.label)},
                     onClick = {
                         navSelectedItem = i
                         navController.navigate(navItem.route){
                             popUpTo(navController.graph.startDestinationId){
-                                saveState = true
-                            }
+                                saveState = true}
                             launchSingleTop = true
                             restoreState = true
                         }

@@ -1,15 +1,16 @@
 package com.example.myapp.ui.screen.home
 
-import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
@@ -27,15 +28,18 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePickerDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,18 +60,15 @@ import com.example.myapp.R
 import com.example.myapp.ui.components.IconText
 import com.example.myapp.ui.screen.appointments.convertMillisToDatee
 import com.example.myapp.ui.theme.BluePrimary
-import com.example.myapp.ui.viewModel.AppointmentViewModel
 import com.example.myapp.ui.viewModel.DetailedPropertyViewModel
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PropertyDetails(navController: NavHostController, propertyId: String?) {
     var showDatePicker by remember { mutableStateOf(false) }
     var selectedDate by remember { mutableStateOf("MM/DD/YYYY")}
-    var selectedTime by remember { mutableStateOf("00 : 00") }
+    var selectedTime by remember { mutableStateOf(" 00 : 00") }
     var showTimePicker by remember { mutableStateOf(false) }
 
     val detailedPropertyViewModel: DetailedPropertyViewModel = hiltViewModel()
@@ -75,10 +76,33 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
 
     detailedPropertyViewModel.getPropertyDetails(propertyId?.toIntOrNull())
 
-
-
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Property Detail",
+                    color = Color.White,
+                    modifier = Modifier.padding(top = 4.dp))
+                },
+                navigationIcon = {
+                    IconButton(onClick = {navController.navigateUp()}) {
+                        Image(
+                            painter = painterResource(id = R.drawable.back),
+                            contentDescription = "Back arrow",
+                            modifier = Modifier
+                                .requiredSize(20.dp)
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                windowInsets = WindowInsets(0.dp)// To remove more padding of system (finally)
+            )
+        }
+    ){ paddingValues ->
     Column(
         modifier = Modifier
+            .padding(paddingValues)
             .verticalScroll(rememberScrollState())
     ) {
         Image(
@@ -270,6 +294,8 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
             }
         }
     }
+    }
+
 }
 
 // Calendar

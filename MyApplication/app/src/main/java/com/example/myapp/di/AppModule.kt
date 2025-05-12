@@ -1,15 +1,9 @@
 package com.example.propSync.di
 
-import android.app.Application
 import com.example.myapp.data.api.AppointmentService
 import com.example.myapp.data.api.AuthApiService
-//import com.example.myapp.data.api.AuthApiService.Companion.BASE_URL
 import com.example.myapp.data.api.PropertyService
 import com.example.myapp.data.api.UserService
-//import com.example.myapp.data.db.AppDatabase
-//import com.example.myapp.data.local.AppointmentDao
-//import com.example.myapp.data.local.PropertyDAO
-//import com.example.myapp.data.local.UserDao
 import com.example.myapp.data.repository.AppointmentRepository
 import com.example.myapp.data.repository.AppointmentRepositoryImpl
 import com.example.myapp.data.repository.AuthRepository

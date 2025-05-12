@@ -27,12 +27,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -62,7 +60,6 @@ import com.example.myapp.data.model.AppointmentEntity
 import com.example.myapp.data.model.Property
 import com.example.myapp.ui.components.Header
 import com.example.myapp.ui.screen.home.DatePickerModal
-//import com.example.myapp.ui.screen.home.convertMillisToDate
 import com.example.myapp.ui.theme.BluePrimary
 import com.example.myapp.ui.viewModel.AppointmentViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -189,19 +186,6 @@ fun AppointmentsPage(navController: NavController) {
                 }
         }
     }
-
-
-
-
-@RequiresApi(Build.VERSION_CODES.O)
-private fun formatDateString(dateString: String, formatter: DateTimeFormatter): String {
-    return try {
-        LocalDateTime.parse(dateString, formatter).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-    } catch (e: DateTimeParseException) {
-        "Invalid Date"
-    }
-}
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
