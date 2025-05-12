@@ -52,122 +52,132 @@ import kotlinx.coroutines.flow.collectLatest
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppointmentsPage(navController: NavController) {
-    val tabs = listOf("All", "Pending", "Confirmed", "Completed", "Cancelled")
+    val tabs = listOf("ALL", "PENDING", "CONFIRMED", "COMPLETED", "CANCELLED")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     val appointmentViewModel: AppointmentViewModel = hiltViewModel()
     val appointments by appointmentViewModel.appointments.collectAsState()
-
     val userRole by appointmentViewModel.userRole.collectAsState()
+
+    val filteredAppointments = remember(appointments, selectedTabIndex) {
+        appointments?.filter { appointment ->
+            when (selectedTabIndex) {
+                0 -> true // ALL
+                1 -> appointment.status == "PENDING"
+                2 -> appointment.status == "CONFIRMED"
+                3 -> appointment.status == "COMPLETED"
+                4 -> appointment.status == "CANCELLED"
+                else -> true
+            }
+        } ?: emptyList()
+    }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("My Appointments",
-                    color = Color.White,
-                    modifier = Modifier.padding(top = 4.dp))
+                title = {
+                    Text("My Appointments",
+                        color = Color.White,
+                        modifier = Modifier.padding(top = 4.dp))
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
-                windowInsets = WindowInsets(0.dp)// To remove more padding of system (finally)
+                windowInsets = WindowInsets(0.dp)
             )
         }
-    ){paddingValues ->
-    Column(modifier = Modifier.padding(paddingValues)) {
+    ) { paddingValues ->
+        Column(modifier = Modifier.padding(paddingValues)) {
+            // Simplified tab row
             ScrollableTabRow(
                 selectedTabIndex = selectedTabIndex,
-                contentColor = BluePrimary,
                 edgePadding = 0.dp,
-                divider = {},
-                indicator = {},
-                containerColor = Color.Transparent,
                 modifier = Modifier.padding(vertical = 4.dp)
             ) {
                 tabs.forEachIndexed { index, title ->
                     Tab(
                         selected = selectedTabIndex == index,
                         onClick = { selectedTabIndex = index },
-                        interactionSource = remember { MutableInteractionSource() },
-                        modifier = if (selectedTabIndex == index) {
-                            Modifier
-                                .padding(vertical = 4.dp, horizontal = 8.dp)
-                                .height(36.dp)
-                                .background(
-                                    color = BluePrimary.copy(0.2f),
-                                    shape = RoundedCornerShape(16.dp)
-                                )
-                        } else {
-                            Modifier
-                                .padding(vertical = 4.dp, horizontal = 8.dp)
-                                .height(36.dp)
-                        },
                         text = {
                             Text(
                                 text = title,
-                                maxLines = 1,
-                                overflow = TextOverflow.Visible,
-                                color = if (selectedTabIndex == index) BluePrimary else Color.Black,
-                                fontWeight = if (selectedTabIndex == index) FontWeight.Medium else FontWeight.Normal,
-                                fontSize = 14.sp
+                                color = if (selectedTabIndex == index) BluePrimary else Color.Black
                             )
-                        },
-                        selectedContentColor = Color.Transparent,
-                        unselectedContentColor = Color.Transparent,
-                        enabled = true
+                        }
                     )
                 }
             }
-                appointments?.let {
-                    if (it.isEmpty()) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
 
-                        Text(text = "No appointments Yet.")
-                            Button(
-                                modifier = Modifier.padding(vertical = 24.dp),
-                                onClick = { navController.navigate(Screens.Home.route)}
-                            ) {
-                                Text("Check Deals",
-                                    color = Color.White)
-                            }
-
-                        }
-                    } else {
-                        LazyColumn(modifier = Modifier.padding(16.dp, vertical = 4.dp)) {
-                            itemsIndexed(it) { index, appointment: AppointmentEntity ->
-                                var propertyDetails by remember { mutableStateOf<Property?>(null) }
-
-                                LaunchedEffect(appointment.propid) {
-                                    println("AppointmentsPage: Fetching property details for propId: ${appointment.propid}")
-                                    appointmentViewModel.getPropertyDetails(appointment.propid).collectLatest { propertyResult ->
-                                        println("AppointmentsPage: Received property result for propId: ${appointment.propid}, Result: $propertyResult")
-                                        propertyDetails = propertyResult.getOrNull()
-                                        println("AppointmentsPage: propertyDetails updated: $propertyDetails")
-                                    }
-                                }
-                                AppointmentCard(
-                                    title = propertyDetails?.title ?: "Couldn't get title",
-                                    date = appointment.date,
-                                    time = appointment.startTime,
-                                    address = propertyDetails?.location ?: "Couldn't get location",
-                                    status = appointment.status,
-                                    onEditBuyer ={ newDate, newTime->  appointmentViewModel.updateAppointment(
-                                        appointment.id,
-                                        date = newDate,
-                                        startTime = newTime,
-                                    )},
-                                    onCancel = { appointmentViewModel.updateAppointmentStatus(appointment.id, "CANCELED") },
-                                    onConfirm = { appointmentViewModel.updateAppointmentStatus(appointment.id, "CONFIRMED") },
-                                    isSeller = userRole == "SELLER"
-                                )
-                            }
-                        }
-                    }
-                }
+            // Appointment list
+            if (filteredAppointments.isEmpty()) {
+                EmptyAppointmentsView(navController)
+            } else {
+                AppointmentList(
+                    appointments = filteredAppointments,
+                    appointmentViewModel = appointmentViewModel,
+                    userRole = userRole.toString()
+                )
+            }
         }
+    }
+}
+
+@Composable
+private fun EmptyAppointmentsView(navController: NavController) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "No appointments yet.")
+        Button(
+            modifier = Modifier.padding(vertical = 24.dp),
+            onClick = { navController.navigate(Screens.Home.route) }
+        ) {
+            Text("Check Deals", color = Color.White)
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+private fun AppointmentList(
+    appointments: List<AppointmentEntity>,
+    appointmentViewModel: AppointmentViewModel,
+    userRole: String
+) {
+    LazyColumn(modifier = Modifier.padding(16.dp, vertical = 4.dp)) {
+        itemsIndexed(appointments) { index, appointment ->
+            var propertyDetails by remember { mutableStateOf<Property?>(null) }
+
+            LaunchedEffect(appointment.propid) {
+                appointmentViewModel.getPropertyDetails(appointment.propid).collectLatest {
+                    propertyDetails = it.getOrNull()
+                }
+            }
+
+            AppointmentCard(
+                title = propertyDetails?.title ?: "Loading...",
+                date = appointment.date,
+                time = appointment.startTime,
+                address = propertyDetails?.location ?: "Loading...",
+                status = appointment.status,
+                onEditBuyer = { newDate, newTime ->
+                    appointmentViewModel.updateAppointment(
+                        appointment.id,
+                        date = newDate,
+                        startTime = newTime
+                    )
+                },
+                onCancel = {
+                    appointmentViewModel.updateAppointmentStatus(
+                        appointment.id,
+                        "CANCELLED"
+                    )
+                },
+                onConfirm = {
+                    appointmentViewModel.updateAppointmentStatus(
+                        appointment.id,
+                        "CONFIRMED") },
+                isSeller = userRole == "SELLER") }
     }
 }
