@@ -258,7 +258,7 @@ fun CounterField(
                     .border(
                         1.dp,
                         MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                        RoundedCornerShape(8.dp)
+                        RoundedCornerShape(topStart = 8.dp, topEnd = 0.dp, bottomEnd = 0.dp, bottomStart = 8.dp)
                     )
                     .clickable { onDecrement() },
                 contentAlignment = Alignment.Center
@@ -272,8 +272,7 @@ fun CounterField(
                     .size(55.dp)
                     .border(
                         1.dp,
-                        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                        RoundedCornerShape(8.dp)
+                        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
                     ),
                 contentAlignment = Alignment.Center
             ) {
@@ -290,7 +289,7 @@ fun CounterField(
                     .border(
                         1.dp,
                         MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                        RoundedCornerShape(8.dp)
+                        RoundedCornerShape(topStart = 0.dp, topEnd = 8.dp, bottomEnd = 8.dp, bottomStart = 0.dp)
                     )
                     .clickable { onIncrement() },
                 contentAlignment = Alignment.Center
