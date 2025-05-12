@@ -11,39 +11,39 @@ import com.example.myapp.ui.navigation.Screens
 data class NavItems (
     val label: String = "",
     val icon: ImageVector = Icons.Outlined.Home,
-    val rout: String = "",
+    val route: String = "",
 ) {
     companion object {
         fun bottomNavigationItems(userRole: String): List<com.example.myapp.data.model.NavItems> {
-            var defualtNav = mutableListOf<com.example.myapp.data.model.NavItems>(
+            var defaultNav = mutableListOf<com.example.myapp.data.model.NavItems>(
                 NavItems(
                     label = "Home",
                     icon = Icons.Outlined.Home,
-                    rout = Screens.Home.route
+                    route = Screens.Home.route
                 ),
                 NavItems(
                     label = "Appointments",
                     icon = Icons.Outlined.DateRange,
-                    rout = Screens.Bookings.route
+                    route = Screens.Bookings.route
                 )
             )
             if (userRole == "SELLER") {
-                defualtNav.add(
+                defaultNav.add(
                     NavItems(
                         label = "Add Property",
                         icon = Icons.Default.Add,
-                        rout = Screens.Add.route
+                        route = Screens.Add.route
                     )
                 )
             }
-            defualtNav.add(
+            defaultNav.add(
                 NavItems(
                     label = "Profile",
                     icon = Icons.Outlined.Person,
-                    rout = Screens.Profile.route
+                    route = Screens.Profile.route
                 )
             )
-            return defualtNav
+            return defaultNav
         }
     }
 }
