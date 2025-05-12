@@ -111,7 +111,6 @@ fun AppointmentsPage(navController: NavController) {
             }
         }
     }
-}
 
 
 @RequiresApi(Build.VERSION_CODES.O)
