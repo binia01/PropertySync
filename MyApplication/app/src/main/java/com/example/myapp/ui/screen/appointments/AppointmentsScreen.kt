@@ -59,6 +59,7 @@ import com.example.myapp.R
 import com.example.myapp.data.model.AppointmentEntity
 import com.example.myapp.data.model.Property
 import com.example.myapp.ui.components.Header
+import com.example.myapp.ui.components.HeaderStyle
 import com.example.myapp.ui.screen.home.DatePickerModal
 import com.example.myapp.ui.theme.BluePrimary
 import com.example.myapp.ui.viewModel.AppointmentViewModel
@@ -87,7 +88,11 @@ fun AppointmentsPage(navController: NavController) {
 
 
     Column {
-            Header("My Appointments")
+            Header(
+                title = "My Appointments",
+                showBack = false,
+                backgroundStyle = HeaderStyle.Blue
+            )
             ScrollableTabRow(
                 selectedTabIndex = selectedTabIndex,
                 contentColor = BluePrimary,

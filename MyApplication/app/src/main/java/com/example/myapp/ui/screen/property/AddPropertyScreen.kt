@@ -34,6 +34,7 @@ import com.example.myapp.ui.components.Header
 import com.example.myapp.ui.viewModel.AddPropertyViewModel
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.myapp.ui.components.HeaderStyle
 
 
 @Composable
@@ -59,8 +60,11 @@ fun AddPropertyScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        Header(title = "Create Property", showBack = false)
-
+        Header(
+            title = "Create Property",
+            showBack = false,
+            backgroundStyle = HeaderStyle.Blue
+        )
         Box(
             modifier = Modifier
                 .weight(1f)
