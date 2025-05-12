@@ -54,7 +54,6 @@ fun LoginScreenUI(
             Text(
                 text = "Sign in to your account",
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSecondary,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
             )

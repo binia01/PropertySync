@@ -63,9 +63,8 @@ fun SignUpScreen(onNavToLogin: () -> Unit, // navigate to sign up
 
             // Sign in title
             Text(
-                text = "Sign in to your account",
+                text = "Create your account",
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSecondary,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
             )
