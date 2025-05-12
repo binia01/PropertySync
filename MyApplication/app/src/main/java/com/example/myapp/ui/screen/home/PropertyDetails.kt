@@ -1,15 +1,16 @@
 package com.example.myapp.ui.screen.home
 
-import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
@@ -27,15 +28,18 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePickerDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,20 +57,18 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.myapp.R
+import com.example.myapp.ui.components.IconText
 import com.example.myapp.ui.screen.appointments.convertMillisToDatee
 import com.example.myapp.ui.theme.BluePrimary
-import com.example.myapp.ui.viewModel.AppointmentViewModel
 import com.example.myapp.ui.viewModel.DetailedPropertyViewModel
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PropertyDetails(navController: NavHostController, propertyId: String?) {
     var showDatePicker by remember { mutableStateOf(false) }
     var selectedDate by remember { mutableStateOf("MM/DD/YYYY")}
-    var selectedTime by remember { mutableStateOf("00 : 00") }
+    var selectedTime by remember { mutableStateOf(" 00 : 00") }
     var showTimePicker by remember { mutableStateOf(false) }
 
     val detailedPropertyViewModel: DetailedPropertyViewModel = hiltViewModel()
@@ -74,10 +76,33 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
 
     detailedPropertyViewModel.getPropertyDetails(propertyId?.toIntOrNull())
 
-
-
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Property Detail",
+                    color = Color.White,
+                    modifier = Modifier.padding(top = 4.dp))
+                },
+                navigationIcon = {
+                    IconButton(onClick = {navController.navigateUp()}) {
+                        Image(
+                            painter = painterResource(id = R.drawable.back),
+                            contentDescription = "Back arrow",
+                            modifier = Modifier
+                                .requiredSize(20.dp)
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                windowInsets = WindowInsets(0.dp)// To remove more padding of system (finally)
+            )
+        }
+    ){ paddingValues ->
     Column(
         modifier = Modifier
+            .padding(paddingValues)
             .verticalScroll(rememberScrollState())
     ) {
         Image(
@@ -103,10 +128,8 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
                 // Property Name
                 Text(
                     text = "${property?.title}",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.weight(1f))
 
                 // Location
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -114,11 +137,10 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
                         Icons.Default.LocationOn,
                         contentDescription = null
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "${property?.location}",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(text="${property?.title}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -128,8 +150,7 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
                     text = "Description",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+                    modifier = Modifier.padding(bottom = 6.dp))
                 Text(
                     text = "${property?.description}",
                     style = MaterialTheme.typography.bodyMedium,
@@ -139,17 +160,16 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
 
                 // Property Features
                 Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    FeatureItem(icon = R.drawable.outline_bed_24, text = "${property?.beds}")
-                    FeatureItem(icon = R.drawable.outline_bathtub_24, text = "${property?.baths}")
-                    FeatureItem(icon = R.drawable.outline_crop_square_24, text = "${property?.area}")
+                        .padding(horizontal = 8.dp)
+                        .padding(bottom = 8.dp)) {
+                    IconText(R.drawable.outline_bed_24, "${property?.beds} Beds")
+                    IconText(R.drawable.outline_bathtub_24, "${property?.baths} Baths")
+                    IconText(R.drawable.outline_crop_square_24, "${property?.area} sqft")
                 }
-
-//                HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
 
                 Row(
                     modifier = Modifier
@@ -163,7 +183,7 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
                         text = "${property?.price}",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        color = BluePrimary
+                        color = MaterialTheme.colorScheme.primary
                     )
 
                     Text(
@@ -274,25 +294,9 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
             }
         }
     }
-}
-
-
-// Bed / Bath / Square feet ....
-@Composable
-private fun FeatureItem(icon: Int, text: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Image(
-            painter = painterResource(id = icon),
-            contentDescription = null,
-            modifier = Modifier.size(20.dp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(text = text)
     }
+
 }
-
-
-
 
 // Calendar
 @OptIn(ExperimentalMaterial3Api::class)

@@ -1,15 +1,9 @@
 package com.example.propSync.di
 
-import android.app.Application
 import com.example.myapp.data.api.AppointmentService
 import com.example.myapp.data.api.AuthApiService
-//import com.example.myapp.data.api.AuthApiService.Companion.BASE_URL
 import com.example.myapp.data.api.PropertyService
 import com.example.myapp.data.api.UserService
-//import com.example.myapp.data.db.AppDatabase
-//import com.example.myapp.data.local.AppointmentDao
-//import com.example.myapp.data.local.PropertyDAO
-//import com.example.myapp.data.local.UserDao
 import com.example.myapp.data.repository.AppointmentRepository
 import com.example.myapp.data.repository.AppointmentRepositoryImpl
 import com.example.myapp.data.repository.AuthRepository
@@ -49,7 +43,7 @@ abstract class AppModule {
         @Singleton
         fun provideAuthApiService(): AuthApiService{
             return Retrofit.Builder()
-                .baseUrl("http://192.168.1.7:3000/")
+                .baseUrl("http://192.168.137.1:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(AuthApiService::class.java)
@@ -59,7 +53,7 @@ abstract class AppModule {
         @Singleton
         fun provideUserApiService(): UserService{
             return Retrofit.Builder()
-                .baseUrl("http://192.168.1.7:3000/")
+                .baseUrl("http://192.168.137.1:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(UserService::class.java)
@@ -69,7 +63,7 @@ abstract class AppModule {
         @Singleton
         fun providePropertyApiService(): PropertyService{
             return Retrofit.Builder()
-                .baseUrl("http://192.168.1.7:3000/")
+                .baseUrl("http://192.168.137.1:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(PropertyService::class.java)
@@ -79,7 +73,7 @@ abstract class AppModule {
         @Singleton
         fun provideAppointmentApiService(): AppointmentService{
             return Retrofit.Builder()
-                .baseUrl("http://192.168.1.7:3000/")
+                .baseUrl("http://192.168.137.1:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(AppointmentService::class.java)

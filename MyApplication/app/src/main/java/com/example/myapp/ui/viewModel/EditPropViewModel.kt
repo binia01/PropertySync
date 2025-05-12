@@ -1,20 +1,12 @@
 package com.example.myapp.ui.viewModel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapp.data.api.PropertyService
-import com.example.myapp.data.model.Auth
-import com.example.myapp.data.model.User
-import com.example.myapp.data.model.UserReqState
 import com.example.myapp.data.repository.PropertyRepository
 import com.example.myapp.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject

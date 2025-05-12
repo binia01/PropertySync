@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,12 +27,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.ScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -61,7 +60,6 @@ import com.example.myapp.data.model.AppointmentEntity
 import com.example.myapp.data.model.Property
 import com.example.myapp.ui.components.Header
 import com.example.myapp.ui.screen.home.DatePickerModal
-//import com.example.myapp.ui.screen.home.convertMillisToDate
 import com.example.myapp.ui.theme.BluePrimary
 import com.example.myapp.ui.viewModel.AppointmentViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -135,9 +133,25 @@ fun AppointmentsPage(navController: NavController) {
             }
                 appointments?.let {
                     if (it.isEmpty()) {
-                        // Display a message if there are no appointments
-                        // TODO make this prettier ig?
-                        Text(text = "No appointments available.")
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+
+                        Text(text = "No appointments Yet.")
+                            Button(
+                                modifier = Modifier.padding(vertical = 24.dp),
+                                onClick = { /* Navigate Back home*/}
+                            ) {
+                                Text(
+                                    "Check Deals",
+                                    color = Color.White
+                                )
+                            }
+
+                        }
                     } else {
                         LazyColumn(modifier = Modifier.padding(16.dp, vertical = 4.dp)) {
                             itemsIndexed(it) { index, appointment: AppointmentEntity ->
@@ -172,19 +186,6 @@ fun AppointmentsPage(navController: NavController) {
                 }
         }
     }
-
-
-
-
-@RequiresApi(Build.VERSION_CODES.O)
-private fun formatDateString(dateString: String, formatter: DateTimeFormatter): String {
-    return try {
-        LocalDateTime.parse(dateString, formatter).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-    } catch (e: DateTimeParseException) {
-        "Invalid Date"
-    }
-}
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)

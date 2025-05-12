@@ -19,7 +19,7 @@ import androidx.navigation.NavController
 import com.example.myapp.data.model.Property
 import com.example.myapp.R
 import androidx.compose.material.icons.filled.LocationOn
-
+import com.example.myapp.ui.theme.FailRed
 
 
 @Composable
@@ -30,14 +30,11 @@ fun PropertyCard( property: Property, isSeller: Boolean, navController: NavContr
             .padding(12.dp)
             .clickable {
                 if (!isSeller) {
-                    navController.navigate("propertyDetails/${property.id}")
-                }
+                    navController.navigate("propertyDetails/${property.id}")}
             },
         elevation = CardDefaults.cardElevation(defaultElevation=4.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
-
-
-        ){
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface))
+    {
         Image(
             painter = painterResource(R.drawable.demohouse),
             contentDescription = "home",
@@ -46,9 +43,8 @@ fun PropertyCard( property: Property, isSeller: Boolean, navController: NavContr
                 .height(190.dp)
                 .fillMaxSize()
         )
-        Column (modifier = Modifier
-            .padding(8.dp)
-        ){
+        Column (modifier = Modifier.padding(8.dp))
+        {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -56,66 +52,59 @@ fun PropertyCard( property: Property, isSeller: Boolean, navController: NavContr
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ){
-                Text(text=property.title, style = MaterialTheme.typography.titleMedium)
+                Text(text=property.title,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.weight(1f))
                 Surface(
-                    modifier = Modifier.padding(8.dp),
-                    shape = RoundedCornerShape(4.dp),
-                    color = Color(37, 99,235)
+                    modifier = Modifier.padding(12.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.primary
                 ){
                     Text(
                         text = property.price.toString(),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
                     )
                 }
 
             }
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 6.dp)
+                    .padding(bottom = 2.dp),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Default.LocationOn,
                     contentDescription = "Location",
-                    modifier = Modifier.padding(end = 4.dp)
-                )
-                Text(text = property.location, style = MaterialTheme.typography.bodySmall)
+                    modifier = Modifier.padding(end = 4.dp))
+                Text(text = property.location,
+                    style = MaterialTheme.typography.bodyMedium)
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp)){
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(R.drawable.outline_bed_24),
-                        contentDescription = "Beds",
-                        modifier = Modifier.padding(end = 4.dp)
-                    )
-                    Text(text="${property.beds} Beds", style = MaterialTheme.typography.bodySmall)
-                }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(R.drawable.outline_bathtub_24),
-                        contentDescription = "bath",
-                        modifier = Modifier.padding(end = 4.dp)
-                    )
-                    Text(text = "${property.baths} Baths", style = MaterialTheme.typography.bodySmall)
-                }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        painter = painterResource(R.drawable.outline_crop_square_24),
-                        contentDescription = "area",
-                        modifier = Modifier.padding(end = 4.dp)
-                    )
-                    Text(text = "${property.area} ", style = MaterialTheme.typography.bodySmall)
-                }
+
+            Row(verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+                    .padding(bottom = 8.dp))
+            {
+                IconText(R.drawable.outline_bed_24, "${property.beds} Beds")
+                IconText(R.drawable.outline_bathtub_24, "${property.baths} Baths")
+                IconText(R.drawable.outline_crop_square_24, "${property.area} sqft")
+            }
 
                 // Add seller buttons here
-            }
             if (isSeller) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
+                        .padding(horizontal = 8.dp)
                 ) {
                     Button(
                         onClick = {
@@ -123,7 +112,7 @@ fun PropertyCard( property: Property, isSeller: Boolean, navController: NavContr
                         },
                         modifier = Modifier.padding(end = 8.dp),
                         shape = MaterialTheme.shapes.medium,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(37, 99, 235))
+                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
                     ) {
                         Text(
                             text = "Edit",
@@ -131,12 +120,11 @@ fun PropertyCard( property: Property, isSeller: Boolean, navController: NavContr
                             style = MaterialTheme.typography.bodyMedium
                         )
                     }
-
                     Button(
                         onClick = { onDelete?.invoke() },
                         modifier = Modifier.padding(end = 8.dp),
                         shape = MaterialTheme.shapes.medium,
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(220, 38, 38))
+                        colors = ButtonDefaults.buttonColors(containerColor = FailRed)
                     ) {
                         Text(
                             text = "Delete",
