@@ -9,13 +9,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,13 +41,11 @@ import com.example.myapp.ui.viewModel.HomeViewModel
 
 
 @Composable
-fun EditProperty(propertyId: String?,  navController: NavController){
+fun EditProperty(propertyId: String?, navController: NavController) {
     val editPropViewModel: EditPropViewModel = hiltViewModel()
-    // TODO
     val editState by editPropViewModel.editState.collectAsState()
-
-
-
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scrollState = rememberScrollState()
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var price by remember { mutableStateOf("") }
@@ -50,32 +54,40 @@ fun EditProperty(propertyId: String?,  navController: NavController){
     var beds by remember { mutableStateOf("") }
     var area by remember { mutableStateOf("") }
 
-
+    LaunchedEffect(editState) {
+        if (editState is EditState.Success) {
+            snackbarHostState.showSnackbar("Property updated successfully")
+        }
+    }
 
     Column(
         modifier = Modifier
+            .verticalScroll(scrollState)
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Header("Edit Property", true, { navController.popBackStack() })
+        Header("Edit Property", true) { navController.popBackStack() }
         Spacer(modifier = Modifier.height(24.dp))
 
-        // TODO
+        SnackbarHost(hostState = snackbarHostState) { data ->
+            Snackbar(snackbarData = data)
+        }
+
+        // Show loading/error/success message
         when (editState) {
             is EditState.Loading -> CircularProgressIndicator()
             is EditState.Error -> Text(
                 text = (editState as EditState.Error).message,
                 color = MaterialTheme.colorScheme.error
             )
-
             is EditState.Success -> Text(
                 text = (editState as EditState.Success).message.toString(),
                 color = MaterialTheme.colorScheme.primary
             )
-
             else -> {}
         }
+
         Spacer(modifier = Modifier.height(24.dp))
 
         OutlinedTextField(
@@ -111,7 +123,7 @@ fun EditProperty(propertyId: String?,  navController: NavController){
         )
         Spacer(modifier = Modifier.height(8.dp))
 
-        Row (
+        Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -151,7 +163,7 @@ fun EditProperty(propertyId: String?,  navController: NavController){
                 baths = baths,
                 location = location,
                 price = price,
-                id = propertyId.toString(),
+                id = propertyId.orEmpty()
             )
         }) {
             Text("Save Changes")

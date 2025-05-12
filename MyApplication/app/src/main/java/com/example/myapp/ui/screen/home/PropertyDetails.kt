@@ -58,10 +58,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.myapp.R
 import com.example.myapp.ui.components.IconText
-import com.example.myapp.ui.screen.appointments.convertMillisToDatee
 import com.example.myapp.ui.theme.BluePrimary
 import com.example.myapp.ui.viewModel.DetailedPropertyViewModel
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -309,19 +311,10 @@ fun DatePickerModal(
 
     DatePickerDialog(
         onDismissRequest = onDismiss,
-        confirmButton = {
-            TextButton(onClick = {
-                onDateSelected(datePickerState.selectedDateMillis)
+        confirmButton = { TextButton(onClick = { onDateSelected(datePickerState.selectedDateMillis)
                 onDismiss()
-            }) {
-                Text("OK")
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Cancel")
-            }
-        }
+            }) { Text("OK") }},
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Cancel") }}
     ) {
         DatePicker(state = datePickerState)
     }
@@ -396,3 +389,9 @@ fun TimePickerPopup(
         }
     }
 }
+
+fun convertMillisToDatee(millis: Long): String {
+    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    return formatter.format(Date(millis))
+}
+
