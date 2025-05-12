@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -37,7 +39,7 @@ fun EditProperty(propertyId: String?,  navController: NavController){
     val editPropViewModel: EditPropViewModel = hiltViewModel()
     // TODO
     val editState by editPropViewModel.editState.collectAsState()
-
+    val scrollState = rememberScrollState()
 
 
     var title by remember { mutableStateOf("") }
@@ -53,6 +55,7 @@ fun EditProperty(propertyId: String?,  navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .verticalScroll(scrollState)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

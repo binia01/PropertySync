@@ -2,6 +2,7 @@ package com.example.myapp.ui.screen.profile
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -20,7 +21,6 @@ import com.example.myapp.data.model.UserReqState
 import com.example.myapp.ui.components.Header
 import com.example.myapp.ui.viewModel.UserViewModel
 import com.example.myapp.R
-import com.example.myapp.ui.theme.BluePrimary
 import com.example.myapp.ui.theme.TextPrimary
 import com.example.myapp.ui.theme.TextSecondary
 
@@ -115,8 +115,8 @@ fun UpdateProfile(
                         modifier = Modifier
                             .height(48.dp)
                             .width(160.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = BluePrimary),
-                        shape = RoundedCornerShape(6.dp)
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2563EB)),
+                        shape = RoundedCornerShape(8.dp)
                     ) {
                         Text("Save Changes", color = Color.White)
                     }
@@ -136,7 +136,7 @@ fun DefaultInputField(label: String, value: String, onValueChange: (String) -> U
         Text(
             text = label,
             style = MaterialTheme.typography.bodyMedium,
-            color = TextSecondary
+            color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.height(6.dp))
 
@@ -145,17 +145,19 @@ fun DefaultInputField(label: String, value: String, onValueChange: (String) -> U
             onValueChange = onValueChange,
             singleLine = true,
             placeholder = { Text("Enter $label", style = MaterialTheme.typography.bodySmall.copy(color = TextSecondary)) },
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
+                    shape = RoundedCornerShape(8.dp)
+                ),
             textStyle = MaterialTheme.typography.bodyMedium.copy(
                 color = TextPrimary
             ),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color(0xFF007BFF),
-                unfocusedBorderColor = Color(0xFFE0E0E0),
-                cursorColor = Color(0xFF007BFF),
-                focusedContainerColor = Color(0xFFF3F3F3),
-                unfocusedContainerColor = Color(0xFFF3F3F3)
+                cursorColor = Color(0xFF007BFF)
             )
         )
     }
