@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.myapp.ui.components.Header
+import com.example.myapp.ui.components.HeaderStyle
 import com.example.myapp.ui.viewModel.EditPropViewModel
 import com.example.myapp.ui.viewModel.EditState
 
@@ -59,7 +60,12 @@ fun EditProperty(propertyId: String?,  navController: NavController){
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Header("Edit Property", true, { navController.popBackStack() })
+        Header(
+            title = "Edit Property",
+            showBack = true,
+            onbackpressed = { navController.popBackStack() },
+            backgroundStyle = HeaderStyle.Blue
+        )
         Spacer(modifier = Modifier.height(24.dp))
 
         // TODO

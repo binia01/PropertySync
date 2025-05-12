@@ -21,6 +21,7 @@ import com.example.myapp.data.model.UserReqState
 import com.example.myapp.ui.components.Header
 import com.example.myapp.ui.viewModel.UserViewModel
 import com.example.myapp.R
+import com.example.myapp.ui.components.HeaderStyle
 import com.example.myapp.ui.theme.TextPrimary
 import com.example.myapp.ui.theme.TextSecondary
 
@@ -52,8 +53,10 @@ fun UpdateProfile(
     Column(modifier = Modifier.fillMaxSize()){
         Header(
             title = "Update Profile",
+            subtitle = "Manage your account",
             showBack = true,
-            onbackpressed = { navController.popBackStack() }
+            onbackpressed = { navController.popBackStack() },
+            backgroundStyle = HeaderStyle.Secondary
         )
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             item {
