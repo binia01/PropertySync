@@ -16,7 +16,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -58,10 +57,10 @@ fun LoginScreenUI(
                 color = MaterialTheme.colorScheme.onSecondary,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 24.dp)
-
             )
         }
+
+        Spacer(modifier = Modifier.padding(bottom = 24.dp))
 
         // Email field
         OutlinedTextField(
