@@ -19,6 +19,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+
+import androidx.compose.material3.MaterialTheme
+
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -33,24 +36,18 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.myapp.ui.components.BottomNav
 import com.example.myapp.ui.components.Header
 import com.example.myapp.ui.viewModel.AddPropertyViewModel
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.myapp.ui.components.HeaderStyle
 
-//import com.example.myapp.ui.components.Header
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -91,6 +88,12 @@ fun AddPropertyScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
+
+        Header(
+            title = "Create Property",
+            showBack = false,
+            backgroundStyle = HeaderStyle.Blue
+        )
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -112,6 +115,7 @@ fun AddPropertyScreen(
                 InputField(
                     label = "Price ($) *",
                     hint = "e.g. 100000",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = state.price,
                     num = 1,
                     onValueChange = { viewModel.onEvent(AddPropertyEvent.onPriceChange(it)) }
@@ -128,6 +132,7 @@ fun AddPropertyScreen(
                 InputField(
                     label = "Area (sq ft) *",
                     hint = "e.g. 2400",
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = state.area,
                     num = 1,
                     onValueChange = { viewModel.onEvent(AddPropertyEvent.onAreaChange(it)) }
@@ -223,6 +228,7 @@ fun InputField(
     hint: String,
     value: String,
     num: Int,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onValueChange: (String) -> Unit
 ) {
     Column(modifier = Modifier.padding(bottom = 16.dp)) {
@@ -289,7 +295,7 @@ fun CounterField(
                     .border(
                         1.dp,
                         MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                        RoundedCornerShape(8.dp)
+                        RoundedCornerShape(topStart = 8.dp, topEnd = 0.dp, bottomEnd = 0.dp, bottomStart = 8.dp)
                     )
                     .clickable { onDecrement() },
                 contentAlignment = Alignment.Center
@@ -303,8 +309,7 @@ fun CounterField(
                     .size(55.dp)
                     .border(
                         1.dp,
-                        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                        RoundedCornerShape(8.dp)
+                        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
                     ),
                 contentAlignment = Alignment.Center
             ) {
@@ -321,7 +326,7 @@ fun CounterField(
                     .border(
                         1.dp,
                         MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                        RoundedCornerShape(8.dp)
+                        RoundedCornerShape(topStart = 0.dp, topEnd = 8.dp, bottomEnd = 8.dp, bottomStart = 0.dp)
                     )
                     .clickable { onIncrement() },
                 contentAlignment = Alignment.Center

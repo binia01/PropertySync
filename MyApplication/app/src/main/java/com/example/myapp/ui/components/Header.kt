@@ -1,12 +1,13 @@
 package com.example.myapp.ui.components
 
-import androidx.compose.foundation.background
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -14,41 +15,105 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.myapp.ui.theme.BluePrimary
+import com.example.myapp.R
 
+enum class HeaderStyle {
+    Secondary,
+    Blue
+}
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Header(title: String, showBack: Boolean = false, onbackpressed: (() -> Unit)? = null) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
+fun Header(
+    title: String,
+    showBack: Boolean = false,
+    onbackpressed: (() -> Unit)? = null,
+    subtitle: String? = null,
+    backgroundStyle: HeaderStyle = HeaderStyle.Secondary
+) {
+    val backgroundColor = when (backgroundStyle) {
+        HeaderStyle.Secondary -> MaterialTheme.colorScheme.surface
+        HeaderStyle.Blue -> Color(0xFF2563EB)
+    }
+
+    val textColor = if (backgroundStyle == HeaderStyle.Blue)
+        Color.White
+    else
+        MaterialTheme.colorScheme.onBackground
+
+    Surface(
+        shadowElevation = 4.dp,
+        color = backgroundColor
     ) {
-        if (showBack) {
-            IconButton(
-                onClick = { onbackpressed?.invoke() }, // Handle back press
-                modifier = Modifier.padding(end = 8.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 16.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                )
+                if (showBack) {
+                    IconButton(
+                        onClick = { onbackpressed?.invoke() },
+                        modifier = Modifier.padding(end = 8.dp)
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.back),
+                            contentDescription = "Back",
+                            tint = textColor
+                        )
+                    }
+                }
+
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.titleLarge,
+                        color = textColor
+                    )
+                    subtitle?.let {
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = textColor.copy(alpha = 0.85f)
+                        )
+                    }
+                }
             }
         }
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge, // White text
-            modifier = Modifier.weight(1f)
-        )
     }
 }
 
-@Preview
+
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun HeaderPrevDark() {
+    Header(
+        title = "Appointments",
+        subtitle = "No upcoming events",
+        showBack = true,
+        backgroundStyle = HeaderStyle.Secondary
+    )
+}
+
+@Preview(showBackground = true)
 @Composable
 fun HeaderPrev() {
-    Header("abs",showBack = true);
+    Header(
+        title = "Appointments",
+        subtitle = "No upcoming events",
+        showBack = true,
+        backgroundStyle = HeaderStyle.Secondary
+    )
 }

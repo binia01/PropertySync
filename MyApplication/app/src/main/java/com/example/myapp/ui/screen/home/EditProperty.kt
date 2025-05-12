@@ -33,17 +33,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.myapp.data.model.UserReqState
 import com.example.myapp.ui.components.Header
+import com.example.myapp.ui.components.HeaderStyle
 import com.example.myapp.ui.viewModel.EditPropViewModel
 import com.example.myapp.ui.viewModel.EditState
-import com.example.myapp.ui.viewModel.HomeViewModel
 
 
 @Composable
 fun EditProperty(propertyId: String?, navController: NavController) {
     val editPropViewModel: EditPropViewModel = hiltViewModel()
     val editState by editPropViewModel.editState.collectAsState()
+
     val snackbarHostState = remember { SnackbarHostState() }
     val scrollState = rememberScrollState()
     var title by remember { mutableStateOf("") }
@@ -67,7 +67,12 @@ fun EditProperty(propertyId: String?, navController: NavController) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Header("Edit Property", true) { navController.popBackStack() }
+        Header(
+            title = "Edit Property",
+            showBack = true,
+            onbackpressed = { navController.popBackStack() },
+            backgroundStyle = HeaderStyle.Blue
+        )
         Spacer(modifier = Modifier.height(24.dp))
 
         SnackbarHost(hostState = snackbarHostState) { data ->

@@ -6,11 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
@@ -28,15 +26,11 @@ import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePickerDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -57,6 +51,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.myapp.R
+import com.example.myapp.ui.components.Header
+import com.example.myapp.ui.components.HeaderStyle
 import com.example.myapp.ui.components.IconText
 import com.example.myapp.ui.theme.BluePrimary
 import com.example.myapp.ui.viewModel.DetailedPropertyViewModel
@@ -78,35 +74,16 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
 
     detailedPropertyViewModel.getPropertyDetails(propertyId?.toIntOrNull())
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Property Detail",
-                    color = Color.White,
-                    modifier = Modifier.padding(top = 4.dp))
-                },
-                navigationIcon = {
-                    IconButton(onClick = {navController.navigateUp()}) {
-                        Image(
-                            painter = painterResource(id = R.drawable.back),
-                            contentDescription = "Back arrow",
-                            modifier = Modifier
-                                .requiredSize(20.dp)
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                windowInsets = WindowInsets(0.dp)// To remove more padding of system (finally)
-            )
-        }
-    ){ paddingValues ->
     Column(
         modifier = Modifier
-            .padding(paddingValues)
             .verticalScroll(rememberScrollState())
     ) {
+        Header(
+            title = "Property Details",
+            showBack = true,
+            onbackpressed = { navController.popBackStack() },
+            backgroundStyle = HeaderStyle.Blue
+        )
         Image(
             painter = painterResource(id = R.drawable.demohouse),
             contentDescription = "Property Image",
@@ -297,8 +274,6 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
         }
     }
     }
-
-}
 
 // Calendar
 @OptIn(ExperimentalMaterial3Api::class)

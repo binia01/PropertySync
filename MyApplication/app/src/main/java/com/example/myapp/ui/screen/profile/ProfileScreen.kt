@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.myapp.ui.components.HeaderStyle
 import com.example.myapp.ui.navigation.Screens
 import com.example.myapp.ui.viewModel.AuthViewModel
 import com.example.myapp.ui.viewModel.UserViewModel
@@ -53,6 +54,13 @@ fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel
                         .clip(RoundedCornerShape(12.dp))
                         .padding(horizontal = 16.dp)
                 ) {
+
+                    Header(
+                        title = "My Profile",
+                        subtitle = "Manage your account",
+                        showBack = false,
+                        backgroundStyle = HeaderStyle.Blue
+                    )
                     UserInfoCard(
                         "${userState?.firstname} ${userState?.lastname}",
                         "${userState?.email}",
@@ -60,7 +68,7 @@ fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                     ProfileAppointmentsCards(
-                        5, 2, 10, "${userState?.role?.uppercase()}"
+                        1, 1, 2, "${userState?.role?.uppercase()}"
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                     Text(

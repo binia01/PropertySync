@@ -41,6 +41,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.myapp.data.model.AppointmentEntity
 import com.example.myapp.data.model.Property
+import com.example.myapp.ui.components.Header
+import com.example.myapp.ui.components.HeaderStyle
+import com.example.myapp.ui.screen.home.DatePickerModal
 import com.example.myapp.ui.components.AppointmentCard
 import com.example.myapp.ui.navigation.Screens
 import com.example.myapp.ui.theme.BluePrimary
@@ -71,23 +74,12 @@ fun AppointmentsPage(navController: NavController) {
         } ?: emptyList()
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text("My Appointments",
-                        color = Color.White,
-                        modifier = Modifier.padding(top = 4.dp))
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                windowInsets = WindowInsets(0.dp)
+    Column {
+            Header(
+                title = "My Appointments",
+                showBack = false,
+                backgroundStyle = HeaderStyle.Blue
             )
-        }
-    ) { paddingValues ->
-        Column(modifier = Modifier.padding(paddingValues)) {
-            // Simplified tab row
             ScrollableTabRow(
                 selectedTabIndex = selectedTabIndex,
                 edgePadding = 0.dp,
@@ -106,10 +98,10 @@ fun AppointmentsPage(navController: NavController) {
                     )
                 }
             }
-
+           
             // Appointment list
             if (filteredAppointments.isEmpty()) {
-                EmptyAppointmentsView(navController)
+                NoAppointments(navController)
             } else {
                 AppointmentList(
                     appointments = filteredAppointments,
@@ -121,23 +113,18 @@ fun AppointmentsPage(navController: NavController) {
     }
 }
 
-@Composable
-private fun EmptyAppointmentsView(navController: NavController) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = "No appointments yet.")
-        Button(
-            modifier = Modifier.padding(vertical = 24.dp),
-            onClick = { navController.navigate(Screens.Home.route) }
-        ) {
-            Text("Check Deals", color = Color.White)
-        }
+
+@RequiresApi(Build.VERSION_CODES.O)
+private fun formatDateString(dateString: String, formatter: DateTimeFormatter): String {
+    return try {
+        LocalDateTime.parse(dateString, formatter).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+    } catch (e: DateTimeParseException) {
+        "Invalid Date"
     }
 }
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 private fun AppointmentList(
@@ -180,4 +167,57 @@ private fun AppointmentList(
                         "CONFIRMED") },
                 isSeller = userRole == "SELLER") }
     }
+
 }
+
+@Composable
+fun NoAppointments(navController: NavController) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Image(
+            painter = painterResource(id = R.drawable.calander),
+            contentDescription = "Calendar Icon",
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+            modifier = Modifier
+                .size(64.dp)
+                .padding(bottom = 16.dp)
+        )
+
+        Text(
+            text = "No appointments found",
+            style = MaterialTheme.typography.titleMedium.copy(
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "You don't have any appointments yet.",
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontSize = 14.sp
+            ),
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(6.dp))
+        Button(
+            modifier = Modifier.padding(vertical = 24.dp),
+            onClick = { navController.navigate(Screens.Home.route) }
+        ) {
+            Text("Check Deals", color = Color.White)
+        }
+    }
+}
+
+fun convertMillisToDatee(millis: Long): String {
+    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    return formatter.format(Date(millis))
+}
+
+

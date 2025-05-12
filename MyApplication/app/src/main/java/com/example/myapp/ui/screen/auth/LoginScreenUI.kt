@@ -16,7 +16,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -41,24 +40,26 @@ fun LoginScreenUI(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // App Logo/Title
-        Text(
-            text = "PropertySync",
-            style = MaterialTheme.typography.headlineLarge.copy(
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF2196F3)
-            ),
-            modifier = Modifier.padding(bottom = 48.dp)
-        )
+        Column(verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally){// App Logo/Title
+            Text(
+                text = "PropertySync",
+                style = MaterialTheme.typography.headlineLarge.copy(
+                    color = Color(0xFF2196F3)
+                ),
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
 
-        // Sign in title
-        Text(
-            text = "Sign in to your account",
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(bottom = 24.dp)
-        )
+            // Sign in title
+            Text(
+                text = "Sign in to your account",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+            )
+        }
+
+        Spacer(modifier = Modifier.padding(bottom = 24.dp))
 
         // Email field
         OutlinedTextField(
