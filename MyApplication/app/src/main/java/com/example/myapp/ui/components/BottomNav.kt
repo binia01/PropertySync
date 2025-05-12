@@ -2,7 +2,6 @@ package com.example.myapp.ui.components
 
 import androidx.compose.material3.NavigationBar
 import androidx.compose.runtime.*
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.example.myapp.data.model.NavItems
 import androidx.compose.material3.NavigationBarItem

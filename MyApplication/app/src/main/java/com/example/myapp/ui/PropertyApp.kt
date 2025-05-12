@@ -11,13 +11,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.compose.composable
 import com.example.myapp.data.model.Auth
 import com.example.myapp.ui.components.BottomNav
-import com.example.myapp.ui.screen.booking.BookingScreen
 import com.example.myapp.ui.screen.home.HomeScreen
 import com.example.myapp.ui.navigation.Screens
 import com.example.myapp.ui.screen.appointments.AppointmentsPage
 import com.example.myapp.ui.screen.auth.LoginScreenUI
 import com.example.myapp.ui.screen.auth.SignUpScreen
-//import com.example.myapp.ui.screen.booking.NewAppointments
 import com.example.myapp.ui.screen.home.EditProperty
 import com.example.myapp.ui.screen.home.PropertyDetails
 import com.example.myapp.ui.screen.profile.ProfileScreen

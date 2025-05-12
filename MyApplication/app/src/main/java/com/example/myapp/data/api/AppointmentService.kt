@@ -1,6 +1,5 @@
 package com.example.myapp.data.api
 
-import com.example.myapp.data.model.BuyerBookingsReturn
 import com.example.myapp.data.model.Request.CreateAppointmentRequest
 import retrofit2.Response
 import retrofit2.http.Body

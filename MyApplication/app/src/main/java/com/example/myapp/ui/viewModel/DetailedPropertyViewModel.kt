@@ -33,7 +33,6 @@ class DetailedPropertyViewModel  @Inject constructor (
 
     fun createAppointment(propertyId: Int, date: String, time: String, sellerId: Int?) {
         viewModelScope.launch {
-//            _createAppointmentResult.value = Result.Loading
             userRepository.getUser()
                 .map { user -> user?.token }
                 .collectLatest { authToken ->

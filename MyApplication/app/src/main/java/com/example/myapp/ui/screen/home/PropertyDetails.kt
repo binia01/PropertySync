@@ -1,6 +1,5 @@
 package com.example.myapp.ui.screen.home
 
-import android.icu.text.SimpleDateFormat
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,7 +34,6 @@ import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,11 +53,8 @@ import androidx.navigation.NavHostController
 import com.example.myapp.R
 import com.example.myapp.ui.screen.appointments.convertMillisToDatee
 import com.example.myapp.ui.theme.BluePrimary
-import com.example.myapp.ui.viewModel.AppointmentViewModel
 import com.example.myapp.ui.viewModel.DetailedPropertyViewModel
 import java.util.Calendar
-import java.util.Date
-import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

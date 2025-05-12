@@ -1,12 +1,9 @@
 package com.example.myapp.ui.viewModel
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.myapp.ui.screen.property.AddPropertyState
 import androidx.lifecycle.viewModelScope
 import com.example.myapp.data.model.Request.AddPropertyRequest
-import com.example.myapp.data.repository.AuthRepository
 import com.example.myapp.data.repository.PropertyRepository
 import com.example.myapp.data.repository.UserRepository
 import com.example.myapp.ui.screen.property.AddPropertyEvent
