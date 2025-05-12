@@ -61,7 +61,7 @@ fun PropertyCard( property: Property, isSeller: Boolean, navController: NavContr
                     color = MaterialTheme.colorScheme.primary
                 ){
                     Text(
-                        text = property.price.toString(),
+                        text = "$ ${property.price}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)

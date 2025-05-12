@@ -15,7 +15,6 @@ import androidx.navigation.NavController
 import com.example.myapp.data.model.AppointmentEntity
 import com.example.myapp.ui.viewModel.AppointmentViewModel
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
