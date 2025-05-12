@@ -12,6 +12,5 @@ data class AppointmentEntity(
     val buyerid: Int,
     val sellerid: Int,
     val status: String,
-    // val role: String, // "BUYER" or "SELLER"
     val relatedJson: String // JSON string of either `property` or `buyer`
 )

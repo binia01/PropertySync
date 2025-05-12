@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.Result
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -61,7 +60,6 @@ class HomeViewModel @Inject constructor(
                                     _properties.value
                                 }
                                 _properties.value = filteredProperties
-//                                _errorMessage.value = MessageState.Success("")
                             } else {
                                 _properties.value = null
                                 _errorMessage.value = MessageState.Error(result.exceptionOrNull()?.localizedMessage ?: "Failed to fetch properties")
@@ -75,37 +73,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-//    private fun loadProperties() {
-//        viewModelScope.launch {
-//            userRepository.getUser()
-//                .map { user -> user?.token }
-//                .collectLatest { authToken ->
-//
-//                    if (!authToken.isNullOrBlank()) {
-//                        _isLoading.value = true
-//                        propertyRepository.getProperties("Bearer $authToken").collectLatest { result ->
-//                            _isLoading.value = false
-//                            if (result.isSuccess) {
-//                                _properties.value = result.getOrNull()
-//                                val filteredProperties = if (userRole.value == "SELLER" && userId != null) {
-//                                    _properties.value?.filter { it.sellerId ==  }
-//                                } else {
-//                                    _properties.value
-//                                }
-//                                _properties.value = filteredProperties
-//                                _errorMessage.value = null
-//                            } else {
-//                                _properties.value = null
-//                                _errorMessage.value = result.exceptionOrNull()?.localizedMessage ?: "Failed to fetch properties"
-//                            }
-//                        }
-//                    } else {
-//                        _properties.value = null
-//                        _errorMessage.value = "User token not available"
-//                    }
-//                }
-//        }
-//    }
 
     private fun loadUserDetails() {
         viewModelScope.launch {

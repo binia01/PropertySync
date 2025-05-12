@@ -7,7 +7,6 @@ import androidx.activity.enableEdgeToEdge
 import com.example.myapp.ui.PropertyApp
 import com.example.myapp.ui.theme.MyApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.HiltAndroidApp
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

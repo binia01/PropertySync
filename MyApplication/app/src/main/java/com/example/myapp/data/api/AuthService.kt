@@ -1,17 +1,9 @@
 package com.example.myapp.data.api
 
 
-import androidx.compose.ui.semantics.Role
-import com.example.myapp.data.api.AuthApiService.SignupRequest
-import com.example.myapp.data.model.Auth
-import com.example.myapp.data.model.User
-import com.google.gson.annotations.SerializedName
-import dagger.Provides
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-//import retrofit2.converter.scalars.ScalarsConverterFactory
 
+import com.google.gson.annotations.SerializedName
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 

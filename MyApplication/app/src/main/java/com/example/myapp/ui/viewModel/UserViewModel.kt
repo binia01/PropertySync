@@ -1,12 +1,8 @@
 package com.example.myapp.ui.viewModel
 
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapp.data.model.Auth
 import com.example.myapp.data.model.User
 import com.example.myapp.data.model.UserReqState
 import com.example.myapp.data.repository.UserRepository

@@ -1,22 +1,13 @@
 package com.example.myapp.data.api
 
-import com.example.myapp.data.model.User
 import com.example.myapp.data.model.UserReturn
-import com.example.myapp.data.repository.UserRepository
 import com.google.gson.annotations.SerializedName
-import dagger.Provides
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PATCH
-import retrofit2.http.POST
-import javax.inject.Singleton
-
-
 
 interface UserService {
     @GET("users/profile")
