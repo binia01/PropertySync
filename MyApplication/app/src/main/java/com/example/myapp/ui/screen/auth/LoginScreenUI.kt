@@ -41,24 +41,27 @@ fun LoginScreenUI(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // App Logo/Title
-        Text(
-            text = "PropertySync",
-            style = MaterialTheme.typography.headlineLarge.copy(
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF2196F3)
-            ),
-            modifier = Modifier.padding(bottom = 48.dp)
-        )
+        Column(verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally){// App Logo/Title
+            Text(
+                text = "PropertySync",
+                style = MaterialTheme.typography.headlineLarge.copy(
+                    color = Color(0xFF2196F3)
+                ),
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
 
-        // Sign in title
-        Text(
-            text = "Sign in to your account",
-            style = MaterialTheme.typography.headlineSmall,
-            modifier = Modifier
-                .align(Alignment.Start)
-                .padding(bottom = 24.dp)
-        )
+            // Sign in title
+            Text(
+                text = "Sign in to your account",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSecondary,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(bottom = 24.dp)
+
+            )
+        }
 
         // Email field
         OutlinedTextField(
