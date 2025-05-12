@@ -45,7 +45,6 @@ fun Header(
         MaterialTheme.colorScheme.onBackground
 
     Surface(
-        shadowElevation = 4.dp,
         color = backgroundColor
     ) {
         Column(

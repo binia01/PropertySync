@@ -1,5 +1,6 @@
 package com.example.myapp.ui.screen.profile
 
+import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -27,26 +28,18 @@ import com.example.myapp.ui.viewModel.UserViewModel
 fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     val userViewModel: UserViewModel = hiltViewModel()
     val userState by userViewModel.userState.collectAsState()
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("My Profile",
-                    color = Color.White,
-                    modifier = Modifier.padding(top = 4.dp))
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                windowInsets = WindowInsets(0.dp)
-            )
-        }
-    ) { paddingValues ->
-        LazyColumn(
+
+    LazyColumn(
             modifier = Modifier
-                .padding(paddingValues)
                 .fillMaxSize()
         ) {
             item {
+                Header(
+                    title = "My Profile",
+                    subtitle = "Manage your account",
+                    showBack = false,
+                    backgroundStyle = HeaderStyle.Blue
+                )
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -55,12 +48,6 @@ fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel
                         .padding(horizontal = 16.dp)
                 ) {
 
-                    Header(
-                        title = "My Profile",
-                        subtitle = "Manage your account",
-                        showBack = false,
-                        backgroundStyle = HeaderStyle.Blue
-                    )
                     UserInfoCard(
                         "${userState?.firstname} ${userState?.lastname}",
                         "${userState?.email}",
@@ -90,6 +77,5 @@ fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel
                 }
             }
         }
-    }
     }
 

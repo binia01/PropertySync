@@ -35,7 +35,6 @@ fun HomeScreen(navController: NavController, authViewModel: AuthViewModel) {
     ) {
         Header(
             title = "Find Your Dream Home",
-            showBack = false,
             backgroundStyle = HeaderStyle.Blue
         )
         if (userRole == "SELLER"){

@@ -24,7 +24,7 @@ import androidx.compose.material3.MaterialTheme
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBarDefaults.InputField
 import androidx.compose.material3.Text
@@ -67,24 +67,9 @@ fun AddPropertyScreen(
             viewModel.onEvent(AddPropertyEvent.OnSuccessHandled)
         }
     }
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Create Propertys",
-                    color = Color.White,
-                    modifier = Modifier.padding(top = 4.dp))
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                windowInsets = WindowInsets(0.dp)// To remove more padding of system (finally)
-            )
-        }
-    ){paddingValues ->
 
     Column(
         modifier = Modifier
-            .padding(paddingValues)
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
@@ -220,7 +205,7 @@ fun AddPropertyScreen(
         }
     }
     }
-}
+
 
 @Composable
 fun InputField(
@@ -260,7 +245,8 @@ fun InputField(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                 )
             },
-            maxLines = num
+            maxLines = num,
+            keyboardOptions = keyboardOptions,
         )
     }
 }
@@ -295,7 +281,12 @@ fun CounterField(
                     .border(
                         1.dp,
                         MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                        RoundedCornerShape(topStart = 8.dp, topEnd = 0.dp, bottomEnd = 0.dp, bottomStart = 8.dp)
+                        RoundedCornerShape(
+                            topStart = 8.dp,
+                            topEnd = 0.dp,
+                            bottomEnd = 0.dp,
+                            bottomStart = 8.dp
+                        )
                     )
                     .clickable { onDecrement() },
                 contentAlignment = Alignment.Center
@@ -326,7 +317,12 @@ fun CounterField(
                     .border(
                         1.dp,
                         MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                        RoundedCornerShape(topStart = 0.dp, topEnd = 8.dp, bottomEnd = 8.dp, bottomStart = 0.dp)
+                        RoundedCornerShape(
+                            topStart = 0.dp,
+                            topEnd = 8.dp,
+                            bottomEnd = 8.dp,
+                            bottomStart = 0.dp
+                        )
                     )
                     .clickable { onIncrement() },
                 contentAlignment = Alignment.Center

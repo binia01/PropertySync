@@ -118,7 +118,6 @@ fun AppointmentCard(
                 modifier = Modifier
                     .clickable{ onLinkClick() }
                     .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.secondary)
                     .padding(horizontal = 16.dp, vertical = 20.dp)
 
             ) {

@@ -2,14 +2,17 @@ package com.example.myapp.ui.screen.appointments
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,12 +36,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.myapp.R
 import com.example.myapp.data.model.AppointmentEntity
 import com.example.myapp.data.model.Property
 import com.example.myapp.ui.components.Header
@@ -55,7 +61,7 @@ import kotlinx.coroutines.flow.collectLatest
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppointmentsPage(navController: NavController) {
-    val tabs = listOf("ALL", "PENDING", "CONFIRMED", "COMPLETED", "CANCELLED")
+    val tabs = listOf("ALL", "PENDING", "CONFIRMED", "COMPLETED", "CANCELED")
     var selectedTabIndex by remember { mutableIntStateOf(0) }
     val appointmentViewModel: AppointmentViewModel = hiltViewModel()
     val appointments by appointmentViewModel.appointments.collectAsState()
@@ -68,7 +74,7 @@ fun AppointmentsPage(navController: NavController) {
                 1 -> appointment.status == "PENDING"
                 2 -> appointment.status == "CONFIRMED"
                 3 -> appointment.status == "COMPLETED"
-                4 -> appointment.status == "CANCELLED"
+                4 -> appointment.status == "CANCELED"
                 else -> true
             }
         } ?: emptyList()
@@ -113,14 +119,6 @@ fun AppointmentsPage(navController: NavController) {
     }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
-private fun formatDateString(dateString: String, formatter: DateTimeFormatter): String {
-    return try {
-        LocalDateTime.parse(dateString, formatter).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
-    } catch (e: DateTimeParseException) {
-        "Invalid Date"
-    }
-}
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -157,7 +155,7 @@ private fun AppointmentList(
                 onCancel = {
                     appointmentViewModel.updateAppointmentStatus(
                         appointment.id,
-                        "CANCELLED"
+                        "CANCELED"
                     )
                 },
                 onConfirm = {
@@ -214,9 +212,6 @@ fun NoAppointments(navController: NavController) {
     }
 }
 
-fun convertMillisToDatee(millis: Long): String {
-    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    return formatter.format(Date(millis))
-}
+
 
 
