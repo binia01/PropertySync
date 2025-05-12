@@ -3,6 +3,7 @@ package com.example.myapp.ui.screen.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -12,6 +13,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -35,25 +38,30 @@ fun HomeScreen(navController: NavController, authViewModel: AuthViewModel) {
     val properties by homeViewModel.properties.collectAsState()
 
     val propertiesList = properties ?: emptyList()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp)
-    ) {
-        Header(
-            title = "Find Your Dream Home",
-        )
-        if (userRole == "SELLER"){
-            LazyColumn {
-                itemsIndexed(propertiesList){ index, it -> PropertyCard(it, true, navController,
-                    onDelete = { homeViewModel.deleteProperty(it.id.toInt())})}
-            }
-        }else{
-            LazyColumn {
-                itemsIndexed(propertiesList) { index, it -> PropertyCard(it, false, navController)}
+
+    Scaffold(modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                title = { Text("Find Your Dream Home",
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White) },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary),
+                windowInsets = WindowInsets(0.dp)
+            ) }
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize())
+        {
+            if (userRole == "SELLER"){
+                    itemsIndexed(propertiesList){ index, it -> PropertyCard(it, true, navController,
+                        onDelete = { homeViewModel.deleteProperty(it.id.toInt())})}
+
+            }else{
+                    itemsIndexed(propertiesList) { index, it -> PropertyCard(it, false, navController)}
             }
         }
-
-
     }
 }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -135,9 +136,25 @@ fun AppointmentsPage(navController: NavController) {
             }
                 appointments?.let {
                     if (it.isEmpty()) {
-                        // Display a message if there are no appointments
-                        // TODO make this prettier ig?
-                        Text(text = "No appointments available.")
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+
+                        Text(text = "No appointments Yet.")
+                            Button(
+                                modifier = Modifier.padding(vertical = 24.dp),
+                                onClick = { /* Navigate Back home*/}
+                            ) {
+                                Text(
+                                    "Check Deals",
+                                    color = Color.White
+                                )
+                            }
+
+                        }
                     } else {
                         LazyColumn(modifier = Modifier.padding(16.dp, vertical = 4.dp)) {
                             itemsIndexed(it) { index, appointment: AppointmentEntity ->

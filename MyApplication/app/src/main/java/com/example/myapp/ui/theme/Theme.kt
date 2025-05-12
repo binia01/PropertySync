@@ -1,5 +1,6 @@
 package com.example.myapp.ui.theme
 
+import android.R.attr.text
 import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -21,15 +22,15 @@ private val DarkColorScheme = darkColorScheme(
 private val LightColorScheme = lightColorScheme(
     primary = BluePrimary,
     secondary = BaseBackground,
-    tertiary = BaseBackground,
+    tertiary = TextSecondary,
 //    primary = BluePrimary,
-    background = CardBackground,
+    background = Color(0xFFF3F4F6),
     surface = CardBackground,
     onPrimary = Color.White,
     onBackground = TextPrimary,
-    onSurface = TextPrimary
+    onSurface = TextPrimary,
     /* Other default colors to override
-    background = Color(0xFFFFFBFE),
+    background = Color(0xFFF3F4F6),
     surface = Color(0xFFFFFBFE),
     onPrimary = Color.White,
     onSecondary = Color.White,

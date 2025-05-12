@@ -53,6 +53,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.myapp.R
+import com.example.myapp.ui.components.IconText
 import com.example.myapp.ui.screen.appointments.convertMillisToDatee
 import com.example.myapp.ui.theme.BluePrimary
 import com.example.myapp.ui.viewModel.AppointmentViewModel
@@ -103,10 +104,8 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
                 // Property Name
                 Text(
                     text = "${property?.title}",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.weight(1f))
 
                 // Location
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -114,11 +113,10 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
                         Icons.Default.LocationOn,
                         contentDescription = null
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = "${property?.location}",
-                        style = MaterialTheme.typography.bodyLarge
-                    )
+                    Spacer(modifier = Modifier.width(6.dp))
+                    Text(text="${property?.title}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.weight(1f))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -128,8 +126,7 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
                     text = "Description",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+                    modifier = Modifier.padding(bottom = 6.dp))
                 Text(
                     text = "${property?.description}",
                     style = MaterialTheme.typography.bodyMedium,
@@ -139,17 +136,16 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
 
                 // Property Features
                 Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    FeatureItem(icon = R.drawable.outline_bed_24, text = "${property?.beds}")
-                    FeatureItem(icon = R.drawable.outline_bathtub_24, text = "${property?.baths}")
-                    FeatureItem(icon = R.drawable.outline_crop_square_24, text = "${property?.area}")
+                        .padding(horizontal = 8.dp)
+                        .padding(bottom = 8.dp)) {
+                    IconText(R.drawable.outline_bed_24, "${property?.beds} Beds")
+                    IconText(R.drawable.outline_bathtub_24, "${property?.baths} Baths")
+                    IconText(R.drawable.outline_crop_square_24, "${property?.area} sqft")
                 }
-
-//                HorizontalDivider(thickness = 1.dp, color = Color.LightGray)
 
                 Row(
                     modifier = Modifier
@@ -163,7 +159,7 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
                         text = "${property?.price}",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        color = BluePrimary
+                        color = MaterialTheme.colorScheme.primary
                     )
 
                     Text(
@@ -275,24 +271,6 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
         }
     }
 }
-
-
-// Bed / Bath / Square feet ....
-@Composable
-private fun FeatureItem(icon: Int, text: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Image(
-            painter = painterResource(id = icon),
-            contentDescription = null,
-            modifier = Modifier.size(20.dp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
-        Text(text = text)
-    }
-}
-
-
-
 
 // Calendar
 @OptIn(ExperimentalMaterial3Api::class)

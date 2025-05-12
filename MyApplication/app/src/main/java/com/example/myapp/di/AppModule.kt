@@ -49,7 +49,7 @@ abstract class AppModule {
         @Singleton
         fun provideAuthApiService(): AuthApiService{
             return Retrofit.Builder()
-                .baseUrl("http://192.168.1.7:3000/")
+                .baseUrl("http://192.168.137.1:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(AuthApiService::class.java)
@@ -59,7 +59,7 @@ abstract class AppModule {
         @Singleton
         fun provideUserApiService(): UserService{
             return Retrofit.Builder()
-                .baseUrl("http://192.168.1.7:3000/")
+                .baseUrl("http://192.168.137.1:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(UserService::class.java)
@@ -69,7 +69,7 @@ abstract class AppModule {
         @Singleton
         fun providePropertyApiService(): PropertyService{
             return Retrofit.Builder()
-                .baseUrl("http://192.168.1.7:3000/")
+                .baseUrl("http://192.168.137.1:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(PropertyService::class.java)
@@ -79,7 +79,7 @@ abstract class AppModule {
         @Singleton
         fun provideAppointmentApiService(): AppointmentService{
             return Retrofit.Builder()
-                .baseUrl("http://192.168.1.7:3000/")
+                .baseUrl("http://192.168.137.1:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(AppointmentService::class.java)
