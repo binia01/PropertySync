@@ -14,9 +14,7 @@ import com.example.myapp.ui.viewModel.UserViewModel
 
 @Composable
 fun BottomNav(navController: NavController) {
-    var navSelectedItem by remember {
-        mutableIntStateOf(0)
-    }
+    var navSelectedItem by remember {mutableIntStateOf(0)}
     val userViewModel: UserViewModel = viewModel()
     val userRole by userViewModel.userRole.collectAsState()
     val user by userViewModel.userState.collectAsState()
@@ -31,20 +29,15 @@ fun BottomNav(navController: NavController) {
                 NavigationBarItem(
                     selected = i == navSelectedItem,
                     label = {
-                        Text(navItem.label)
-                    },
-                    icon = {
-                        Icon(
+                        Text(navItem.label)},
+                    icon = { Icon(
                             navItem.icon,
-                            contentDescription = navItem.label
-                        )
-                    },
+                            contentDescription = navItem.label)},
                     onClick = {
                         navSelectedItem = i
-                        navController.navigate(navItem.rout){
+                        navController.navigate(navItem.route){
                             popUpTo(navController.graph.startDestinationId){
-                                saveState = true
-                            }
+                                saveState = true}
                             launchSingleTop = true
                             restoreState = true
                         }

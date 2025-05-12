@@ -1,6 +1,5 @@
 package com.example.myapp.ui.viewModel
 
-//package com.example.propSync.ui.viewModel;
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
