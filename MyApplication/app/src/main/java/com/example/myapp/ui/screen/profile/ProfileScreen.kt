@@ -15,19 +15,36 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.myapp.ui.navigation.Screens
 import com.example.myapp.ui.viewModel.AuthViewModel
 import com.example.myapp.ui.viewModel.UserViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     val userViewModel: UserViewModel = hiltViewModel()
     val userState by userViewModel.userState.collectAsState()
-
-    LazyColumn(modifier = Modifier
-            .fillMaxSize()
-            ) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("My Profile",
+                    color = Color.White,
+                    modifier = Modifier.padding(top = 4.dp))
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                windowInsets = WindowInsets(0.dp)
+            )
+        }
+    ) { paddingValues ->
+        LazyColumn(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+        ) {
             item {
                 Column(
                     modifier = Modifier
@@ -36,7 +53,6 @@ fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel
                         .clip(RoundedCornerShape(12.dp))
                         .padding(horizontal = 16.dp)
                 ) {
-                    Header("My Profile")
                     UserInfoCard(
                         "${userState?.firstname} ${userState?.lastname}",
                         "${userState?.email}",
@@ -66,5 +82,6 @@ fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel
                 }
             }
         }
+    }
     }
 
