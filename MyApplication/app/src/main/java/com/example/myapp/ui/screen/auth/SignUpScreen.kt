@@ -16,7 +16,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -52,19 +51,27 @@ fun SignUpScreen(onNavToLogin: () -> Unit, // navigate to sign up
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // App title
-        Text(
-            text = "PropertySync",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 32.dp)
-        )
+        Column(verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally){// App Logo/Title
+            Text(
+                text = "PropertySync",
+                style = MaterialTheme.typography.headlineLarge.copy(
+                    color = Color(0xFF2196F3)
+                ),
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
 
-        Text(
-            text = "Create your account",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(bottom = 24.dp)
-        )
+            // Sign in title
+            Text(
+                text = "Sign in to your account",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSecondary,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+            )
+        }
+
+        Spacer(modifier = Modifier.padding(bottom = 24.dp))
 
         // Full name field
         OutlinedTextField(

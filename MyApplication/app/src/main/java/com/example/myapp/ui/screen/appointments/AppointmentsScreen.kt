@@ -59,6 +59,7 @@ import com.example.myapp.R
 import com.example.myapp.data.model.AppointmentEntity
 import com.example.myapp.data.model.Property
 import com.example.myapp.ui.components.Header
+import com.example.myapp.ui.components.HeaderStyle
 import com.example.myapp.ui.screen.home.DatePickerModal
 import com.example.myapp.ui.theme.BluePrimary
 import com.example.myapp.ui.viewModel.AppointmentViewModel
@@ -87,7 +88,11 @@ fun AppointmentsPage(navController: NavController) {
 
 
     Column {
-            Header("My Appointments")
+            Header(
+                title = "My Appointments",
+                showBack = false,
+                backgroundStyle = HeaderStyle.Blue
+            )
             ScrollableTabRow(
                 selectedTabIndex = selectedTabIndex,
                 contentColor = BluePrimary,
@@ -133,25 +138,7 @@ fun AppointmentsPage(navController: NavController) {
             }
                 appointments?.let {
                     if (it.isEmpty()) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-
-                        Text(text = "No appointments Yet.")
-                            Button(
-                                modifier = Modifier.padding(vertical = 24.dp),
-                                onClick = { /* Navigate Back home*/}
-                            ) {
-                                Text(
-                                    "Check Deals",
-                                    color = Color.White
-                                )
-                            }
-
-                        }
+                        NoAppointments()
                     } else {
                         LazyColumn(modifier = Modifier.padding(16.dp, vertical = 4.dp)) {
                             itemsIndexed(it) { index, appointment: AppointmentEntity ->
@@ -186,6 +173,19 @@ fun AppointmentsPage(navController: NavController) {
                 }
         }
     }
+
+
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+private fun formatDateString(dateString: String, formatter: DateTimeFormatter): String {
+    return try {
+        LocalDateTime.parse(dateString, formatter).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))
+    } catch (e: DateTimeParseException) {
+        "Invalid Date"
+    }
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -449,6 +449,44 @@ fun AppointmentCard(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun NoAppointments() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Image(
+            painter = painterResource(id = R.drawable.calander),
+            contentDescription = "Calendar Icon",
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground),
+            modifier = Modifier
+                .size(64.dp)
+                .padding(bottom = 16.dp)
+        )
+
+        Text(
+            text = "No appointments found",
+            style = MaterialTheme.typography.titleMedium.copy(
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = "You don't have any appointments yet.",
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontSize = 14.sp
+            ),
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 

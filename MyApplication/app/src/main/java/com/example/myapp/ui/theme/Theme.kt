@@ -25,6 +25,7 @@ private val LightColorScheme = lightColorScheme(
     background = CardBackground,
     surface = CardBackground,
     onPrimary = Color.White,
+    onSecondary = TextSecondary,
     onBackground = TextPrimary,
     onSurface = TextPrimary
     /* Other default colors to override

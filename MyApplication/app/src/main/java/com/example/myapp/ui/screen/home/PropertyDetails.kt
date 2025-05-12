@@ -57,6 +57,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.myapp.R
+import com.example.myapp.ui.components.Header
+import com.example.myapp.ui.components.HeaderStyle
 import com.example.myapp.ui.components.IconText
 import com.example.myapp.ui.screen.appointments.convertMillisToDatee
 import com.example.myapp.ui.theme.BluePrimary
@@ -76,35 +78,16 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
 
     detailedPropertyViewModel.getPropertyDetails(propertyId?.toIntOrNull())
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Property Detail",
-                    color = Color.White,
-                    modifier = Modifier.padding(top = 4.dp))
-                },
-                navigationIcon = {
-                    IconButton(onClick = {navController.navigateUp()}) {
-                        Image(
-                            painter = painterResource(id = R.drawable.back),
-                            contentDescription = "Back arrow",
-                            modifier = Modifier
-                                .requiredSize(20.dp)
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                ),
-                windowInsets = WindowInsets(0.dp)// To remove more padding of system (finally)
-            )
-        }
-    ){ paddingValues ->
     Column(
         modifier = Modifier
-            .padding(paddingValues)
             .verticalScroll(rememberScrollState())
     ) {
+        Header(
+            title = "Property Details",
+            showBack = true,
+            onbackpressed = { navController.popBackStack() },
+            backgroundStyle = HeaderStyle.Blue
+        )
         Image(
             painter = painterResource(id = R.drawable.demohouse),
             contentDescription = "Property Image",
@@ -295,8 +278,6 @@ fun PropertyDetails(navController: NavHostController, propertyId: String?) {
         }
     }
     }
-
-}
 
 // Calendar
 @OptIn(ExperimentalMaterial3Api::class)

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.example.myapp.ui.components.Header
+import com.example.myapp.ui.components.HeaderStyle
 
 
 @Composable
@@ -11,8 +12,10 @@ fun NewAppointments(navController: NavController){
 
     Column {
         Header(
-            "Book a Property", true,
-            onbackpressed = { navController.popBackStack() }
+            title = "Book a Property",
+            showBack = true,
+            onbackpressed = { navController.popBackStack() },
+            backgroundStyle = HeaderStyle.Blue
         )
 
     }

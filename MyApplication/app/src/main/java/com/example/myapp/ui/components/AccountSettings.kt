@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,7 +37,6 @@ fun AccountSettings( onUpdateProfileClick: () -> Unit,
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White, shape = RoundedCornerShape(16.dp))
             .padding(12.dp)
     ) {
         SettingsRow(
@@ -59,8 +59,8 @@ fun AccountSettings( onUpdateProfileClick: () -> Unit,
 fun SettingsRow(
     title: String,
     icon: Any,
-    iconTint: Color = Color.Black,
-    textColor: Color = Color.Black,
+    iconTint: Color = MaterialTheme.colorScheme.onBackground,
+    textColor: Color = MaterialTheme.colorScheme.onBackground,
     onClick: () -> Unit,
     hasRightArrow: Boolean = false
 ) {
