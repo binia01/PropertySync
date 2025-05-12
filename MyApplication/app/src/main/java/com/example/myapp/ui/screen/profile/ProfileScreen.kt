@@ -50,7 +50,7 @@ fun ProfileScreen(navController: NavHostController, authViewModel: AuthViewModel
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                     ProfileAppointmentsCards(
-                        5, 2, 10, "${userState?.role?.uppercase()}"
+                        1, 1, 2, "${userState?.role?.uppercase()}"
                     )
                     Spacer(modifier = Modifier.height(24.dp))
                     Text(
